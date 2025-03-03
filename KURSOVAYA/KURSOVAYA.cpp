@@ -103,17 +103,19 @@ int player_move(int& x, int& y, char& cursor_type) {
     //std::cout << "Mouse X: " << p.x / 9 << " Y: " << p.y / 16 << std::endl;
     //cout << x << ' ' << y;
 
-    if ((x - p.x) > abs(y - p.y)) {
-        cursor_type = '<';
-    }
-    else if ((p.x - x) > abs(y - p.y)) {
-        cursor_type = '>';
-    }
-    else if ((y - p.y) > abs(x - p.x)) {
+    // Так как расстояние между строками и столбцами не совпадает для корректного изменения 
+    // требуется немного увеличить расстояние вертикальных курсоров
+    if ((y - p.y) * 1.9 >= abs(x - p.x)) {
         cursor_type = '^';
     }
-    else {
+    else if ((p.y - y) * 1.5 >= abs(x - p.x)) {
         cursor_type = 'V';
+    }
+    else if ((p.x - x) >= abs(y - p.y)) {
+        cursor_type = '>';
+    }
+    else if ((x - p.x) >= abs(y - p.y)) {
+        cursor_type = '<';
     }
 
     move_cursor(x, y);
@@ -127,6 +129,13 @@ void hideCursor() {
     cursorInfo.dwSize = 100;
     cursorInfo.bVisible = FALSE;
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+}
+
+void showMouseCursor(bool show) {
+    SystemParametersInfo(SPI_SETCURSORS, 0, nullptr, 0);
+    if (!show) {
+        ShowCursor(TRUE);
+    }
 }
 
 void disableScroll() {
@@ -147,6 +156,7 @@ int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     hideCursor();
+    showMouseCursor(true);
     disableScroll();
     Sleep(100);
     simulateF11();
