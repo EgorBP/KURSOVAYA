@@ -65,80 +65,55 @@ bool can_move(int x, int y) {
 int player_move(int& x, int& y, char& cursor_type) {
     clear(x, y);
     if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move(x - 2, y - 1)) { // Вверх и влево
-        //clear(x, y);
         y -= 1;
         x -= 2;
-        //move_cursor(x, y);
-        //cursor_type = '<';
-        //cout << '<';
     }
     else if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move(x + 2, y - 1)) { // Вверх и вправо
-        //clear(x, y);
         y -= 1;
         x += 2;
-        //move_cursor(x, y);
-        //cursor_type = '>';
-        //cout << '>';
     }
     else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move(x - 2, y + 1)) { // Вниз и влево
-        //clear(x, y);
         y += 1;
         x -= 2;
-        //move_cursor(x, y);
-        //cursor_type = '<';
-        //cout << '<';
     }
     else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move(x + 2, y + 1)) { // Вниз и вправо
-        //clear(x, y);
         y += 1;
         x += 2;
-        //move_cursor(x, y);
-        //cursor_type = '>';
-        //cout << '>';
     }
     else if (GetAsyncKeyState('W') & 0x8000 && can_move(x, y - 1)) { // Только вверх
-        //clear(x, y);
         y -= 1;
-        //move_cursor(x, y);
-        //cursor_type = '^';
-        //cout << '^';
     }
     else if (GetAsyncKeyState('S') & 0x8000 && can_move(x, y + 1)) { // Только вниз
-        //clear(x, y);
         y += 1;
-        //move_cursor(x, y);
-        //cursor_type = 'V';
-        //cout << 'V';
     }
     else if (GetAsyncKeyState('A') & 0x8000 && can_move(x - 2, y)) { // Только влево
-        //clear(x, y);
         x -= 2;
-        //move_cursor(x, y);
-        //cursor_type = '<';
-        //cout << '<';
     }
     else if (GetAsyncKeyState('D') & 0x8000 && can_move(x + 2, y)) { // Только вправо
-        //clear(x, y);
         x += 2;
-        //cursor_type = '>';
-        //move_cursor(x, y);
-        //cout << '>';
-    }
-    else { // Если никакая клавиша не нажата
-        //move_cursor(x, y);
-        //cout << cursor_type;
     }
 
     POINT p;
     HWND hwnd = GetConsoleWindow();
     GetCursorPos(&p);
     ScreenToClient(hwnd, &p);
+    p.x /= 9;
+    p.y /= 16;
 
-    std::cout << "Mouse X: " << p.x / 9 << " Y: " << p.y / 16 << std::endl;
-    cout << x << ' ' << y;
+    //std::cout << "Mouse X: " << p.x / 9 << " Y: " << p.y / 16 << std::endl;
+    //cout << x << ' ' << y;
 
-    if (x > p.x && y > p.y) {
-        cursor_type == 
+    if ((x - p.x) > abs(y - p.y)) {
+        cursor_type = '<';
+    }
+    else if ((p.x - x) > abs(y - p.y)) {
+        cursor_type = '>';
+    }
+    else if ((y - p.y) > abs(x - p.x)) {
+        cursor_type = '^';
+    }
+    else {
+        cursor_type = 'V';
     }
 
     move_cursor(x, y);
