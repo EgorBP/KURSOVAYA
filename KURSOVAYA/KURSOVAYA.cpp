@@ -9,29 +9,29 @@ void set_color(int text_color, int bg_color = 0) {
 }
 
 int print_castle() {
-    const string free_space(50, ' ');
-    cout << free_space << "                     /\\         /\\\n";
-    cout << free_space << "                   (^<>^)     (^<>^)\n";
-    cout << free_space << "          __       /^/\\^\\     /^/\\^\\      __             \n";
-    cout << free_space << "       __:  |     / /  \\ \\   / /  \\ \\    |  :__          \n";
-    cout << free_space << "      |  :__|     |^^^^^^|   |^^^^^^|    |__:  |             \n";
-    cout << free_space << "      |__:  |     \\/\\/\\/\\/   \\/\\/\\/\\/    |  :__|     \n";
-    cout << free_space << "           / \\    |  __  |   |  __  |   / \\                \n";
-    cout << free_space << "          /   \\   | |__| |   | |__| |  /   \\               \n";
-    cout << free_space << "         /_____\\  |      |   |      | /_____\\              \n";
-    cout << free_space << "         |     |==  ==  ==  ==  ==  ==|     |                \n";
-    cout << free_space << "         |  _  | |__||__||__||__||__| |  _  |                \n";
-    cout << free_space << "         | | | |                      | | | |                \n";
-    cout << free_space << "         | |=| |   __           __    | |=| |                \n";
-    cout << free_space << "         |     |  |  |    __   |  |   |     |                \n";
-    cout << free_space << "         |     |  |==|   |::|  |==|   |     |                \n";
-    cout << free_space << "         |     |         |::|         |     |                \n";
-    cout << free_space << "         |_____|_________|::|_________|_____|~               \n";
-    cout << free_space << "         ~~~~~~~~~~~~~~~~++++~~~~~~~~~~~~~~~~~               \n";
-    cout << free_space << "           ~~~~~~~~~~~~~~++++~~~~~~~~~~~~~~~                 \n";
-    cout << free_space << "              ~~~~~~~~~~~++++~~~~~~~~~~~                     \n";
-    cout << free_space << "                        ++++++                               \n";
-    cout << free_space << "                        ++++++                               \n";
+    // От флага до флага 41 символ
+    const string free_space(57, ' ');
+    cout << free_space << "               /\\         /\\                    \n";
+    cout << free_space << "             (^<>^)     (^<>^)                    \n";
+    cout << free_space << "    __       /^/\\^\\     /^/\\^\\      __        \n";
+    cout << free_space << " __:  |     / /  \\ \\   / /  \\ \\    |  :__     \n";
+    cout << free_space << "|  :__|     |^^^^^^|   |^^^^^^|    |__:  |        \n";
+    cout << free_space << "|__:  |     \\/\\/\\/\\/   \\/\\/\\/\\/    |  :__|\n";
+    cout << free_space << "     / \\    |  __  |   |  __  |   / \\           \n";
+    cout << free_space << "    /   \\   | |__| |   | |__| |  /   \\          \n";
+    cout << free_space << "   /_____\\  |      |   |      | /_____\\         \n";
+    cout << free_space << "   |     |==  ==  ==  ==  ==  ==|     |           \n";
+    cout << free_space << "   |  _  | |__||__||__||__||__| |  _  |           \n";
+    cout << free_space << "   | | | |                      | | | |           \n";
+    cout << free_space << "   | |=| |   __           __    | |=| |           \n";
+    cout << free_space << "   |     |  |  |    __   |  |   |     |           \n";
+    cout << free_space << "   |     |  |==|   |::|  |==|   |     |           \n";
+    cout << free_space << "   |     |         |::|         |     |           \n";
+    cout << free_space << "   ~~~~~~~~~~~~~~~~++++~~~~~~~~~~~~~~~~~          \n";
+    cout << free_space << "     ~~~~~~~~~~~~~~++++~~~~~~~~~~~~~~~            \n";
+    cout << free_space << "        ~~~~~~~~~~~++++~~~~~~~~~~~                \n";
+    cout << free_space << "                  ++++++                          \n";
+    //cout << free_space << "                  ++++++                          \n";
     return 0;
 }
 
@@ -41,6 +41,11 @@ void simulateF11() {
     input[0].type = INPUT_KEYBOARD;
     input[0].ki.wVk = VK_F11;
     input[0].ki.dwFlags = 0;
+
+    input[1].type = INPUT_KEYBOARD;
+    input[1].ki.wVk = VK_F11;
+    input[1].ki.dwFlags = KEYEVENTF_KEYUP;
+
     SendInput(2, input, sizeof(INPUT));
 }
 
@@ -55,10 +60,11 @@ void clear(int x, int y) {
 }
 
 bool can_move(int x, int y) {
-    if (x < 0 or y < 0) return false;
+    if (x < 0 or y < 0) return false;   // Границы окна 
     if (x >= 156 or y >= 46) return false;
-    //if (x > 56 and y > 17) return false;
-    //if ()
+    if ((x > 56 && x < 99) && (y >= 2 && y <= 5)) return false;  // Флаг
+    if ((x > 59 && x < 96) && (y >= 6 && y <= 15)) return false; // Стены
+    if ((x > 68 && x < 87) && (y >= 0 && y <= 2)) return false;  // Верхушка
     return true;
 }
 
@@ -97,24 +103,24 @@ int player_move(int& x, int& y, char& cursor_type) {
     HWND hwnd = GetConsoleWindow();
     GetCursorPos(&p);
     ScreenToClient(hwnd, &p);
-    p.x /= 9;
-    p.y /= 16;
+    double x_pos = (double)p.x / 9.7;       // Переводим позицию мыши в координаты консоли ( +-1 )
+    double y_pos = (double)p.y / 17.6;
 
-    //std::cout << "Mouse X: " << p.x / 9 << " Y: " << p.y / 16 << std::endl;
+    //std::cout << "Mouse X: " << x_pos << " Y: " << y_pos << std::endl;
     //cout << x << ' ' << y;
 
     // Так как расстояние между строками и столбцами не совпадает для корректного изменения 
     // требуется немного увеличить расстояние вертикальных курсоров
-    if ((y - p.y) * 1.9 >= abs(x - p.x)) {
+    if ((y - y_pos) * 1.9 >= abs(x - x_pos)) {
         cursor_type = '^';
     }
-    else if ((p.y - y) * 1.5 >= abs(x - p.x)) {
+    else if ((y_pos - y) * 1.5 >= abs(x - x_pos)) {
         cursor_type = 'V';
     }
-    else if ((p.x - x) >= abs(y - p.y)) {
+    else if ((x_pos - x) >= abs(y - y_pos)) {
         cursor_type = '>';
     }
-    else if ((x - p.x) >= abs(y - p.y)) {
+    else if ((x - x_pos) >= abs(y - y_pos)) {
         cursor_type = '<';
     }
 
@@ -131,41 +137,16 @@ void hideCursor() {
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
 
-void showMouseCursor(bool show) {
-    SystemParametersInfo(SPI_SETCURSORS, 0, nullptr, 0);
-    if (!show) {
-        ShowCursor(TRUE);
-    }
-}
-
-void disableScroll() {
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    DWORD dwMode;
-
-    // Получаем текущий режим консоли
-    GetConsoleMode(hConsole, &dwMode);
-
-    // Отключаем режим прокрутки
-    dwMode &= ~ENABLE_LINE_INPUT;
-    dwMode &= ~ENABLE_ECHO_INPUT;
-
-    SetConsoleMode(hConsole, dwMode);
-}
-
 int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     hideCursor();
-    showMouseCursor(true);
-    disableScroll();
-    Sleep(100);
+    Sleep(70);
     simulateF11();
-    //print_castle();
 
-    int player_x = 2;
-    int player_y = 2;
+    int player_x = 78;
+    int player_y = 25;
     char player_type = 'V';
-    POINT p;
 
     while (true) {
         if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
@@ -175,12 +156,20 @@ int main() {
         print_castle();
         set_color(2);
         player_move(player_x, player_y, player_type);
+        move_cursor(0, 0);
         set_color(7);
+
+        cout << R"(
+       `.oo'    |    `oo.'
+    ,.  (`-'    |    `-')  ,.
+   '^\`-' )     |     ( `-'/^`
+      c-L'-     |     -`_-)   
+)";
 
         Sleep(80);
         move_cursor(0, 0);
+        ShowCursor(TRUE);
     }
-
 
     //system("pause");
     return 0;
