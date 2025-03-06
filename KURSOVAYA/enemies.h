@@ -20,6 +20,7 @@ struct Enemy {
 		"   c-L'- ",
 	};
 	void print() const;
+	void clear_enemy() const;
 	void move(int player_x, int player_y);
 };
 

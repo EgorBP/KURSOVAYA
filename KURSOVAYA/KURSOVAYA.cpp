@@ -12,7 +12,7 @@ int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     hideCursor();
-    Sleep(70);
+    Sleep(80);
     simulateF11();
     disableMouseSelection();
     Enemy enemy = { 50, 24 };
@@ -26,17 +26,18 @@ int main() {
             break;
         }
 
+        //system("cls");
         //print_castle();
         set_color(2);
         player_move(player_x, player_y, player_type);
         move_cursor(0, 0);
         set_color(7);
+        enemy.clear_enemy();
         enemy.print();
         enemy.move(player_x, player_y);
 
         Sleep(80);
         move_cursor(0, 0);
-        ShowCursor(TRUE);
     }
 
     //system("pause");
