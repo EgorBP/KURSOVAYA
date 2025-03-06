@@ -9,9 +9,10 @@ void move_cursor(short x, short y) {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void clear(int x, int y) {
+void clear(int x, int y, int n = 1) {
+    string empty(n, ' ');
     move_cursor(x, y);
-    cout << ' ';
+    cout << empty;
 }
 
 void set_color(int text_color, int bg_color = 0) {
@@ -37,4 +38,12 @@ void hideCursor() {
     cursorInfo.dwSize = 100;
     cursorInfo.bVisible = FALSE;
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+}
+
+void disableMouseSelection() {
+    HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
+    DWORD prev_mode;
+    GetConsoleMode(hInput, &prev_mode);
+    SetConsoleMode(hInput, ENABLE_EXTENDED_FLAGS |
+        (prev_mode & ~ENABLE_QUICK_EDIT_MODE));
 }

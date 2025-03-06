@@ -2,16 +2,17 @@
 #include <windows.h>
 #include "services.h"
 
+
 bool can_move_player(int x, int y) {
-    if (x < 0 or y < 0) return false;   // Границы окна 
-    if (x >= 156 or y >= 46) return false;
-    if ((x > 56 && x < 99) && (y >= 2 && y <= 5)) return false;  // Флаг
-    if ((x > 59 && x < 96) && (y >= 6 && y <= 15)) return false; // Стены
-    if ((x > 68 && x < 87) && (y >= 0 && y <= 2)) return false;  // Верхушка
+    //if (x < 0 or y < 0) return false;   // Границы окна 
+    //if (x >= 156 or y >= 46) return false;
+    //if ((x > 56 && x < 99) && (y >= 2 && y <= 5)) return false;  // Флаг
+    //if ((x > 59 && x < 96) && (y >= 6 && y <= 15)) return false; // Стены
+    //if ((x > 68 && x < 87) && (y >= 0 && y <= 2)) return false;  // Верхушка
     return true;
 }
 
-int player_move(int& x, int& y, char& cursor_type) {
+void player_move(int& x, int& y, char& cursor_type) {
     clear(x, y);
     if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move_player(x - 2, y - 1)) { // Вверх и влево
         y -= 1;

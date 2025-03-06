@@ -14,6 +14,8 @@ int main() {
     hideCursor();
     Sleep(70);
     simulateF11();
+    disableMouseSelection();
+    Enemy enemy = { 50, 24 };
 
     int player_x = 78;
     int player_y = 25;
@@ -24,18 +26,13 @@ int main() {
             break;
         }
 
-        print_castle();
+        //print_castle();
         set_color(2);
         player_move(player_x, player_y, player_type);
         move_cursor(0, 0);
         set_color(7);
-
-        cout << R"(
-       .oo'    |    oo.'
-    ,.  (-'    |    -')  ,.
-   '^\-' )     |     ( -'/^
-      c-L'-     |     -_-)   
-)";
+        enemy.print();
+        enemy.move(player_x, player_y);
 
         Sleep(80);
         move_cursor(0, 0);

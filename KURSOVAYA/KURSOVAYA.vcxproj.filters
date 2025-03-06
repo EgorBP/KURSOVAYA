@@ -24,10 +24,10 @@
     <ClCompile Include="player.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="enemies.cpp">
+    <ClCompile Include="services.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="services.cpp">
+    <ClCompile Include="enemies.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
