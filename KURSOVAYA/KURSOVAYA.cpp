@@ -22,7 +22,8 @@ int main() {
 
     enemies[0] = new Enemy{ 1, 10 };
     enemies[1] = new Enemy{ 131, 30 };
-    enemies[2] = new Enemy{ 51, 20 };
+    enemies[7] = new Enemy{ 77, 20 };
+    enemies[6] = new Enemy{ 77, 30 };
 
 
     int player_x = 77;
@@ -43,8 +44,8 @@ int main() {
                     if (level == 1) {}
                     else if (level == 2) color = 6; // Желтый
                     else if (level == 3) color = 4; // Красный
-                    else if (level == 4) color = 6; // Пурпурный
-                    else color = 6; //
+                    else if (level == 4) color = 5; // Пурпурный
+                    else color = 5; // Пурпурный
                     set_color(color);
                     enemies[i]->clear_enemy();
                     enemies[i]->print();
@@ -61,12 +62,14 @@ int main() {
                         if (enemies[i_checker] && i != i_checker) {
 
                             int x_other = enemies[i_checker]->enemy_upper_left_x;
-                            int y_oyter = enemies[i_checker]->enemy_upper_left_y;
+                            int y_other = enemies[i_checker]->enemy_upper_left_y;
 
-                            if (abs(x_main - x_other) < 9) {
-                                enemies[i_checker]->merge(enemies[i]->level);
-                                enemies[i]->clear_enemy();
-                                enemies[i] = nullptr;
+                            if (abs(x_main - x_other) < 9 && abs(y_main - y_other) < 3) {
+                                enemies[i_checker]->merge(enemies[i]->level); // Повышаем уровень
+                                enemies[i]->clear_enemy();                    // Очищаем перед удалением
+                                enemies[i_checker]->clear_enemy();            // Очищаем и рисуем заново в этой же итерации чтобы создать
+                                enemies[i_checker]->print();                  // эффкт переваривания (задержка) и перебить очищение от удаленного
+                                enemies[i] = nullptr;                         // Удаляем
                             }
                         }
                     }
@@ -85,15 +88,13 @@ int main() {
         set_color(7);
 
         //Sleep(80);
-        Sleep(20);
+        Sleep(120);
         move_cursor(0, 0);
     }
 
     for (int i = 0; enemies[i] != nullptr && i < size; i++) {
         delete enemies[i];
     }
-    //delete[] x_cords;
-    //delete[] y_cords;
 
     return 0;
 }
