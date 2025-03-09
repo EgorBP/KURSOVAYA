@@ -16,6 +16,14 @@ void clear(int x, int y, int n = 1) {
 }
 
 void set_color(int text_color, int bg_color = 0) {
+    //  0 - Черный
+    //  1 - Синий
+    //  2 - Зеленый
+    //  3 - Голубой
+    //  4 - Красный
+    //  5 - Пурпурный
+    //  6 - Желтый
+    //  7 - Белый(по умолчанию)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text_color | (bg_color << 4));
 }
 
