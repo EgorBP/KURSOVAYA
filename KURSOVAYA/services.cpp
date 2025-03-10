@@ -27,6 +27,12 @@ void set_color(int text_color, int bg_color = 0) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text_color | (bg_color << 4));
 }
 
+
+void end_game() {
+
+}
+
+
 void simulateF11() {
     INPUT input[2] = {};
 

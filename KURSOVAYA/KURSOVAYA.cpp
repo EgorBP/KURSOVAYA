@@ -40,13 +40,6 @@ int main() {
         if (parity % 2 != 0) {
             for (int i = 0; i < size; i++) {
                 if (enemies[i] != nullptr) {
-                    int level = enemies[i]->level, color = 7;  // Белый
-                    if (level == 1) {}
-                    else if (level == 2) color = 6; // Желтый
-                    else if (level == 3) color = 4; // Красный
-                    else if (level == 4) color = 5; // Пурпурный
-                    else color = 5; // Пурпурный
-                    set_color(color);
                     enemies[i]->clear_enemy();
                     enemies[i]->print();
                     enemies[i]->move(player_x, player_y, 1, 1);
@@ -88,7 +81,7 @@ int main() {
         set_color(7);
 
         //Sleep(80);
-        Sleep(120);
+        Sleep(20);
         move_cursor(0, 0);
     }
 

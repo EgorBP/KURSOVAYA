@@ -4,8 +4,6 @@
 
 
 bool can_move_player(int x, int y) {
-    //if (x < 2 or y < 1) return false;   // Границы окна 
-    //if (x >= 15 or y >= 45) return false;
     if (x < 1 or y < 0) return false;   // Границы окна 
     if (x >= 156 or y >= 46) return false;
     //if ((x > 56 && x < 99) && (y >= 2 && y <= 5)) return false;  // Флаг

@@ -4,8 +4,18 @@
 
 using namespace std;
 
+void Enemy::set_enemy_color() const {
+	int color = 7;  // Белый
+	if (level == 1) color = color;
+	else if (level == 2) color = 6; // Желтый
+	else if (level == 3) color = 4; // Красный
+	else if (level == 4) color = 5; // Пурпурный
+	else color = 5; // Пурпурный
+	set_color(color);
+}
 
 void Enemy::print() const {
+	set_enemy_color();
 	const string* model;
 	if (position == 'r') model = pos_rigth;
 	else model = pos_left;
@@ -13,6 +23,7 @@ void Enemy::print() const {
 		move_cursor(enemy_upper_left_x, enemy_upper_left_y + i);
 		cout << model[i];
 	}
+	set_color(7);
 }
 
 void Enemy::clear_enemy() {

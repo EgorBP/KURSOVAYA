@@ -24,6 +24,7 @@ struct Enemy {
 		"   c-L'- ",
 	};
 
+	void set_enemy_color() const;
 	void print() const;
 	void clear_enemy();
 	void merge(int other_level);
