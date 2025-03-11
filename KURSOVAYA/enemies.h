@@ -28,6 +28,7 @@ struct Enemy {
 	void print() const;
 	void clear_enemy();
 	void merge(int other_level);
+	bool is_enemy_on_player(int player_x, int player_y) const;
 	void move(int player_x, int player_y, int ponts_x, int point_y, short distance_x = 4, short distance_y = 2);
 };
 

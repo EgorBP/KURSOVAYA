@@ -48,6 +48,15 @@ void Enemy::merge(int other_level) {
 	level += other_level;
 }
 
+bool Enemy::is_enemy_on_player(int player_x, int player_y) const {
+	// ¬ернуть true враг в герое иначе false
+	if ((player_x >= enemy_upper_left_x && player_x <= enemy_upper_left_x + 8) &&
+		player_y >= enemy_upper_left_y && player_y <= enemy_upper_left_y + 3) {
+		return true;
+	}
+	return false;
+}
+
 void Enemy::move(int player_x, int player_y, int point_x, int point_y, short distance_x, short distance_y) {
 	// „тобы динозавр не переходил на другие строки на границах
 	if (player_x <= 4) {

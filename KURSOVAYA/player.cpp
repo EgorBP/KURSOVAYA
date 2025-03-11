@@ -2,6 +2,9 @@
 #include <windows.h>
 #include "services.h"
 
+void piy(int player_x, int player_y, char player_type) {
+
+}
 
 bool can_move_player(int x, int y) {
     if (x < 1 or y < 0) return false;   // Границы окна 
