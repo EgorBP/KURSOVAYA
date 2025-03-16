@@ -10,6 +10,7 @@ void Enemy::set_enemy_color() const {
 	else if (level == 2) color = 6; // Желтый
 	else if (level == 3) color = 4; // Красный
 	else if (level == 4) color = 5; // Пурпурный
+	else if (level <= 0) color = 7;
 	else color = 5; // Пурпурный
 	set_color(color);
 }
@@ -97,5 +98,3 @@ void Enemy::move(int player_x, int player_y, int point_x, int point_y, short dis
 		position = 'r';
 	}
 }
-
-

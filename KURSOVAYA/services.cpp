@@ -4,31 +4,7 @@
 using namespace std;
 
 
-LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
-    if (nCode >= 0 && wParam == WM_LBUTTONDOWN) {
-        MSLLHOOKSTRUCT* mouse = (MSLLHOOKSTRUCT*)lParam;
-        std::cout << "Левая кнопка нажата: (" << mouse->pt.x << ", " << mouse->pt.y << ")\n";
-    }
-    return CallNextHookEx(NULL, nCode, wParam, lParam);
-}
-
-void TrackMouseClicks() {
-    HHOOK mouseHook = SetWindowsHookEx(WH_MOUSE_LL, MouseHookProc, GetModuleHandle(NULL), 0);
-    if (!mouseHook) {
-        std::cerr << "Ошибка установки хука\n";
-        return;
-    }
-
-    MSG msg;
-    while (GetMessage(&msg, NULL, 0, 0)) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-
-    UnhookWindowsHookEx(mouseHook);
-}
-
-void move_cursor(short x, short y) {
+void move_cursor(const short x, const short y) {
     COORD coord = { x, y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
@@ -49,6 +25,12 @@ void set_color(int text_color, int bg_color = 0) {
     //  6 - Желтый
     //  7 - Белый(по умолчанию)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text_color | (bg_color << 4));
+}
+
+bool can_move_border(const int x, const int y) {
+    if (x < 1 or y < 0) return false;   // Границы окна 
+    if (x >= 156 or y >= 46) return false;
+    return true;
 }
 
 
