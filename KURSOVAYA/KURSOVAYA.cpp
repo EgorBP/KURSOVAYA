@@ -4,9 +4,9 @@
 #include "decoration.h"
 #include "player.h"
 #include "enemies.h"
+#include "bow.h"
 
 using namespace std;
-
 
 int main() {
 	SetConsoleCP(1251);
@@ -16,11 +16,12 @@ int main() {
 	simulateF11();
 	disableMouseSelection();
 
-	// !!!!! ЧТОБЫ ДИНОЗАВР ЗАЛЕЗАЛ МОРДОЙ ПО КРАЯМ ЕГО НУЖНО СОЗДАВАТЬ ТОЛЬКО НА НЕЧЕТНЫХ ПОЗИЦИЯХ ИНАЧЕ ОН ЛИБО БУДЕТ ЗАЛЕЗАТЬ ЗА ГНАНИЦУ ИЛИ НЕ ДОСТАНЕТ ДО ИГРОКА С ПРАВОЙ СТОРОНЫ !!!!!
+	// !!!!! ЧТОБЫ ДИНОЗАВР ЗАЛЕЗАЛ МОРДОЙ ПО КРАЯМ ЕГО НУЖНО СОЗДАВАТЬ ТОЛЬКО НА НЕЧЕТНЫХ ПОЗИЦИЯХ
+	// ИНАЧЕ ОН ЛИБО БУДЕТ ЗАЛЕЗАТЬ ЗА ГНАНИЦУ ИЛИ НЕ ДОСТАНЕТ ДО ИГРОКА С ПРАВОЙ СТОРОНЫ !!!!!
 	const int size = 50, bullets = 25;
-	Enemy* enemies[size]{};
-	int* bullet_cord[bullets]{};
-	char* bullet_side[bullets]{};
+	Enemy* enemies[size]{ nullptr };
+	int* bullet_cord[bullets]{ nullptr };
+	char* bullet_side[bullets]{ nullptr };
 
 	//enemies[0] = new Enemy{ 1, 10 };
 	enemies[1] = new Enemy{ 101, 30 };
@@ -68,7 +69,7 @@ int main() {
 			}
 			if (flag_end_game) {
 				move_cursor(0, 0);
-				cout << "Поражение";
+				cout << "Поражение, нажмите Enter...";
 				cin.get();
 				break;
 			}
@@ -100,15 +101,16 @@ int main() {
 			//parity -= 8;
 		}
 		//else {
-			parity += 1;
-			//cout << parity;
-		//}
+		parity += 1;
+		//cout << parity;
+	//}
 
 
 		if (parity % 6 == 0) {
 			// Создание пули
 			if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
 				// Ищем первую пустую позицию в которую запишем пулю
+				// Если делать отдельную ф-цию она будет принимать 6 аргументов
 				int free_pos = 0;
 				for (int i = 0; i < 25; i++) {
 					if (bullet_cord[i] == nullptr) {
@@ -121,40 +123,8 @@ int main() {
 
 			}
 		}
-		// Движение пули
-		for (int i = 0; i < bullets; i++) {
-			if (bullet_side[i]) {
-				bool end = false;
-				const char side = *bullet_side[i];
-				int& x = bullet_cord[i][0];
-				int& y = bullet_cord[i][1];
-				piy_clear(x, y, side);
-				for (int i_enemy = 0; i_enemy < size; i_enemy++) {
-					if (enemies[i_enemy] != nullptr) {
-						if (is_arrow_on_enemy(x, y, enemies[i_enemy]->enemy_upper_left_x, enemies[i_enemy]->enemy_upper_left_y, side)) {
-							enemies[i_enemy]->merge(-1);
-							bullet_side[i] = nullptr;
-							bullet_cord[i] = nullptr;
-							end = true;
-							break;
-						}
-					}
-				}
-				if (end) break;
 
-				if (side == '<') x -= 2;
-				else if (side == '>') x += 2;
-				else if (side == '^') y--;
-				else if (side == 'V') y++;
-				move_cursor(0, 0);
-				if (is_piy_border(x, y, side)) {
-					bullet_side[i] = nullptr;
-					bullet_cord[i] = nullptr;
-					continue;
-				}
-				print_bullet(x, y, side);
-			}
-		}
+		arrow_move(bullet_side, bullet_cord, enemies, bullets, size);
 
 		// Движение игрока
 		if (parity % 2 == 0) {
@@ -165,9 +135,11 @@ int main() {
 
 		//Sleep(15);
 		Sleep(15);
+		player_print(player_x, player_y, player_type);
+
 		move_cursor(0, 0);
 	}
-	
+
 	// Освобождаем динамические массивы
 	for (int i = 0; i < size; i++) {
 		delete enemies[i];

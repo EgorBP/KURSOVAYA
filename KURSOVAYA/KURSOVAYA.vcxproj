@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bow.cpp" />
     <ClCompile Include="decoration.cpp" />
     <ClCompile Include="enemies.cpp" />
     <ClCompile Include="KURSOVAYA.cpp" />
@@ -134,6 +135,7 @@
     <ClCompile Include="services.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bow.h" />
     <ClInclude Include="decoration.h" />
     <ClInclude Include="enemies.h" />
     <ClInclude Include="player.h" />

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Weapons">
+      <UniqueIdentifier>{9c57cb4f-b168-40f3-a623-a90537b67ad6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KURSOVAYA.cpp">
@@ -30,6 +33,9 @@
     <ClCompile Include="enemies.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="bow.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="decoration.h">
@@ -43,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="services.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="bow.h">
+      <Filter>Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
