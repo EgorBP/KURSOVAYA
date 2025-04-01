@@ -20,16 +20,11 @@ int main() {
 	// ИНАЧЕ ОН ЛИБО БУДЕТ ЗАЛЕЗАТЬ ЗА ГНАНИЦУ ИЛИ НЕ ДОСТАНЕТ ДО ИГРОКА С ПРАВОЙ СТОРОНЫ !!!!!
 	const int size = 50, bullets = 25;
 	Enemy* enemies[size]{ nullptr };
-	int* bullet_cord[bullets]{ nullptr };
-	char* bullet_side[bullets]{ nullptr };
+	Arrow* arrows[bullets]{ nullptr };
 
-	//enemies[0] = new Enemy{ 1, 10 };
-	enemies[1] = new Enemy{ 101, 30 };
-	enemies[2] = new Enemy{ 101, 30 };
 	enemies[3] = new Enemy{ 101, 25 };
 	enemies[4] = new Enemy{ 101, 25 };
 	enemies[7] = new Enemy{ 81, 20 };
-	//enemies[6] = new Enemy{ 81, 40 };
 
 	// Только на нечетном x чтобы мог по правому краю впритык лазить
 	int player_x = 77;
@@ -38,15 +33,17 @@ int main() {
 
 	bool flag_end_game = false;
 	int killer_id;
+	long long counter = 0;
 
-	int parity = 0;  // Четность
 	while (true) {
+		cout << counter;
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
 			break;
 		}
 
+
 		// Перемещение дино
-		if (parity % 4 == 0 && parity != 0) {
+		if (counter % 4 == 0 && counter != 0) {
 			for (int i = 0; i < size; i++) {
 				if (enemies[i] != nullptr) {
 
@@ -69,10 +66,12 @@ int main() {
 			}
 			if (flag_end_game) {
 				move_cursor(0, 0);
+				cin.clear();
 				cout << "Поражение, нажмите Enter...";
 				cin.get();
 				break;
 			}
+
 
 			// Слияние дино
 			for (int i = 0; i < size; i++) {
@@ -97,43 +96,39 @@ int main() {
 					}
 				}
 			}
-
-			//parity -= 8;
 		}
-		//else {
-		parity += 1;
-		//cout << parity;
-	//}
 
 
-		if (parity % 6 == 0) {
+		if (counter % 6 == 0) {
 			// Создание пули
 			if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
 				// Ищем первую пустую позицию в которую запишем пулю
 				// Если делать отдельную ф-цию она будет принимать 6 аргументов
 				int free_pos = 0;
 				for (int i = 0; i < 25; i++) {
-					if (bullet_cord[i] == nullptr) {
+					if (arrows[i] == nullptr) {
 						free_pos = i;
-						bullet_side[i] = new char(player_type);
-						bullet_cord[i] = new int[2] {player_x, player_y};
+						arrows[i] = new Arrow(player_x, player_y, player_type);
 						break;
 					}
 				}
 
 			}
 		}
+		// Перемещение пули
+		Arrow::arrow_move(arrows, enemies, bullets, size);
 
-		arrow_move(bullet_side, bullet_cord, enemies, bullets, size);
 
 		// Движение игрока
-		if (parity % 2 == 0) {
+		if (counter % 2 == 0) {
 			player_move(player_x, player_y, player_type);
 			move_cursor(0, 0);
 		}
 		player_print(player_x, player_y, player_type);
 
+
 		//Sleep(15);
+		counter += 1;
 		Sleep(15);
 		player_print(player_x, player_y, player_type);
 
@@ -145,9 +140,9 @@ int main() {
 		delete enemies[i];
 	}
 	for (int i = 0; i < bullets; i++) {
-		delete bullet_cord[i];
-		delete bullet_side[i];
+		delete arrows[i];
 	}
+
 	move_cursor(0, 0);
 	//system("pause");
 	return 0;
