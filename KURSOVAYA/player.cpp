@@ -18,11 +18,6 @@ void Player::player_move() {
 		player_y -= 1;
 		player_x -= 2;
 	}
-	// аывржаыфЁ
-	// fsadаывфпывп
-	// афывафыв
-	// авыфапыв
-	// аывдрафыва
 	else if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move_border(player_x + 2, player_y - 1)) { // Вверх и вправо
 		player_y -= 1;
 		player_x += 2;
