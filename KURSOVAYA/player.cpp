@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <windows.h>
 #include "services.h"
 #include "player.h"
@@ -14,36 +14,37 @@ void Player::player_print() const {
 
 void Player::player_move() {
 	clear(player_x, player_y);
-	if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move_border(player_x - 2, player_y - 1)) { // Вверх и влево
+	if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move_border(player_x - 2, player_y - 1)) { // Р’РІРµСЂС… Рё РІР»РµРІРѕ
 		player_y -= 1;
 		player_x -= 2;
 	}
-	// аывржаыфЁ
-	// fsadаывфпывп
-	// афывафыв
-	// авыфапыв
-	else if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move_border(player_x + 2, player_y - 1)) { // Вверх и вправо
+	// Р°С‹РІСЂР¶Р°С‹С„РЃ
+	// fsadР°С‹РІС„РїС‹РІРї
+	// Р°С„С‹РІР°С„С‹РІ
+	// Р°РІС‹С„Р°РїС‹РІ
+	// Р°С‹РІРґСЂР°С„С‹РІР°
+	else if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move_border(player_x + 2, player_y - 1)) { // Р’РІРµСЂС… Рё РІРїСЂР°РІРѕ
 		player_y -= 1;
 		player_x += 2;
 	}
-	else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move_border(player_x - 2, player_y + 1)) { // Вниз и влево
+	else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move_border(player_x - 2, player_y + 1)) { // Р’РЅРёР· Рё РІР»РµРІРѕ
 		player_y += 1;
 		player_x -= 2;
 	}
-	else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move_border(player_x + 2, player_y + 1)) { // Вниз и вправо
+	else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move_border(player_x + 2, player_y + 1)) { // Р’РЅРёР· Рё РІРїСЂР°РІРѕ
 		player_y += 1;
 		player_x += 2;
 	}
-	else if (GetAsyncKeyState('W') & 0x8000 && can_move_border(player_x, player_y - 1)) { // Только вверх
+	else if (GetAsyncKeyState('W') & 0x8000 && can_move_border(player_x, player_y - 1)) { // РўРѕР»СЊРєРѕ РІРІРµСЂС…
 		player_y -= 1;
 	}
-	else if (GetAsyncKeyState('S') & 0x8000 && can_move_border(player_x, player_y + 1)) { // Только вниз
+	else if (GetAsyncKeyState('S') & 0x8000 && can_move_border(player_x, player_y + 1)) { // РўРѕР»СЊРєРѕ РІРЅРёР·
 		player_y += 1;
 	}
-	else if (GetAsyncKeyState('A') & 0x8000 && can_move_border(player_x - 2, player_y)) { // Только влево
+	else if (GetAsyncKeyState('A') & 0x8000 && can_move_border(player_x - 2, player_y)) { // РўРѕР»СЊРєРѕ РІР»РµРІРѕ
 		player_x -= 2;
 	}
-	else if (GetAsyncKeyState('D') & 0x8000 && can_move_border(player_x + 2, player_y)) { // Только вправо
+	else if (GetAsyncKeyState('D') & 0x8000 && can_move_border(player_x + 2, player_y)) { // РўРѕР»СЊРєРѕ РІРїСЂР°РІРѕ
 		player_x += 2;
 	}
 
@@ -51,14 +52,14 @@ void Player::player_move() {
 	HWND hwnd = GetConsoleWindow();
 	GetCursorPos(&p);
 	ScreenToClient(hwnd, &p);
-	double x_pos = (double)p.x / 9.7;       // Переводим позицию мыши в координаты консоли ( +-1 )
+	double x_pos = (double)p.x / 9.7;       // РџРµСЂРµРІРѕРґРёРј РїРѕР·РёС†РёСЋ РјС‹С€Рё РІ РєРѕРѕСЂРґРёРЅР°С‚С‹ РєРѕРЅСЃРѕР»Рё ( +-1 )
 	double y_pos = (double)p.y / 17.6;
 
 	//std::cout << "Mouse X: " << x_pos << " Y: " << y_pos << std::endl;
 	//cout << player_x << ' ' << player_y;
 
-	// Так как расстояние между строками и столбцами не совпадает для корректного изменения 
-	// требуется немного увеличить расстояние вертикальных курсоров
+	// РўР°Рє РєР°Рє СЂР°СЃСЃС‚РѕСЏРЅРёРµ РјРµР¶РґСѓ СЃС‚СЂРѕРєР°РјРё Рё СЃС‚РѕР»Р±С†Р°РјРё РЅРµ СЃРѕРІРїР°РґР°РµС‚ РґР»СЏ РєРѕСЂСЂРµРєС‚РЅРѕРіРѕ РёР·РјРµРЅРµРЅРёСЏ 
+	// С‚СЂРµР±СѓРµС‚СЃСЏ РЅРµРјРЅРѕРіРѕ СѓРІРµР»РёС‡РёС‚СЊ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РІРµСЂС‚РёРєР°Р»СЊРЅС‹С… РєСѓСЂСЃРѕСЂРѕРІ
 	if ((player_y - y_pos) * 1.9 >= abs(player_x - x_pos)) {
 		player_side = '^';
 	}
