@@ -1,4 +1,4 @@
-#include "enemies.h"
+п»ї#include "enemies.h"
 #include <iostream>
 #include "services.h"
 #include "player.h"
@@ -6,13 +6,13 @@
 using namespace std;
 
 void Enemy::set_enemy_color() const {
-	int color = 7;  // Белый
+	int color = 7;  // Р‘РµР»С‹Р№
 	if (level == 1) color = color;
-	else if (level == 2) color = 6; // Желтый
-	else if (level == 3) color = 4; // Красный
-	else if (level == 4) color = 5; // Пурпурный
+	else if (level == 2) color = 6; // Р–РµР»С‚С‹Р№
+	else if (level == 3) color = 4; // РљСЂР°СЃРЅС‹Р№
+	else if (level == 4) color = 5; // РџСѓСЂРїСѓСЂРЅС‹Р№
 	else if (level <= 0) color = 7;
-	else color = 5; // Пурпурный
+	else color = 5; // РџСѓСЂРїСѓСЂРЅС‹Р№
 	set_color(color);
 }
 
@@ -59,11 +59,11 @@ void Enemy::check_merge_all(Enemy** enemies, int size) {
 					int y_other = enemies[i_checker]->enemy_upper_left_y;
 
 					if (abs(x_main - x_other) < 9 && abs(y_main - y_other) < 3) {
-						enemies[i_checker]->merge(enemies[i]->level); // Повышаем уровень
-						enemies[i]->clear_enemy();                    // Очищаем перед удалением
-						enemies[i_checker]->clear_enemy();            // Очищаем и рисуем заново в этой же итерации чтобы создать
-						enemies[i_checker]->print();                  //  эффкт переваривания (задержка) и перебить очищение от удаленного
-						enemies[i] = nullptr;                         // Удаляем
+						enemies[i_checker]->merge(enemies[i]->level); // РџРѕРІС‹С€Р°РµРј СѓСЂРѕРІРµРЅСЊ
+						enemies[i]->clear_enemy();                    // РћС‡РёС‰Р°РµРј РїРµСЂРµРґ СѓРґР°Р»РµРЅРёРµРј
+						enemies[i_checker]->clear_enemy();            // РћС‡РёС‰Р°РµРј Рё СЂРёСЃСѓРµРј Р·Р°РЅРѕРІРѕ РІ СЌС‚РѕР№ Р¶Рµ РёС‚РµСЂР°С†РёРё С‡С‚РѕР±С‹ СЃРѕР·РґР°С‚СЊ
+						enemies[i_checker]->print();                  //  СЌС„С„РєС‚ РїРµСЂРµРІР°СЂРёРІР°РЅРёСЏ (Р·Р°РґРµСЂР¶РєР°) Рё РїРµСЂРµР±РёС‚СЊ РѕС‡РёС‰РµРЅРёРµ РѕС‚ СѓРґР°Р»РµРЅРЅРѕРіРѕ
+						enemies[i] = nullptr;                         // РЈРґР°Р»СЏРµРј
 					}
 				}
 			}
@@ -76,7 +76,7 @@ void Enemy::merge(int other_level) {
 }
 
 bool Enemy::is_enemy_on_player(Player& player) const {
-	// Вернуть true враг в герое иначе false
+	// Р’РµСЂРЅСѓС‚СЊ true РІСЂР°Рі РІ РіРµСЂРѕРµ РёРЅР°С‡Рµ false
 	int player_x = player.player_x;
 	int player_y = player.player_y;
 
@@ -88,7 +88,7 @@ bool Enemy::is_enemy_on_player(Player& player) const {
 }
 
 void Enemy::move(Player& player, int point_x, int point_y, short distance_x, short distance_y) {
-	// Чтобы динозавр не переходил на другие строки на границах
+	// Р§С‚РѕР±С‹ РґРёРЅРѕР·Р°РІСЂ РЅРµ РїРµСЂРµС…РѕРґРёР» РЅР° РґСЂСѓРіРёРµ СЃС‚СЂРѕРєРё РЅР° РіСЂР°РЅРёС†Р°С…
 	int player_x = player.player_x;
 	int player_y = player.player_y;
 	if (player_x <= 4) {
@@ -104,7 +104,7 @@ void Enemy::move(Player& player, int point_x, int point_y, short distance_x, sho
 		distance_y += 1;
 	}
 
-	// Куда идти
+	// РљСѓРґР° РёРґС‚Рё
 	int enemy_center_x = enemy_upper_left_x + distance_x, enemy_center_y = enemy_upper_left_y + distance_y;
 	int x_difference = player_x - enemy_center_x, y_difference = player_y - enemy_center_y;
 
@@ -121,7 +121,7 @@ void Enemy::move(Player& player, int point_x, int point_y, short distance_x, sho
 		enemy_upper_left_y -= point_y;
 	}
 
-	// Сторона (если равно сохраняем сторону куда он шел до этого)
+	// РЎС‚РѕСЂРѕРЅР° (РµСЃР»Рё СЂР°РІРЅРѕ СЃРѕС…СЂР°РЅСЏРµРј СЃС‚РѕСЂРѕРЅСѓ РєСѓРґР° РѕРЅ С€РµР» РґРѕ СЌС‚РѕРіРѕ)
 	if (x_difference > 0) {
 		position = 'l';
 	}

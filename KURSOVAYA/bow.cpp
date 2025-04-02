@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <windows.h>
 #include "bow.h"
 #include "services.h"
@@ -29,7 +29,6 @@ bool Arrow::is_arrow_border() const {
 }
 
 void Arrow::print_arrow() const {
-    //cout << bullet_side;
     if (arrow_side == '>') {
         move_cursor(arrow_x - 1, arrow_y);
         cout << "*->";
