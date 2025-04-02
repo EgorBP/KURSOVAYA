@@ -8,7 +8,7 @@ struct Arrow {
 	int arrow_y;
 	char arrow_side;
 
-	Arrow(int x, int y, char side) : arrow_x(x), arrow_y(y), arrow_side(side) {}
+	Arrow(Player& player) : arrow_x(player.player_x), arrow_y(player.player_y), arrow_side(player.player_side) {}
 
 	void arrow_clear() const;
 	bool is_arrow_border() const;

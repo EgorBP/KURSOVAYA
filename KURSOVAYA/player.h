@@ -1,8 +1,15 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-void player_print(const int player_x, const int player_y, const char cursor_type);
-bool can_move_border(int x, int y);
-void player_move(int& x, int& y, char& cursor_type);
+struct Player {
+	int player_x;
+	int player_y;
+	char player_side;
+
+	Player(int x, int y) : player_x(x), player_y(y), player_side('^') {}
+
+	void player_print() const;
+	void player_move();
+};
 
 #endif

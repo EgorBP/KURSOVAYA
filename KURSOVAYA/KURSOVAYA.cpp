@@ -18,6 +18,7 @@ int main() {
 
 	// !!!!! ЧТОБЫ ДИНОЗАВР ЗАЛЕЗАЛ МОРДОЙ ПО КРАЯМ ЕГО НУЖНО СОЗДАВАТЬ ТОЛЬКО НА НЕЧЕТНЫХ ПОЗИЦИЯХ
 	// ИНАЧЕ ОН ЛИБО БУДЕТ ЗАЛЕЗАТЬ ЗА ГНАНИЦУ ИЛИ НЕ ДОСТАНЕТ ДО ИГРОКА С ПРАВОЙ СТОРОНЫ !!!!!
+	// p.s это нужно если его координаты перемещения по x = 2
 	const int size = 50, bullets = 25;
 	Enemy* enemies[size]{ nullptr };
 	Arrow* arrows[bullets]{ nullptr };
@@ -27,88 +28,71 @@ int main() {
 	enemies[7] = new Enemy{ 81, 20 };
 
 	// Только на нечетном x чтобы мог по правому краю впритык лазить
-	int player_x = 77;
-	int player_y = 25;
-	char player_type = '^';
+	Player player = Player(77, 25);
 
 	bool flag_end_game = false;
 	int killer_id;
 	long long counter = 0;
 
-	while (true) {
+	while (!flag_end_game) {
 		cout << counter;
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
 			break;
 		}
 
 
-		// Перемещение дино
+		// ДИНО
 		if (counter % 4 == 0 && counter != 0) {
 			for (int i = 0; i < size; i++) {
 				if (enemies[i] != nullptr) {
-
-					if (enemies[i]->is_enemy_on_player(player_x, player_y)) {
+					// Проверяем всех дино на то достигли они игрока или нет
+					if (enemies[i]->is_enemy_on_player(player)) {
 						killer_id = i;
 						flag_end_game = true;
 					}
+					// Очищаем всех перед отрисовкой чтобы при перемещении одного
+					// не очистился другой на позиции близкой к текущему
 					enemies[i]->clear_enemy();
 				}
 			}
 			for (int i = 0; i < size; i++) {
+				// Если игра закончилась то рисумем только того что съел гг
 				if (flag_end_game) {
 					enemies[killer_id]->print();
 					break;
 				}
+				// Если нет то рисуем всех и двигаем
 				if (enemies[i] != nullptr) {
 					enemies[i]->print();
-					enemies[i]->move(player_x, player_y, 1, 1);
+					enemies[i]->move(player , 1, 1);
 				}
 			}
 			if (flag_end_game) {
-				move_cursor(0, 0);
-				cin.clear();
-				cout << "Поражение, нажмите Enter...";
-				cin.get();
+				// Чтобы не видить нажатия других символов мы ждем пока юзер нажмет на нужную кнопку,
+				// а до этого выводим текст поверх всех напечатанных символов
+				while (!(GetAsyncKeyState(VK_RETURN) & 0x8000
+					|| GetAsyncKeyState(VK_SPACE) & 0x8000
+					|| GetAsyncKeyState(VK_ESCAPE) & 0x8000)) {
+					move_cursor(0, 0);
+					cout << "Поражение, нажмите Space или Enter...";
+					Sleep(100);
+				}
 				break;
 			}
-
-
 			// Слияние дино
-			for (int i = 0; i < size; i++) {
-				if (enemies[i]) {
-					int x_main = enemies[i]->enemy_upper_left_x;
-					int y_main = enemies[i]->old_enemy_upper_left_y;
-
-					for (int i_checker = 0; i_checker < size; i_checker++) {
-						if (enemies[i_checker] && i != i_checker) {
-
-							int x_other = enemies[i_checker]->enemy_upper_left_x;
-							int y_other = enemies[i_checker]->enemy_upper_left_y;
-
-							if (abs(x_main - x_other) < 9 && abs(y_main - y_other) < 3) {
-								enemies[i_checker]->merge(enemies[i]->level); // Повышаем уровень
-								enemies[i]->clear_enemy();                    // Очищаем перед удалением
-								enemies[i_checker]->clear_enemy();            // Очищаем и рисуем заново в этой же итерации чтобы создать
-								enemies[i_checker]->print();                  //  эффкт переваривания (задержка) и перебить очищение от удаленного
-								enemies[i] = nullptr;                         // Удаляем
-							}
-						}
-					}
-				}
-			}
+			Enemy::check_merge_all(enemies, size);
 		}
 
 
+		// ПУЛЯ
 		if (counter % 6 == 0) {
 			// Создание пули
 			if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
 				// Ищем первую пустую позицию в которую запишем пулю
 				// Если делать отдельную ф-цию она будет принимать 6 аргументов
-				int free_pos = 0;
 				for (int i = 0; i < 25; i++) {
 					if (arrows[i] == nullptr) {
-						free_pos = i;
-						arrows[i] = new Arrow(player_x, player_y, player_type);
+						arrows[i] = new Arrow(player);
 						break;
 					}
 				}
@@ -121,17 +105,17 @@ int main() {
 
 		// Движение игрока
 		if (counter % 2 == 0) {
-			player_move(player_x, player_y, player_type);
-			move_cursor(0, 0);
+			player.player_move();
+			//move_cursor(0, 0);
 		}
-		player_print(player_x, player_y, player_type);
+		player.player_print();
 
 
+		// Сервисные действия
 		//Sleep(15);
 		counter += 1;
 		Sleep(15);
-		player_print(player_x, player_y, player_type);
-
+		player.player_print();
 		move_cursor(0, 0);
 	}
 

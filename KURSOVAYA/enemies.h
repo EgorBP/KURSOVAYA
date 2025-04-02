@@ -2,6 +2,7 @@
 #define ENEMIES_H
 
 #include <iostream>
+#include "player.h"
 
 struct Enemy {
 	short enemy_upper_left_x;
@@ -27,9 +28,10 @@ struct Enemy {
 	void set_enemy_color() const;
 	void print() const;
 	void clear_enemy();
+	static void check_merge_all(Enemy** enemies, int size);
 	void merge(int other_level);
-	bool is_enemy_on_player(int player_x, int player_y) const;
-	void move(int player_x, int player_y, int ponts_x, int point_y, short distance_x = 4, short distance_y = 2);
+	bool is_enemy_on_player(Player& player) const;
+	void move(Player& player, int ponts_x, int point_y, short distance_x = 4, short distance_y = 2);
 };
 
 #endif
