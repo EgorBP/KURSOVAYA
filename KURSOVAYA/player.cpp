@@ -21,6 +21,7 @@ void Player::player_move() {
 	// אûגנזאûפ¨
 	// fsadאûגפןûגן
 	// אפûגאפûג
+	// אגûפאןûג
 	else if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move_border(player_x + 2, player_y - 1)) { // ֲגונץ ט גןנאגמ
 		player_y -= 1;
 		player_x += 2;
