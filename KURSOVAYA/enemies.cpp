@@ -28,7 +28,12 @@ void Enemy::print() const {
 	set_color(7);
 }
 
-void Enemy::clear_enemy() {
+void Enemy::save_old_cords() {
+	old_enemy_upper_left_x = enemy_upper_left_x;
+	old_enemy_upper_left_y = enemy_upper_left_y;
+}
+
+void Enemy::clear_enemy() const {
 	int console_width = 156;
 	int console_height = 46;
 
@@ -42,14 +47,12 @@ void Enemy::clear_enemy() {
 		int width = min(9, console_width - pos_x);
 		clear(pos_x, pos_y, width);
 	}
-	old_enemy_upper_left_x = enemy_upper_left_x;
-	old_enemy_upper_left_y = enemy_upper_left_y;
 }
 
-void Enemy::check_merge_all(Enemy** enemies, int size) {
+void Enemy::check_merge_all(Enemy** enemies, const int size) {
 	for (int i = 0; i < size; i++) {
 		if (enemies[i]) {
-			int x_main = enemies[i]->enemy_upper_left_x;
+			int x_main = enemies[i]->old_enemy_upper_left_x;
 			int y_main = enemies[i]->old_enemy_upper_left_y;
 
 			for (int i_checker = 0; i_checker < size; i_checker++) {
@@ -71,11 +74,11 @@ void Enemy::check_merge_all(Enemy** enemies, int size) {
 	}
 }
 
-void Enemy::merge(int other_level) {
+void Enemy::merge(const int other_level) {
 	level += other_level;
 }
 
-bool Enemy::is_enemy_on_player(Player& player) const {
+bool Enemy::is_enemy_on_player(const Player& player) const {
 	// Вернуть true враг в герое иначе false
 	int player_x = player.player_x;
 	int player_y = player.player_y;
@@ -87,7 +90,11 @@ bool Enemy::is_enemy_on_player(Player& player) const {
 	return false;
 }
 
-void Enemy::move(Player& player, int point_x, int point_y, short distance_x, short distance_y) {
+void Enemy::move(Player& player, const int point_x, const int point_y) {
+	// Расстояние от точки отслеживания (левого верхнего угла) до центра
+	short distance_x = 4;
+	short distance_y = 2;
+
 	// Чтобы динозавр не переходил на другие строки на границах
 	int player_x = player.player_x;
 	int player_y = player.player_y;

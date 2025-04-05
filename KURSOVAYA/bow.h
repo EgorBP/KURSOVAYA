@@ -1,4 +1,4 @@
-#ifndef BOW_H
+﻿#ifndef BOW_H
 #define BOW_H
 
 #include "enemies.h"
@@ -10,6 +10,7 @@ struct Arrow {
 
 	Arrow(Player& player) : arrow_x(player.player_x), arrow_y(player.player_y), arrow_side(player.player_side) {}
 
+	static void init_arrow_in_array(Arrow** arrows, Player& player, const int size);
 	void arrow_clear() const;
 	bool is_arrow_border() const;
 	void print_arrow() const;

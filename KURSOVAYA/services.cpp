@@ -1,34 +1,61 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <windows.h>
+#include <string>
 
 using namespace std;
 
-
-void move_cursor(const short x, const short y) {
+void move_cursor(const int x = 0, const int y = 0) {
     COORD coord = { x, y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void clear(int x, int y, int n = 1) {
-    string empty(n, ' ');
+void clear_all() {
+    system("cls");
+}
+
+void clear(const int x, const int y, const int n = 1, const char symbol = ' ') {
+    string empty(n, symbol);
     move_cursor(x, y);
     cout << empty;
 }
 
-void set_color(int text_color, int bg_color = 0) {
-    //  0 - ×åðíûé
-    //  1 - Ñèíèé
-    //  2 - Çåëåíûé
-    //  3 - Ãîëóáîé
-    //  4 - Êðàñíûé
-    //  5 - Ïóðïóðíûé
-    //  6 - Æåëòûé
-    //  7 - Áåëûé(ïî óìîë÷àíèþ)
+int get_color_code(const string& color) {
+    if (color == "black") return 0;
+    if (color == "blue") return 1;
+    if (color == "green") return 2;
+    if (color == "cyan") return 3;
+    if (color == "red") return 4;
+    if (color == "purple") return 5;
+    if (color == "yellow") return 6;
+    if (color == "white") return 7;
+    return 7; // ÐŸÐ¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ Ð±ÐµÐ»Ñ‹Ð¹
+}
+
+void set_color(const string& text_color, const string& bg_color = "black") {
+    int text_code = get_color_code(text_color);
+    int bg_code = get_color_code(bg_color);
+
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text_code | (bg_code << 4));
+}
+
+void set_color(const int text_color, const int bg_color) {
+    //  0 - Ð§ÐµÑ€Ð½Ñ‹Ð¹
+    //  1 - Ð¡Ð¸Ð½Ð¸Ð¹
+    //  2 - Ð—ÐµÐ»ÐµÐ½Ñ‹Ð¹
+    //  3 - Ð“Ð¾Ð»ÑƒÐ±Ð¾Ð¹
+    //  4 - ÐšÑ€Ð°ÑÐ½Ñ‹Ð¹
+    //  5 - ÐŸÑƒÑ€Ð¿ÑƒÑ€Ð½Ñ‹Ð¹
+    //  6 - Ð–ÐµÐ»Ñ‚Ñ‹Ð¹
+    //  7 - Ð‘ÐµÐ»Ñ‹Ð¹(Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text_color | (bg_color << 4));
 }
 
+void set_color(const int text_color) {
+    set_color(text_color, 0);  // Ð’Ñ‹Ð·Ñ‹Ð²Ð°ÐµÐ¼ Ð¾ÑÐ½Ð¾Ð²Ð½ÑƒÑŽ Ð²ÐµÑ€ÑÐ¸ÑŽ Ñ Ñ„Ð¾Ð½Ð¾Ð²Ñ‹Ð¼ Ñ†Ð²ÐµÑ‚Ð¾Ð¼ 0
+}
+
 bool can_move_border(const int x, const int y) {
-    if (x < 1 or y < 0) return false;   // Ãðàíèöû îêíà 
+    if (x < 1 or y < 0) return false;   // Ð“Ñ€Ð°Ð½Ð¸Ñ†Ñ‹ Ð¾ÐºÐ½Ð° 
     if (x >= 156 or y >= 46) return false;
     return true;
 }

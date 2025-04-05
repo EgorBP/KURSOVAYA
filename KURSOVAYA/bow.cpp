@@ -3,8 +3,19 @@
 #include "bow.h"
 #include "services.h"
 #include "enemies.h"
+#include "player.h"
 
 using namespace std;
+
+void Arrow::init_arrow_in_array(Arrow** arrows, Player& player, const int size) {
+    // Ищем первую пустую позицию в которую запишем пулю
+    for (int i = 0; i < 25; i++) {
+        if (arrows[i] == nullptr) {
+            arrows[i] = new Arrow(player);
+            return;
+        }
+    }
+}
 
 void Arrow::arrow_clear() const {
     if (arrow_side == '>') clear(arrow_x - 1, arrow_y, 3);
@@ -73,33 +84,39 @@ bool Arrow::is_arrow_on_enemy(const int enemy_x, const int enemy_y) const {
 
 void Arrow::arrow_move(Arrow** arrows, Enemy** enemies, const int bullets, const int size) {
     for (int i = 0; i < bullets; i++) {
-        if (arrows[i]) {
-            move_cursor(0, 1);
-            bool end = false;
-            arrows[i]->arrow_clear();
-            for (int i_enemy = 0; i_enemy < size; i_enemy++) {
-                if (enemies[i_enemy]) {
-                    if (arrows[i]->is_arrow_on_enemy(enemies[i_enemy]->enemy_upper_left_x, enemies[i_enemy]->enemy_upper_left_y)) {
-                        enemies[i_enemy]->merge(-1);
-                        arrows[i] = nullptr;
-                        end = true;
-                        break;
-                    }
+        if (!arrows[i]) continue;
+
+        move_cursor(0, 1);
+        arrows[i]->arrow_clear();
+
+        // Проверка на столкновение с врагами
+        for (int i_enemy = 0; i_enemy < size; i_enemy++) {
+            if (enemies[i_enemy] && arrows[i]->is_arrow_on_enemy(enemies[i_enemy]->enemy_upper_left_x, enemies[i_enemy]->enemy_upper_left_y)) {
+                enemies[i_enemy]->merge(-1);
+                if (enemies[i_enemy]->level <= 0) {
+                    enemies[i_enemy]->clear_enemy();
+                    enemies[i_enemy] = nullptr;
                 }
-            }
-            if (end) break;
-
-            if (arrows[i]->arrow_side == '<') arrows[i]->arrow_x -= 2;
-            else if (arrows[i]->arrow_side == '>') arrows[i]->arrow_x += 2;
-            else if (arrows[i]->arrow_side == '^') arrows[i]->arrow_y--;
-            else if (arrows[i]->arrow_side == 'V') arrows[i]->arrow_y++;
-            move_cursor(0, 0);
-            if (arrows[i]->is_arrow_border()) {
                 arrows[i] = nullptr;
-                continue;
+                break;  // Прерываем цикл по врагам, но не внешний!
             }
-            arrows[i]->print_arrow();
         }
-    }
 
+        if (!arrows[i]) continue;  // Стрела уже использована
+
+        // Движение стрелы
+        if (arrows[i]->arrow_side == '<') arrows[i]->arrow_x -= 2;
+        else if (arrows[i]->arrow_side == '>') arrows[i]->arrow_x += 2;
+        else if (arrows[i]->arrow_side == '^') arrows[i]->arrow_y--;
+        else if (arrows[i]->arrow_side == 'V') arrows[i]->arrow_y++;
+
+        move_cursor(0, 0);
+
+        if (arrows[i]->is_arrow_border()) {
+            arrows[i] = nullptr;
+            continue;
+        }
+
+        arrows[i]->print_arrow();
+    }
 }
