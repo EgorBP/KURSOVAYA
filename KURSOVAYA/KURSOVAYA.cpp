@@ -12,8 +12,11 @@ int main() {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	hideCursor();
-	Sleep(80);
+	// Чтобы окно успело открыться
+	Sleep(100);
 	simulateF11();
+	// Чтобы успело перйти в полноэкранный режим
+	Sleep(50);
 	disableMouseSelection();
 
 	// !!!!! ЧТОБЫ ДИНОЗАВР ЗАЛЕЗАЛ МОРДОЙ ПО КРАЯМ ЕГО НУЖНО СОЗДАВАТЬ ТОЛЬКО НА НЕЧЕТНЫХ ПОЗИЦИЯХ
@@ -33,7 +36,6 @@ int main() {
 	//string mode = "battle";
 	string mode = "castle";
 
-	bool can_init_arrow = true;
 	int player_attack_timer = 0;
 	bool flag_end_game = false;
 	int killer_id;
@@ -48,9 +50,9 @@ int main() {
 		}
 
 
-		if (mode == "castle") {
-			print_castle();
+		if (mode == "castle" ) {
 			move_cursor();
+			print_castle();
 
 			if (player.player_y >= 45) {
 				mode = "battle";
@@ -112,7 +114,6 @@ int main() {
 			// Создание пули
 			if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
 				if (player_attack_timer <= 0) {
-					can_init_arrow = false;
 					Arrow::init_arrow_in_array(arrows, player, size);
 					player_attack_timer = 12;
 				}
@@ -120,10 +121,9 @@ int main() {
 
 			if (player_attack_timer > 0)
 				player_attack_timer--;
+
 			// Перемещение пули и там же уменьшение уровня динозавра или удаление
 			Arrow::arrow_move(arrows, enemies, bullets, size);
-
-			if (counter % 12 == 0) can_init_arrow = true;
 
 
 			if (player.player_y == 0 && not_empty_elements == 0) {

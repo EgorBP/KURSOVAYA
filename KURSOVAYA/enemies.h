@@ -5,12 +5,12 @@
 #include "player.h"
 
 struct Enemy {
-	short enemy_upper_left_x;
-	short enemy_upper_left_y;
-	short old_enemy_upper_left_x;
-	short old_enemy_upper_left_y;
+	int enemy_upper_left_x;
+	int enemy_upper_left_y;
+	int old_enemy_upper_left_x;
+	int old_enemy_upper_left_y;
 	char position = 'r';
-	short level = 1;
+	int level = 1;
 
 	Enemy(int x, int y) : enemy_upper_left_x(x), enemy_upper_left_y(y) {}
 

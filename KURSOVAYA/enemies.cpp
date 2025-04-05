@@ -92,8 +92,8 @@ bool Enemy::is_enemy_on_player(const Player& player) const {
 
 void Enemy::move(Player& player, const int point_x, const int point_y) {
 	// Расстояние от точки отслеживания (левого верхнего угла) до центра
-	short distance_x = 4;
-	short distance_y = 2;
+	int distance_x = 4;
+	int distance_y = 2;
 
 	// Чтобы динозавр не переходил на другие строки на границах
 	int player_x = player.player_x;
