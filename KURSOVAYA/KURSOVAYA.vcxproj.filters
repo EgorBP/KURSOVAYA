@@ -16,12 +16,12 @@
     <Filter Include="Weapons">
       <UniqueIdentifier>{9c57cb4f-b168-40f3-a623-a90537b67ad6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Decorations">
+      <UniqueIdentifier>{0efccba1-cd87-494d-b747-9d026d70d08a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KURSOVAYA.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="decoration.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
@@ -36,11 +36,14 @@
     <ClCompile Include="bow.cpp">
       <Filter>Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="castle.cpp">
+      <Filter>Decorations</Filter>
+    </ClCompile>
+    <ClCompile Include="greeting.cpp">
+      <Filter>Decorations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="decoration.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="enemies.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -52,6 +55,12 @@
     </ClInclude>
     <ClInclude Include="bow.h">
       <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="castle.h">
+      <Filter>Decorations</Filter>
+    </ClInclude>
+    <ClInclude Include="greeting.h">
+      <Filter>Decorations</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

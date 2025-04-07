@@ -128,16 +128,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bow.cpp" />
-    <ClCompile Include="decoration.cpp" />
+    <ClCompile Include="castle.cpp" />
     <ClCompile Include="enemies.cpp" />
+    <ClCompile Include="greeting.cpp" />
     <ClCompile Include="KURSOVAYA.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="services.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bow.h" />
-    <ClInclude Include="decoration.h" />
+    <ClInclude Include="castle.h" />
     <ClInclude Include="enemies.h" />
+    <ClInclude Include="greeting.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="services.h" />
   </ItemGroup>

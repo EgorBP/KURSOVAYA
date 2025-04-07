@@ -1,46 +1,55 @@
 ﻿#include <iostream>
 #include <windows.h>
+#include <string>
 #include "services.h"
 #include "player.h"
 
 using namespace std;
 
-void Player::player_print() const {
-	move_cursor(player_x, player_y);
-	set_color(2);
-	cout << player_side;
-	set_color(7);
+void Player::player_clear() const {
+	if (old_player_x != player_x || old_player_y != player_y) {
+		clear(old_player_x, old_player_y);
+	}
 }
 
-void Player::player_move() {
-	clear(player_x, player_y);
-	if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move_border(player_x - 2, player_y - 1)) { // Вверх и влево
-		player_y -= 1;
-		player_x -= 2;
+void Player::player_print(const std::string& color) const {
+	move_cursor(player_x, player_y);
+	set_text_color(color);
+	cout << player_side;
+	set_text_color(7);
+}
+
+void Player::player_move(const int points_x, const int points_y) {
+	old_player_x = player_x;
+	old_player_y = player_y;
+
+	if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move_border(player_x - points_x, player_y - points_y)) { // Вверх и влево
+		player_y -= points_y;
+		player_x -= points_x;
 	}
-	else if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move_border(player_x + 2, player_y - 1)) { // Вверх и вправо
-		player_y -= 1;
-		player_x += 2;
+	else if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move_border(player_x + points_x, player_y - points_y)) { // Вверх и вправо
+		player_y -= points_y;
+		player_x += points_x;
 	}
-	else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move_border(player_x - 2, player_y + 1)) { // Вниз и влево
-		player_y += 1;
-		player_x -= 2;
+	else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move_border(player_x - points_x, player_y + points_y)) { // Вниз и влево
+		player_y += points_y;
+		player_x -= points_x;
 	}
-	else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move_border(player_x + 2, player_y + 1)) { // Вниз и вправо
-		player_y += 1;
-		player_x += 2;
+	else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move_border(player_x + points_x, player_y + points_y)) { // Вниз и вправо
+		player_y += points_y;
+		player_x += points_x;
 	}
-	else if (GetAsyncKeyState('W') & 0x8000 && can_move_border(player_x, player_y - 1)) { // Только вверх
-		player_y -= 1;
+	else if (GetAsyncKeyState('W') & 0x8000 && can_move_border(player_x, player_y - points_y)) { // Только вверх
+		player_y -= points_y;
 	}
-	else if (GetAsyncKeyState('S') & 0x8000 && can_move_border(player_x, player_y + 1)) { // Только вниз
-		player_y += 1;
+	else if (GetAsyncKeyState('S') & 0x8000 && can_move_border(player_x, player_y + points_y)) { // Только вниз
+		player_y += points_y;
 	}
-	else if (GetAsyncKeyState('A') & 0x8000 && can_move_border(player_x - 2, player_y)) { // Только влево
-		player_x -= 2;
+	else if (GetAsyncKeyState('A') & 0x8000 && can_move_border(player_x - points_x, player_y)) { // Только влево
+		player_x -= points_x;
 	}
-	else if (GetAsyncKeyState('D') & 0x8000 && can_move_border(player_x + 2, player_y)) { // Только вправо
-		player_x += 2;
+	else if (GetAsyncKeyState('D') & 0x8000 && can_move_border(player_x + points_x, player_y)) { // Только вправо
+		player_x += points_x;
 	}
 
 	POINT p;

@@ -34,7 +34,7 @@ struct Enemy {
 	static void check_merge_all(Enemy** enemies, const int size);
 	void merge(const int other_level);
 	bool is_enemy_on_player(const Player& player) const;
-	void move(Player& player, const int point_x, const int point_y);
+	void move(Player& player, const int points_x, const int points_y);
 };
 
 #endif

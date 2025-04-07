@@ -1,10 +1,11 @@
 ﻿#include <iostream>
 #include <windows.h>
 #include "services.h"
-#include "decoration.h"
-#include "player.h"
 #include "enemies.h"
+#include "player.h"
 #include "bow.h"
+#include "castle.h"
+#include "greeting.h"
 
 using namespace std;
 
@@ -16,8 +17,10 @@ int main() {
 	Sleep(100);
 	simulateF11();
 	// Чтобы успело перйти в полноэкранный режим
-	Sleep(50);
+	Sleep(300);
 	disableMouseSelection();
+
+	Greeting::greeting();
 
 	// !!!!! ЧТОБЫ ДИНОЗАВР ЗАЛЕЗАЛ МОРДОЙ ПО КРАЯМ ЕГО НУЖНО СОЗДАВАТЬ ТОЛЬКО НА НЕЧЕТНЫХ ПОЗИЦИЯХ
 	// ИНАЧЕ ОН ЛИБО БУДЕТ ЗАЛЕЗАТЬ ЗА ГНАНИЦУ ИЛИ НЕ ДОСТАНЕТ ДО ИГРОКА С ПРАВОЙ СТОРОНЫ !!!!!
@@ -43,6 +46,8 @@ int main() {
 	long long counter = 0;
 
 	while (!flag_end_game) {
+		//Beep(1000, 100);
+
 		//cout << counter;
 		// Если нажата Esc выходим из цикла
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
@@ -50,9 +55,17 @@ int main() {
 		}
 
 
-		if (mode == "castle" ) {
+		if (mode == "castle") {
 			move_cursor();
-			print_castle();
+			print_castle(player);
+
+
+			// Движение игрока
+			player.player_move(1, 1);
+			player.player_clear();
+			// Отрисовка игрока
+			player.player_print("purple");
+
 
 			if (player.player_y >= 45) {
 				mode = "battle";
@@ -126,6 +139,15 @@ int main() {
 			Arrow::arrow_move(arrows, enemies, bullets, size);
 
 
+			// Движение игрока
+			if (counter % 2 == 0) {
+				player.player_move(2, 1);
+				player.player_clear();
+			}
+			// Отрисовка игрока
+			player.player_print();
+
+
 			if (player.player_y == 0 && not_empty_elements == 0) {
 				mode = "castle";
 				player.player_y = 44;
@@ -134,19 +156,11 @@ int main() {
 			}
 		}
 
-		// Движение игрока
-		player.player_print();
-		if (counter % 2 == 0) {
-			player.player_move();
-		}
-		player.player_print();
-
 
 		// Сервисные действия
 		//Sleep(15);
 		Sleep(15);
 		counter += 1;
-		player.player_print();
 		move_cursor(0, 0);
 	}
 

@@ -19,6 +19,12 @@ void clear(const int x, const int y, const int n = 1, const char symbol = ' ') {
     cout << empty;
 }
 
+bool can_move_border(const int x, const int y) {
+    if (x < 1 or y < 0) return false;   // Границы окна 
+    if (x >= 156 or y >= 46) return false;
+    return true;
+}
+
 int get_color_code(const string& color) {
     if (color == "black") return 0;
     if (color == "blue") return 1;
@@ -31,14 +37,7 @@ int get_color_code(const string& color) {
     return 7; // По умолчанию белый
 }
 
-void set_color(const string& text_color, const string& bg_color = "black") {
-    int text_code = get_color_code(text_color);
-    int bg_code = get_color_code(bg_color);
-
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text_code | (bg_code << 4));
-}
-
-void set_color(const int text_color, const int bg_color) {
+void set_color(const int text_color_code, const int bg_color_code) {
     //  0 - Черный
     //  1 - Синий
     //  2 - Зеленый
@@ -47,17 +46,38 @@ void set_color(const int text_color, const int bg_color) {
     //  5 - Пурпурный
     //  6 - Желтый
     //  7 - Белый(по умолчанию)
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text_color | (bg_color << 4));
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text_color_code | (bg_color_code << 4));
 }
 
-void set_color(const int text_color) {
-    set_color(text_color, 0);  // Вызываем основную версию с фоновым цветом 0
+void set_color(const string& text_color, const string& bg_color) {
+    int text_color_code = get_color_code(text_color);
+    int bg_color_code = get_color_code(bg_color);
+
+    set_color(text_color_code, bg_color_code);
 }
 
-bool can_move_border(const int x, const int y) {
-    if (x < 1 or y < 0) return false;   // Границы окна 
-    if (x >= 156 or y >= 46) return false;
-    return true;
+void set_text_color(const int text_color_code) {
+    set_color(text_color_code, 0);
+}
+
+void set_text_color(const std::string& text_color) {
+    int text_color_code = get_color_code(text_color);
+
+    set_color(text_color_code, 0);
+}
+
+void set_bg_color(const int bg_color_code) {
+    set_color(7, bg_color_code);
+}
+
+void set_bg_color(const std::string& bg_color) {
+    int bg_color_code = get_color_code(bg_color);
+
+    set_color(7, bg_color_code);
+}
+
+void set_color() {
+    set_color(7, 0);
 }
 
 

@@ -13,7 +13,7 @@ void Enemy::set_enemy_color() const {
 	else if (level == 4) color = 5; // Пурпурный
 	else if (level <= 0) color = 7;
 	else color = 5; // Пурпурный
-	set_color(color);
+	set_text_color(color);
 }
 
 void Enemy::print() const {
@@ -25,7 +25,7 @@ void Enemy::print() const {
 		move_cursor(enemy_upper_left_x, enemy_upper_left_y + i);
 		cout << model[i];
 	}
-	set_color(7);
+	set_text_color(7);
 }
 
 void Enemy::save_old_cords() {
@@ -34,8 +34,8 @@ void Enemy::save_old_cords() {
 }
 
 void Enemy::clear_enemy() const {
-	int console_width = 156;
-	int console_height = 46;
+	const int console_width = 156;
+	const int console_height = 46;
 
 	for (int i = 0; i < 4; i++) {
 		int pos_x = old_enemy_upper_left_x;
@@ -80,8 +80,8 @@ void Enemy::merge(const int other_level) {
 
 bool Enemy::is_enemy_on_player(const Player& player) const {
 	// Вернуть true враг в герое иначе false
-	int player_x = player.player_x;
-	int player_y = player.player_y;
+	const int player_x = player.player_x;
+	const int player_y = player.player_y;
 
 	if ((player_x >= enemy_upper_left_x && player_x <= enemy_upper_left_x + 8) &&
 		player_y >= enemy_upper_left_y && player_y <= enemy_upper_left_y + 3) {
@@ -96,8 +96,8 @@ void Enemy::move(Player& player, const int point_x, const int point_y) {
 	int distance_y = 2;
 
 	// Чтобы динозавр не переходил на другие строки на границах
-	int player_x = player.player_x;
-	int player_y = player.player_y;
+	const int player_x = player.player_x;
+	const int player_y = player.player_y;
 	if (player_x <= 4) {
 		distance_x -= 4;
 	}
