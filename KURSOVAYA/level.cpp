@@ -1,0 +1,263 @@
+﻿#include <iostream>
+#include <Windows.h>
+#include <fstream>
+#include "services.h"
+#include "enemies.h"
+#include "level.h"
+
+using namespace std;
+
+const int Level::max_level = 10;
+
+int Level::get_current_level() {
+	int level = -1;
+	fstream file("level.txt", ios::in);
+	if (file.is_open()) {
+		file >> level;
+	}
+	file.close();
+	return level;
+}
+
+void Level::level_up(const int points) {
+	int current_level = get_current_level();
+	fstream file("level.txt", ios::out | ios::trunc);
+	if (file.is_open()) {
+		file << current_level + points;
+	}
+	file.close();
+}
+
+void Level::set_new_level(const int new_level) {
+	fstream file("level.txt", ios::out);
+	if (file.is_open()) {
+		file << new_level;
+	}
+	file.close();
+}
+
+void Level::print_level() {
+	move_cursor(0, 0);
+	if (get_current_level() < 0) {
+		cout << 0;
+	}
+	else {
+		cout << get_current_level();
+	}
+
+	move_cursor(0, 1);
+	if ((max_level + 1) % 10 > 0) {
+		cout << "--";
+	}
+	else cout << '-';
+
+	move_cursor(0, 2);
+	cout << max_level;
+
+	move_cursor();
+}
+
+void Level::init_level(const int wave, Enemy** enemies, const Player& player) {
+	void (*levels[max_level + 1])(const int wave, Enemy** enemies, const Player & player) = {
+		init_0_level,
+		init_1_level,
+		init_2_level,
+		init_3_level,
+		init_4_level,
+		init_5_level,
+		init_6_level,
+		init_7_level,
+		init_8_level,
+		init_9_level,
+		init_10_level,
+	};
+	levels[get_current_level()](wave, enemies, player);
+}
+
+void Level::init_0_level(const int wave, Enemy** enemies, const Player& player) {
+	switch (wave) {
+	case 1:
+		//Enemy::init_enemy_in_array("left", 1, player, enemies);
+		Enemy::init_enemy_in_array("right", 1, player, enemies);
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	}
+}
+
+void Level::init_1_level(const int wave, Enemy** enemies, const Player& player) {
+	switch (wave) {
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	}
+}
+
+void Level::init_2_level(const int wave, Enemy** enemies, const Player& player) {
+	switch (wave) {
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	}
+}
+
+void Level::init_3_level(const int wave, Enemy** enemies, const Player& player) {
+	switch (wave) {
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	}
+}
+
+void Level::init_4_level(const int wave, Enemy** enemies, const Player& player) {
+	switch (wave) {
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	}
+}
+
+void Level::init_5_level(const int wave, Enemy** enemies, const Player& player) {
+	switch (wave) {
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	}
+}
+
+void Level::init_6_level(const int wave, Enemy** enemies, const Player& player) {
+	switch (wave) {
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	}
+}
+
+void Level::init_7_level(const int wave, Enemy** enemies, const Player& player) {
+	switch (wave) {
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	}
+}
+
+void Level::init_8_level(const int wave, Enemy** enemies, const Player& player) {
+	switch (wave) {
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	}
+}
+
+void Level::init_9_level(const int wave, Enemy** enemies, const Player& player) {
+	switch (wave) {
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	}
+}
+
+void Level::init_10_level(const int wave, Enemy** enemies, const Player& player) {
+	switch (wave) {
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	}
+}

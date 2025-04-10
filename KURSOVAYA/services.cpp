@@ -4,6 +4,36 @@
 
 using namespace std;
 
+int get_console_width() {
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+        return csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    }
+    return -1;
+}
+
+int get_console_height() {
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+        return csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+    }
+    return -1;
+}
+
+bool check_console_size_changes() {
+    static int console_width = get_console_width();
+    static int console_height = get_console_height();
+
+    if (console_width != get_console_width() || console_height != get_console_height()) {
+        console_width = get_console_width();
+        console_height = get_console_height();
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
 void move_cursor(const int x = 0, const int y = 0) {
     COORD coord = { x, y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
@@ -14,6 +44,10 @@ void clear_all() {
 }
 
 void clear(const int x, const int y, const int n = 1, const char symbol = ' ') {
+    if (n < 0) return;
+    if (x + n > get_console_width() || y > get_console_height()) {
+        return;
+    }
     string empty(n, symbol);
     move_cursor(x, y);
     cout << empty;
@@ -24,6 +58,7 @@ bool can_move_border(const int x, const int y) {
     if (x >= 156 or y >= 46) return false;
     return true;
 }
+
 
 int get_color_code(const string& color) {
     if (color == "black") return 0;

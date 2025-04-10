@@ -19,9 +19,12 @@
     <Filter Include="Decorations">
       <UniqueIdentifier>{0efccba1-cd87-494d-b747-9d026d70d08a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="File processing">
+      <UniqueIdentifier>{0d5652c3-02d8-429d-864a-6c5cb838240e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="KURSOVAYA.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
@@ -41,6 +44,9 @@
     </ClCompile>
     <ClCompile Include="greeting.cpp">
       <Filter>Decorations</Filter>
+    </ClCompile>
+    <ClCompile Include="level.cpp">
+      <Filter>File processing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,5 +68,13 @@
     <ClInclude Include="greeting.h">
       <Filter>Decorations</Filter>
     </ClInclude>
+    <ClInclude Include="level.h">
+      <Filter>File processing</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="level.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

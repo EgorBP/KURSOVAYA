@@ -3,6 +3,9 @@
 
 #include <string>
 
+int get_console_width();
+int get_console_height();
+bool check_console_size_changes();
 void move_cursor(const int x = 0, const int y = 0);
 void clear_all();
 void clear(const int x, const int y, const int n = 1, const char symbol = ' ');

@@ -77,3 +77,10 @@ void Player::player_move(const int points_x, const int points_y) {
 		player_side = '<';
 	}
 }
+
+bool Player::is_player_on_door(const int door_x, const int door_y, const int door_width) const {
+	if ((player_x >= door_x && player_x <= door_x + door_width - 1) && player_y == door_y) {
+		return true;
+	}
+	else return false;
+}

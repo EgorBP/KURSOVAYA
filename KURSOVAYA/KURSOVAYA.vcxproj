@@ -131,7 +131,8 @@
     <ClCompile Include="castle.cpp" />
     <ClCompile Include="enemies.cpp" />
     <ClCompile Include="greeting.cpp" />
-    <ClCompile Include="KURSOVAYA.cpp" />
+    <ClCompile Include="level.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="services.cpp" />
   </ItemGroup>
@@ -140,8 +141,12 @@
     <ClInclude Include="castle.h" />
     <ClInclude Include="enemies.h" />
     <ClInclude Include="greeting.h" />
+    <ClInclude Include="level.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="services.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="level.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

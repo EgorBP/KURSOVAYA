@@ -7,14 +7,22 @@
 
 using namespace std;
 
-void Arrow::init_arrow_in_array(Arrow** arrows, Player& player, const int size) {
-    // Ищем первую пустую позицию в которую запишем пулю
-    for (int i = 0; i < 25; i++) {
-        if (arrows[i] == nullptr) {
-            arrows[i] = new Arrow(player);
-            return;
-        }
+size_t Arrow::arrows_array_size = 0;
+Arrow* Arrow::arrows = nullptr;
+
+void Arrow::init_new_arrow(Player& player) {
+    // Динамически меняем размер
+    Arrow* new_array = new Arrow[arrows_array_size + 1];
+
+    for (size_t i = 0; i < arrows_array_size; i++) { // копируем старые стрелы
+        new_array[i] = arrows[i];
     }
+
+    new_array[arrows_array_size] = Arrow(player);
+
+    delete[] arrows;
+    arrows = new_array;
+    arrows_array_size++;
 }
 
 void Arrow::arrow_clear() const {
@@ -82,41 +90,94 @@ bool Arrow::is_arrow_on_enemy(const int enemy_x, const int enemy_y) const {
     return false;
 }
 
-void Arrow::arrow_move(Arrow** arrows, Enemy** enemies, const int bullets, const int size) {
-    for (int i = 0; i < bullets; i++) {
-        if (!arrows[i]) continue;
+//void Arrow::process_arrows(Enemy** enemies, const size_t size) {
+//    for (int i = 0; i < arrows_array_size; i++) {
+//        if (arrows[i].arrow_side != '0') {
+//            move_cursor(0, 1);
+//            bool end = false;
+//            arrows[i].arrow_clear();
+//            for (int i_enemy = 0; i_enemy < size; i_enemy++) {
+//                if (enemies[i_enemy]) {
+//                    if (arrows[i].is_arrow_on_enemy(enemies[i_enemy]->enemy_upper_left_x, enemies[i_enemy]->enemy_upper_left_y)) {
+//                        enemies[i_enemy]->merge(-1);
+//                        arrows[i].arrow_side = '0';
+//                        end = true;
+//                        break;
+//                    }
+//                }
+//            }
+//            if (end) break;
+//
+//            if (arrows[i].arrow_side == '<') arrows[i].arrow_x -= 2;
+//            else if (arrows[i].arrow_side == '>') arrows[i].arrow_x += 2;
+//            else if (arrows[i].arrow_side == '^') arrows[i].arrow_y--;
+//            else if (arrows[i].arrow_side == 'V') arrows[i].arrow_y++;
+//            move_cursor(0, 0);
+//            if (arrows[i].is_arrow_border()) {
+//                arrows[i].arrow_side = '0';
+//                continue;
+//            }
+//            arrows[i].print_arrow();
+//        }
+//    }
+//}
 
-        move_cursor(0, 1);
-        arrows[i]->arrow_clear();
+void Arrow::process_arrows(Enemy** enemies, const size_t size) {
+    move_cursor(0, 0);
+    cout << arrows_array_size;
+
+    size_t new_array_size = 0;
+    Arrow* new_array = new Arrow[arrows_array_size];
+
+    for (int i = 0; i < arrows_array_size; i++) {
+        bool to_destroy = false;
+        arrows[i].arrow_clear();
 
         // Проверка на столкновение с врагами
         for (int i_enemy = 0; i_enemy < size; i_enemy++) {
-            if (enemies[i_enemy] && arrows[i]->is_arrow_on_enemy(enemies[i_enemy]->enemy_upper_left_x, enemies[i_enemy]->enemy_upper_left_y)) {
+            if (enemies[i_enemy] && arrows[i].is_arrow_on_enemy(enemies[i_enemy]->enemy_upper_left_x, enemies[i_enemy]->enemy_upper_left_y)) {
                 enemies[i_enemy]->merge(-1);
                 if (enemies[i_enemy]->level <= 0) {
                     enemies[i_enemy]->clear_enemy();
                     enemies[i_enemy] = nullptr;
                 }
-                arrows[i] = nullptr;
+                to_destroy = true;
                 break;  // Прерываем цикл по врагам, но не внешний!
             }
         }
 
-        if (!arrows[i]) continue;  // Стрела уже использована
-
         // Движение стрелы
-        if (arrows[i]->arrow_side == '<') arrows[i]->arrow_x -= 2;
-        else if (arrows[i]->arrow_side == '>') arrows[i]->arrow_x += 2;
-        else if (arrows[i]->arrow_side == '^') arrows[i]->arrow_y--;
-        else if (arrows[i]->arrow_side == 'V') arrows[i]->arrow_y++;
+        if (arrows[i].arrow_side == '<') arrows[i].arrow_x -= 2;
+        else if (arrows[i].arrow_side == '>') arrows[i].arrow_x += 2;
+        else if (arrows[i].arrow_side == '^') arrows[i].arrow_y--;
+        else if (arrows[i].arrow_side == 'V') arrows[i].arrow_y++;
 
-        move_cursor(0, 0);
-
-        if (arrows[i]->is_arrow_border()) {
-            arrows[i] = nullptr;
+        if (to_destroy || arrows[i].is_arrow_border()) {
             continue;
         }
-
-        arrows[i]->print_arrow();
+        else {
+            new_array[new_array_size++] = arrows[i];
+            arrows[i].print_arrow();
+        }
     }
+
+    if (arrows_array_size != new_array_size) {
+        // Удаляем старый массив
+        delete[] arrows;
+
+        // Переназначаем буферный в основной
+        arrows = new Arrow[new_array_size];
+        for (size_t i{ 0 }; i < new_array_size; i++) {
+            arrows[i] = new_array[i];
+        }
+        arrows_array_size = new_array_size;
+
+        delete[] new_array;
+    }
+}
+
+void Arrow::delete_array() {
+    delete[] arrows;
+    arrows = nullptr;
+    arrows_array_size = 0;
 }

@@ -1,18 +1,23 @@
-﻿#include "enemies.h"
-#include <iostream>
+﻿#include <iostream>
 #include "services.h"
 #include "player.h"
+#include "enemies.h"
 
 using namespace std;
 
 void Enemy::set_enemy_color() const {
 	int color = 7;  // Белый
-	if (level == 1) color = color;
-	else if (level == 2) color = 6; // Желтый
-	else if (level == 3) color = 4; // Красный
-	else if (level == 4) color = 5; // Пурпурный
-	else if (level <= 0) color = 7;
-	else color = 5; // Пурпурный
+	//if (level == 1) color = color;
+	//else if (level == 2) color = 6; // Желтый
+	//else if (level == 3) color = 4; // Красный
+	//else if (level == 4) color = 5; // Пурпурный
+	//else if (level <= 0) color = 7;
+	//else color = 5; // Пурпурный
+
+	if (level > 3 * difficult) color = 5; // Пурпурный
+	else if (level > 2 * difficult) color = 4; // Красный
+	else if (level > 1 * difficult) color = 6; // Желтый
+	else color = color;
 	set_text_color(color);
 }
 
@@ -34,8 +39,8 @@ void Enemy::save_old_cords() {
 }
 
 void Enemy::clear_enemy() const {
-	const int console_width = 156;
-	const int console_height = 46;
+	const int console_width = get_console_width();
+	const int console_height = get_console_height();
 
 	for (int i = 0; i < 4; i++) {
 		int pos_x = old_enemy_upper_left_x;
@@ -67,6 +72,7 @@ void Enemy::check_merge_all(Enemy** enemies, const int size) {
 						enemies[i_checker]->clear_enemy();            // Очищаем и рисуем заново в этой же итерации чтобы создать
 						enemies[i_checker]->print();                  //  эффкт переваривания (задержка) и перебить очищение от удаленного
 						enemies[i] = nullptr;                         // Удаляем
+						break;
 					}
 				}
 			}
@@ -90,7 +96,22 @@ bool Enemy::is_enemy_on_player(const Player& player) const {
 	return false;
 }
 
-void Enemy::move(Player& player, const int point_x, const int point_y) {
+void Enemy::init_enemy_in_array(const string& console_side, const int level, const Player& player, Enemy** enemies) {
+	// Ищем первую пустую позицию в которую запишем пулю
+	for (int i = 0; i < 25; i++) {
+		if (enemies[i] == nullptr) {
+			enemies[i] = new Enemy(console_side, level, player);
+			return;
+		}
+	}
+}
+
+void Enemy::move(const Player& player, int point_x, int point_y) {
+	// Динозавр 3 уровня двигается быстрее
+	if (level > 3 * difficult) {
+		point_x++;
+	}
+
 	// Расстояние от точки отслеживания (левого верхнего угла) до центра
 	int distance_x = 4;
 	int distance_y = 2;
@@ -111,28 +132,37 @@ void Enemy::move(Player& player, const int point_x, const int point_y) {
 		distance_y += 1;
 	}
 
+	// Центр
+	int enemy_center_x = enemy_upper_left_x + distance_x;
+	int	enemy_center_y = enemy_upper_left_y + distance_y;
 	// Куда идти
-	int enemy_center_x = enemy_upper_left_x + distance_x, enemy_center_y = enemy_upper_left_y + distance_y;
-	int x_difference = player_x - enemy_center_x, y_difference = player_y - enemy_center_y;
+	int x_difference = player_x - enemy_center_x;
+	int y_difference = player_y - enemy_center_y;
 
-	if (x_difference > 0) {
-		enemy_upper_left_x += point_x;
+	// Движение по X с мёртвой зоной (чтобы избежать дёргания)
+	if (std::abs(x_difference) > 1) {
+		if (x_difference > 0) {
+			enemy_upper_left_x += point_x;
+			position = 'l';
+		}
+		else {
+			enemy_upper_left_x -= point_x;
+			position = 'r';
+		}
 	}
-	else if (x_difference < 0) {
-		enemy_upper_left_x -= point_x;
-	}
+
+	// Движение по Y
 	if (y_difference > 0) {
 		enemy_upper_left_y += point_y;
 	}
 	else if (y_difference < 0) {
 		enemy_upper_left_y -= point_y;
 	}
+}
 
-	// Сторона (если равно сохраняем сторону куда он шел до этого)
-	if (x_difference > 0) {
-		position = 'l';
-	}
-	else if (x_difference < 0) {
-		position = 'r';
+void Enemy::delete_array(Enemy** enemies, const int size) {
+	for (int i = 0; i < size; i++) {
+		delete enemies[i];
+		enemies[i] = nullptr;
 	}
 }
