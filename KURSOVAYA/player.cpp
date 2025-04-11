@@ -56,8 +56,8 @@ void Player::player_move(const int points_x, const int points_y) {
 	HWND hwnd = GetConsoleWindow();
 	GetCursorPos(&p);
 	ScreenToClient(hwnd, &p);
-	double x_pos = static_cast<double>(p.x) / 9.7 * (get_console_width() / 156);    // Переводим позицию мыши в координаты консоли ( +-1 )
-	double y_pos = static_cast<double>(p.y) / 19 * (get_console_height() / 46);		// (get_console_width() / 156) позволяет корректно отслеживать позицию при изменении масштаба
+	double x_pos = static_cast<double>(p.x) / 9.7 * get_console_width() / 156;    // Переводим позицию мыши в координаты консоли ( +-1 )
+	double y_pos = static_cast<double>(p.y) / 19 * get_console_height() / 46;		// (get_console_width() / 156) позволяет корректно отслеживать позицию при изменении масштаба
 
 	//std::cout << "Mouse X: " << x_pos << " Y: " << y_pos << std::endl;
 	//cout << player_x << ' ' << player_y;

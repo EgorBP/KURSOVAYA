@@ -85,8 +85,8 @@ void Enemy::delete_array() {
 
 
 void Enemy::move(const Player& player, int point_x, int point_y) {
-	// Динозавр 3 уровня двигается быстрее
-	if (level > 3 * difficult) {
+	// Динозавр 2 уровня двигается быстрее
+	if (level > 2 * difficult) {
 		point_x++;
 	}
 
@@ -172,6 +172,10 @@ void Enemy::save_old_cords() {
 }
 
 void Enemy::clear_enemy() const {
+	if (old_enemy_upper_left_x == -1 || old_enemy_upper_left_y == -1) {
+		return;
+	}
+
 	const int console_width = get_console_width();
 	const int console_height = get_console_height();
 

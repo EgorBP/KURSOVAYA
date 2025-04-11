@@ -8,6 +8,7 @@ struct Level {
 	static void level_up(const int points = 1);
 	static void set_new_level(const int new_level);
 	static void print_level();
+	static void print_timer(const int timer);
 	static void init_level(const int wave, const Player& player, int& timer);
 
 private:

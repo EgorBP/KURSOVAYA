@@ -31,7 +31,7 @@ int main() {
 		Level::set_new_level(0);
 		mode = "first_time";
 		// Только на нечетном x чтобы мог по правому краю впритык лазить
-		player = Player(77, 26);
+		player = Player(get_console_width() / 2, get_console_height() / 2);
 		//Greeting::greeting();
 	}
 	else {
@@ -40,10 +40,10 @@ int main() {
 		Level::print_level();
 	}
 
-	//mode = "battle";
+	mode = "battle";
 
 	bool flag_end_game = false;
-	bool can_update_level = true;
+	bool can_update_level = false;
 	bool can_change_location = true;
 	int player_attack_timer = 0;
 	int intit_wave_timer = 0;
@@ -63,9 +63,10 @@ int main() {
 
 		// Немного чиним если был выход из полноэкранного режима
 		if (!check_console_size_changes()) {
-			system("cls");
+			clear_all();
 			Level::print_level();
 		}
+
 
 		if (mode == "first_time") {
 			// Движение игрока
@@ -107,6 +108,7 @@ int main() {
 				player.player_y = 1;
 				clear_all();
 				Level::print_level();
+				disableMouseSelection();
 				continue;
 			}
 		}
@@ -115,11 +117,13 @@ int main() {
 		if (mode == "battle") {
 			// ИНИЦИАЛИЗАТОР
 			if (intit_wave_timer == 0) {
+				
 				Level::init_level(wave++, player, intit_wave_timer);
 			}
 
 			if (intit_wave_timer > -1) {
 				intit_wave_timer--;
+				Level::print_timer(intit_wave_timer);
 			}
 
 

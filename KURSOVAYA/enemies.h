@@ -34,19 +34,24 @@ public:
 
 
 	Enemy() {};
-	Enemy(const std::string& console_side, const int level, const Player player) : level(level * difficult), old_enemy_upper_left_x(0), old_enemy_upper_left_y(0) {
+	Enemy(const std::string& console_side, const int level, const Player player) : level(level * difficult), old_enemy_upper_left_x(-1), old_enemy_upper_left_y(-1) {
 		// Спавним по правой левой или нижней стороне
-		if (console_side == "right") { // правая сторона
+		if (console_side == "right" || console_side == "r") { // правая сторона
 			enemy_upper_left_x = get_console_width() - pos_right[0].size();
 			enemy_upper_left_y = rand() % (get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]));
 		}
-		else if (console_side == "left") { // левая сторона
+		else if (console_side == "left" || console_side == "l") { // левая сторона
 			enemy_upper_left_x = 2;
 			enemy_upper_left_y = rand() % (get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]));
 		}
-		else { // низ
+		else if (console_side == "bottom" || console_side == "b") { // низ
 			enemy_upper_left_x = rand() % (get_console_width() - pos_right[0].size());
 			enemy_upper_left_y = get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]);
+		}
+		else {
+			//if (ran)
+			//enemy_upper_left_x = rand() % (get_console_width() - pos_right[0].size());
+
 		}
 		// Спавнится сразу повернутым в нужную сторону 
 		if (enemy_upper_left_x > player.player_x) {

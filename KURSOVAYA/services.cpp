@@ -39,10 +39,6 @@ void move_cursor(const int x = 0, const int y = 0) {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void clear_all() {
-    system("cls");
-}
-
 void clear(const int x, const int y, const int n = 1, const char symbol = ' ') {
     if (n < 0) return;
     if (x + n > get_console_width() || y > get_console_height()) {
@@ -51,6 +47,12 @@ void clear(const int x, const int y, const int n = 1, const char symbol = ' ') {
     string empty(n, symbol);
     move_cursor(x, y);
     cout << empty;
+}
+
+void clear_all() {
+    for (unsigned int i{ 0 }; i < get_console_height(); i++) {
+        clear(0, i, get_console_width());
+    }
 }
 
 bool can_move_border(const int x, const int y) {

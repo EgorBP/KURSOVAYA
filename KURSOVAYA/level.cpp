@@ -57,6 +57,17 @@ void Level::print_level() {
 	move_cursor();
 }
 
+void Level::print_timer(const int timer) {
+	if (timer == 99) {
+	clear(0, 6, 2);
+	}
+	move_cursor(0, 6);
+	cout << timer / 10;
+	move_cursor();
+
+}
+
+
 void Level::init_level(const int wave, const Player& player, int& timer) {
 	void (*levels[max_level + 1])(const int wave, const Player & player, int& timer) = {
 		init_0_level,
@@ -78,7 +89,6 @@ void Level::init_0_level(const int wave, const Player& player, int& timer) {
 	// Присвоить -1 после всех волн
 	switch (wave) {
 	case 1:
-		Enemy::init_enemy_in_array("left", 1, player);
 		Enemy::init_enemy_in_array("right", 1, player);
 		timer = -1;
 		return;
@@ -92,86 +102,80 @@ void Level::init_1_level(const int wave, const Player& player, int& timer) {
 	switch (wave) {
 	case 1:
 		Enemy::init_enemy_in_array("left", 1, player);
-		Enemy::init_enemy_in_array("right", 1, player);
-		timer = 1000;
 		break;
 	case 2:
-
-		break;
-	case 3:
-
-		break;
-	case 4:
-
-		break;
+		Enemy::init_enemy_in_array("left", 1, player);
+		Enemy::init_enemy_in_array("bottom", 1, player);
+		timer = -1;
+		return;
 	default:
 		timer = -1;
 		return;
 	}
-	timer = 1000;
+	timer = 100;
 }
 
 void Level::init_2_level(const int wave, const Player& player, int& timer) {
 	switch (wave) {
 	case 1:
-
+		Enemy::init_enemy_in_array("right", 1, player);
+		Enemy::init_enemy_in_array("bottom", 1, player);
 		break;
 	case 2:
-
-		break;
-	case 3:
-
-		break;
-	case 4:
-
-		break;
+		Enemy::init_enemy_in_array("bottom", 2, player);
+		Enemy::init_enemy_in_array("bottom", 2, player);
+		timer = -1;
+		return;
 	default:
 		timer = -1;
 		return;
 	}
-	timer = 1000;
+	timer = 200;
 }
 
 void Level::init_3_level(const int wave, const Player& player, int& timer) {
 	switch (wave) {
 	case 1:
-
+		Enemy::init_enemy_in_array("bottom", 1, player);
+		Enemy::init_enemy_in_array("bottom", 1, player);
 		break;
 	case 2:
-
-		break;
-	case 3:
-
-		break;
-	case 4:
-
-		break;
+		Enemy::init_enemy_in_array("bottom", 1, player);
+		Enemy::init_enemy_in_array("bottom", 1, player);
+		Enemy::init_enemy_in_array("bottom", 1, player);
+		Enemy::init_enemy_in_array("bottom", 1, player);
+		timer = -1;
+		return;
 	default:
 		timer = -1;
 		return;
 	}
-	timer = 1000;
+	timer = 150;
 }
 
 void Level::init_4_level(const int wave, const Player& player, int& timer) {
 	switch (wave) {
 	case 1:
-
+		Enemy::init_enemy_in_array("r", 2, player);
+		Enemy::init_enemy_in_array("l", 1, player);
 		break;
 	case 2:
-
+		Enemy::init_enemy_in_array("r", 1, player);
+		Enemy::init_enemy_in_array("l", 2, player);
+		Enemy::init_enemy_in_array("bottom", 1, player);
+		Enemy::init_enemy_in_array("r", 1, player);
 		break;
 	case 3:
-
-		break;
-	case 4:
-
-		break;
+		Enemy::init_enemy_in_array("bottom", 1, player);
+		Enemy::init_enemy_in_array("bottom", 1, player);
+		Enemy::init_enemy_in_array("bottom", 1, player);
+		timer = -1;
+		return;
 	default:
 		timer = -1;
 		return;
 	}
-	timer = 1000;
+	timer = 200;
 }
 
 void Level::init_5_level(const int wave, const Player& player, int& timer) {
@@ -192,7 +196,8 @@ void Level::init_5_level(const int wave, const Player& player, int& timer) {
 		timer = -1;
 		return;
 	}
-	timer = 1000;
+	timer = 200;
+
 }
 
 void Level::init_6_level(const int wave, const Player& player, int& timer) {
@@ -213,7 +218,7 @@ void Level::init_6_level(const int wave, const Player& player, int& timer) {
 		timer = -1;
 		return;
 	}
-	timer = 1000;
+	timer = 200;
 }
 
 void Level::init_7_level(const int wave, const Player& player, int& timer) {
@@ -234,7 +239,7 @@ void Level::init_7_level(const int wave, const Player& player, int& timer) {
 		timer = -1;
 		return;
 	}
-	timer = 1000;
+	timer = 200;
 }
 
 void Level::init_8_level(const int wave, const Player& player, int& timer) {
@@ -255,7 +260,7 @@ void Level::init_8_level(const int wave, const Player& player, int& timer) {
 		timer = -1;
 		return;
 	}
-	timer = 1000;
+	timer = 200;
 }
 
 void Level::init_9_level(const int wave, const Player& player, int& timer) {
@@ -276,7 +281,7 @@ void Level::init_9_level(const int wave, const Player& player, int& timer) {
 		timer = -1;
 		return;
 	}
-	timer = 1000;
+	timer = 200;
 }
 
 void Level::init_10_level(const int wave, const Player& player, int& timer) {
@@ -297,5 +302,5 @@ void Level::init_10_level(const int wave, const Player& player, int& timer) {
 		timer = -1;
 		return;
 	}
-	timer = 1000;
+	timer = 200;
 }
