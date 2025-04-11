@@ -36,7 +36,6 @@ public:
 	Enemy() {};
 	Enemy(const std::string& console_side, const int level, const Player player) : level(level * difficult), old_enemy_upper_left_x(0), old_enemy_upper_left_y(0) {
 		// Спавним по правой левой или нижней стороне
-		srand(time(0));
 		if (console_side == "right") { // правая сторона
 			enemy_upper_left_x = get_console_width() - pos_right[0].size();
 			enemy_upper_left_y = rand() % (get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]));

@@ -20,6 +20,7 @@ int main() {
 	// Чтобы успело перйти в полноэкранный режим
 	Sleep(300);
 	disableMouseSelection();
+	srand(time(0));
 
 	Level::set_new_level(0);
 
@@ -46,6 +47,7 @@ int main() {
 	bool can_change_location = true;
 	int player_attack_timer = 0;
 	int intit_wave_timer = 0;
+	int wave = 1;
 	int killer_id;
 	unsigned long long counter = 0;
 
@@ -100,6 +102,8 @@ int main() {
 			// Смена локации
 			if (player.player_y >= get_console_height() - 2) {
 				mode = "battle";
+				intit_wave_timer = 0;
+				wave = 1;
 				player.player_y = 1;
 				clear_all();
 				Level::print_level();
@@ -111,7 +115,7 @@ int main() {
 		if (mode == "battle") {
 			// ИНИЦИАЛИЗАТОР
 			if (intit_wave_timer == 0) {
-				Level::init_level(1, player);
+				Level::init_level(wave++, player, intit_wave_timer);
 			}
 
 			if (intit_wave_timer > -1) {
