@@ -24,7 +24,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="MAIN.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">

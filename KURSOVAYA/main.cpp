@@ -39,13 +39,6 @@ int main() {
 		Level::print_level();
 	}
 
-	// !!!!! ЧТОБЫ ДИНОЗАВР ЗАЛЕЗАЛ МОРДОЙ ПО КРАЯМ ЕГО НУЖНО СОЗДАВАТЬ ТОЛЬКО НА НЕЧЕТНЫХ ПОЗИЦИЯХ
-	// ИНАЧЕ ОН ЛИБО БУДЕТ ЗАЛЕЗАТЬ ЗА ГНАНИЦУ ИЛИ НЕ ДОСТАНЕТ ДО ИГРОКА С ПРАВОЙ СТОРОНЫ !!!!!
-	// p.s это нужно если его координаты перемещения по x = 2
-	const int size = 50, bullets = 25;
-	Enemy* enemies[size]{ nullptr };
-	Arrow* arrows[bullets]{ nullptr };
-
 	//mode = "battle";
 
 	bool flag_end_game = false;
@@ -63,7 +56,7 @@ int main() {
 		//cout << counter;
 		// Если нажата Esc выходим из цикла
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
-			//flag_end_game = true;
+			flag_end_game = true;
 			break;
 		}
 
@@ -75,14 +68,16 @@ int main() {
 
 		if (mode == "first_time") {
 			// Движение игрока
-			player.player_move(2, 1);
-			player.player_clear();
+			if (counter % 2 == 0) {
+				player.player_move(2, 1);
+				player.player_clear();
+			}
 			// Отрисовка игрока
 			player.player_print();
 
 			if (player.player_y <= 0) {
 				mode = "battle";
-				player.player_y = 45;
+				player.player_y = get_console_height() - 1;
 				clear_all();
 				continue;
 			}
@@ -90,7 +85,6 @@ int main() {
 
 
 		if (mode == "castle") {
-			//move_cursor();
 			Castle::print_castle(player);
 			if (can_update_level && player.is_player_on_door(Castle::find_door_index(), Castle::door_y_pos, 2)) {
 				can_update_level = false;
@@ -103,9 +97,9 @@ int main() {
 			player.player_clear();
 			// Отрисовка игрока
 			player.player_print("purple");
-	
+
 			// Смена локации
-			if (player.player_y >= 45) {
+			if (player.player_y >= get_console_height() - 2) {
 				mode = "battle";
 				player.player_y = 1;
 				clear_all();
@@ -118,7 +112,7 @@ int main() {
 		if (mode == "battle") {
 			// ИНИЦИАЛИЗАТОР
 			if (intit_wave_timer == 0) {
-				Level::init_level(1, enemies, player);
+				Level::init_level(1, player);
 			}
 
 			if (intit_wave_timer > -1) {
@@ -129,47 +123,43 @@ int main() {
 			// ДИНО
 			if (counter % 4 == 0 && counter != 0) {
 				not_empty_elements = 0;
-				for (int i = 0; i < size; i++) {
-					if (enemies[i] != nullptr) {
-						not_empty_elements++;
-						// Проверяем всех дино на то достигли они игрока или нет
-						if (enemies[i]->is_enemy_on_player(player)) {
-							killer_id = i;
-							flag_end_game = true;
-						}
-						// Очищаем всех перед отрисовкой чтобы при перемещении одного
-						// не очистился другой на позиции близкой к текущему
-						enemies[i]->clear_enemy();
-						enemies[i]->save_old_cords();
+				for (int i = 0; i < Enemy::enemies_array_size; i++) {
+					not_empty_elements++;
+					// Проверяем всех дино на то достигли они игрока или нет
+					if (Enemy::enemies[i].is_enemy_on_player(player)) {
+						killer_id = i;
+						flag_end_game = true;
 					}
+					// Очищаем всех перед отрисовкой чтобы при перемещении одного
+					// не очистился другой на позиции близкой к текущему
+					Enemy::enemies[i].clear_enemy();
+					Enemy::enemies[i].save_old_cords();
 				}
-				for (int i = 0; i < size; i++) {
+				for (int i = 0; i < Enemy::enemies_array_size; i++) {
 					// Если игра закончилась то рисумем только того что съел гг
 					if (flag_end_game) {
-						enemies[killer_id]->print();
+						Enemy::enemies[killer_id].print();
 						break;
 					}
 					// Если нет то рисуем всех и двигаем
-					if (enemies[i] != nullptr) {
-						enemies[i]->print();
-						enemies[i]->move(player, 2, 1);
-					}
+					Enemy::enemies[i].print();
+					Enemy::enemies[i].move(player, 2, 1);
 				}
-				if (flag_end_game) {
-					// Чтобы не видить нажатия других символов мы ждем пока юзер нажмет на нужную кнопку,
-					// а до этого выводим текст поверх всех напечатанных символов
-					while (!(GetAsyncKeyState(VK_RETURN) & 0x8000
-						|| GetAsyncKeyState(VK_SPACE) & 0x8000
-						|| GetAsyncKeyState(VK_ESCAPE) & 0x8000)) {
-						move_cursor(0, 0);
-						cout << "Поражение, нажмите Space или Enter...";
-						Sleep(50);
-					}
-					break;
-				}
-				// Слияние дино
-				Enemy::check_merge_all(enemies, size);
 			}
+			if (flag_end_game) {
+				// Чтобы не видить нажатия других символов мы ждем пока юзер нажмет на нужную кнопку,
+				// а до этого выводим текст поверх всех напечатанных символов
+				while (!(GetAsyncKeyState(VK_RETURN) & 0x8000
+					|| GetAsyncKeyState(VK_SPACE) & 0x8000
+					|| GetAsyncKeyState(VK_ESCAPE) & 0x8000)) {
+					move_cursor(0, 0);
+					cout << "Поражение, нажмите Space или Enter...";
+					Sleep(50);
+				}
+				mode = "castle";
+			}
+			// Слияние дино
+			Enemy::check_merge_all();
 
 
 			// ПУЛЯ
@@ -185,7 +175,8 @@ int main() {
 				player_attack_timer--;
 
 			// Перемещение пули и там же уменьшение уровня динозавра или удаление
-			Arrow::process_arrows(enemies, size);
+			Arrow::process_arrows();
+			Arrow::print_arrow_array_size();
 
 
 			// Движение игрока
@@ -199,7 +190,8 @@ int main() {
 
 			if (player.player_y <= 0 && not_empty_elements == 0) {
 				mode = "castle";
-				player.player_y = 44;
+				player.player_y = 37;
+				player.player_x = 76;
 				can_update_level = true;
 				Arrow::delete_array();
 				clear_all();
@@ -217,7 +209,7 @@ int main() {
 	}
 
 	// Освобождаем динамические массивы
-	Enemy::delete_array(enemies, size);
+	Enemy::delete_array();
 	Arrow::delete_array();
 
 	move_cursor(0, 0);

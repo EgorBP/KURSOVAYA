@@ -132,7 +132,7 @@
     <ClCompile Include="enemies.cpp" />
     <ClCompile Include="greeting.cpp" />
     <ClCompile Include="level.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MAIN.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="services.cpp" />
   </ItemGroup>

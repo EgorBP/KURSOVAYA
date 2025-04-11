@@ -57,8 +57,8 @@ void Level::print_level() {
 	move_cursor();
 }
 
-void Level::init_level(const int wave, Enemy** enemies, const Player& player) {
-	void (*levels[max_level + 1])(const int wave, Enemy** enemies, const Player & player) = {
+void Level::init_level(const int wave, const Player& player) {
+	void (*levels[max_level + 1])(const int wave, const Player & player) = {
 		init_0_level,
 		init_1_level,
 		init_2_level,
@@ -71,14 +71,14 @@ void Level::init_level(const int wave, Enemy** enemies, const Player& player) {
 		init_9_level,
 		init_10_level,
 	};
-	levels[get_current_level()](wave, enemies, player);
+	levels[get_current_level()](wave, player);
 }
 
-void Level::init_0_level(const int wave, Enemy** enemies, const Player& player) {
+void Level::init_0_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
-		//Enemy::init_enemy_in_array("left", 1, player, enemies);
-		Enemy::init_enemy_in_array("right", 1, player, enemies);
+		//Enemy::init_enemy_in_array("left", 1, player);
+		Enemy::init_enemy_in_array("right", 1, player);
 		break;
 	case 2:
 
@@ -92,24 +92,7 @@ void Level::init_0_level(const int wave, Enemy** enemies, const Player& player) 
 	}
 }
 
-void Level::init_1_level(const int wave, Enemy** enemies, const Player& player) {
-	switch (wave) {
-	case 1:
-
-		break;
-	case 2:
-
-		break;
-	case 3:
-
-		break;
-	case 4:
-
-		break;
-	}
-}
-
-void Level::init_2_level(const int wave, Enemy** enemies, const Player& player) {
+void Level::init_1_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
 
@@ -126,7 +109,7 @@ void Level::init_2_level(const int wave, Enemy** enemies, const Player& player) 
 	}
 }
 
-void Level::init_3_level(const int wave, Enemy** enemies, const Player& player) {
+void Level::init_2_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
 
@@ -143,7 +126,7 @@ void Level::init_3_level(const int wave, Enemy** enemies, const Player& player) 
 	}
 }
 
-void Level::init_4_level(const int wave, Enemy** enemies, const Player& player) {
+void Level::init_3_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
 
@@ -160,7 +143,7 @@ void Level::init_4_level(const int wave, Enemy** enemies, const Player& player) 
 	}
 }
 
-void Level::init_5_level(const int wave, Enemy** enemies, const Player& player) {
+void Level::init_4_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
 
@@ -177,7 +160,7 @@ void Level::init_5_level(const int wave, Enemy** enemies, const Player& player) 
 	}
 }
 
-void Level::init_6_level(const int wave, Enemy** enemies, const Player& player) {
+void Level::init_5_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
 
@@ -194,7 +177,7 @@ void Level::init_6_level(const int wave, Enemy** enemies, const Player& player) 
 	}
 }
 
-void Level::init_7_level(const int wave, Enemy** enemies, const Player& player) {
+void Level::init_6_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
 
@@ -211,7 +194,7 @@ void Level::init_7_level(const int wave, Enemy** enemies, const Player& player) 
 	}
 }
 
-void Level::init_8_level(const int wave, Enemy** enemies, const Player& player) {
+void Level::init_7_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
 
@@ -228,7 +211,7 @@ void Level::init_8_level(const int wave, Enemy** enemies, const Player& player) 
 	}
 }
 
-void Level::init_9_level(const int wave, Enemy** enemies, const Player& player) {
+void Level::init_8_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
 
@@ -245,7 +228,24 @@ void Level::init_9_level(const int wave, Enemy** enemies, const Player& player) 
 	}
 }
 
-void Level::init_10_level(const int wave, Enemy** enemies, const Player& player) {
+void Level::init_9_level(const int wave, const Player& player) {
+	switch (wave) {
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	}
+}
+
+void Level::init_10_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
 

@@ -54,8 +54,8 @@ void clear(const int x, const int y, const int n = 1, const char symbol = ' ') {
 }
 
 bool can_move_border(const int x, const int y) {
-    if (x < 1 or y < 0) return false;   // Границы окна 
-    if (x >= 156 or y >= 46) return false;
+    if (x < 2 or y < 0) return false;   // Границы окна 
+    if (x >= get_console_width() or y >= get_console_height()) return false;
     return true;
 }
 
@@ -113,11 +113,6 @@ void set_bg_color(const std::string& bg_color) {
 
 void set_color() {
     set_color(7, 0);
-}
-
-
-void end_game() {
-
 }
 
 
