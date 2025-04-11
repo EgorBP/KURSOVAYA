@@ -46,7 +46,6 @@ int main() {
 	bool can_change_location = true;
 	int player_attack_timer = 0;
 	int intit_wave_timer = 0;
-	int not_empty_elements = 0;
 	int killer_id;
 	unsigned long long counter = 0;
 
@@ -122,9 +121,7 @@ int main() {
 
 			// ДИНО
 			if (counter % 4 == 0 && counter != 0) {
-				not_empty_elements = 0;
-				for (int i = 0; i < Enemy::enemies_array_size; i++) {
-					not_empty_elements++;
+				for (size_t i = 0; i < Enemy::enemies_array_size; i++) {
 					// Проверяем всех дино на то достигли они игрока или нет
 					if (Enemy::enemies[i].is_enemy_on_player(player)) {
 						killer_id = i;
@@ -188,7 +185,7 @@ int main() {
 			player.player_print();
 
 
-			if (player.player_y <= 0 && not_empty_elements == 0) {
+			if (player.player_y <= 0 && Enemy::enemies_array_size == 0 && intit_wave_timer < 0) {
 				mode = "castle";
 				player.player_y = 37;
 				player.player_x = 76;

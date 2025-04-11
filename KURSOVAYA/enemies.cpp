@@ -22,7 +22,6 @@ const string Enemy::pos_left[4] = {
 		"   c-L'- ",
 };
 
-
 void Enemy::init_enemy_in_array(const string& console_side, const int level, const Player& player) {
 	// Динамически меняем размер
 	Enemy* new_array = new Enemy[enemies_array_size + 1];
@@ -39,16 +38,19 @@ void Enemy::init_enemy_in_array(const string& console_side, const int level, con
 }
 
 void Enemy::rebuild_array_without_element(const size_t index) {
-	Enemy* new_array = new Enemy[--enemies_array_size];
+	if (enemies_array_size == 0) return;
 
-	for (size_t i{ 0 }; i < enemies_array_size; i++) {
-		if (i >= index) {
-			new_array[i] = enemies[i + 1];
-		}
-		else {
-			new_array[i] = enemies[i];
+	Enemy* new_array = new Enemy[enemies_array_size - 1];
+	for (size_t i = 0, j = 0; i < enemies_array_size; i++) {
+		if (i != index) {
+			new_array[j] = enemies[i];
+			j++;
 		}
 	}
+
+	delete[] enemies;
+	enemies = new_array;
+	enemies_array_size--;
 }
 
 void Enemy::check_merge_all() {
@@ -58,16 +60,16 @@ void Enemy::check_merge_all() {
 
 		for (int i_checker = 0; i_checker < enemies_array_size; i_checker++) {
 			if (i != i_checker) {
-
 				int x_other = enemies[i_checker].enemy_upper_left_x;
 				int y_other = enemies[i_checker].enemy_upper_left_y;
 
 				if (abs(x_main - x_other) < 9 && abs(y_main - y_other) < 3) {
-					enemies[i_checker].merge(enemies[i].level);  // Повышаем уровень
-					enemies[i].clear_enemy();                    // Очищаем перед удалением
-					enemies[i_checker].clear_enemy();            // Очищаем и рисуем заново в этой же итерации чтобы создать
-					enemies[i_checker].print();                  //  эффкт переваривания (задержка) и перебить очищение от удаленного
-					rebuild_array_without_element(i);                        // Удаляем
+					enemies[i_checker].merge(enemies[i].level); // Повышаем уровень
+					enemies[i].clear_enemy();                   // Очищаем перед удалением
+					enemies[i_checker].clear_enemy();           // Очищаем и рисуем заново в этой же итерации чтобы создать
+					enemies[i_checker].print();                 //  эффкт переваривания (задержка) и перебить очищение от удаленного
+					rebuild_array_without_element(i);           // Удаляем
+					i--;										// Откатываем i на тот же элемент так как на его месте теперь новый элемент который нужно проверить
 					break;
 				}
 			}

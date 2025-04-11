@@ -12,6 +12,7 @@ struct Arrow {
 	static Arrow* arrows;
 
 	static void init_new_arrow(Player& player);
+	static void rebuild_array_without_element(const size_t index);
 	static void process_arrows();
 	static void print_arrow_array_size();
 	static void delete_array();

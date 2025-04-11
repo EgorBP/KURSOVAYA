@@ -77,7 +77,7 @@ void Level::init_level(const int wave, const Player& player) {
 void Level::init_0_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
-		//Enemy::init_enemy_in_array("left", 1, player);
+		Enemy::init_enemy_in_array("left", 1, player);
 		Enemy::init_enemy_in_array("right", 1, player);
 		break;
 	case 2:
