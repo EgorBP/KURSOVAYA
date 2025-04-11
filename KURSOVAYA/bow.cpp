@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <windows.h>
+#include <fstream>
 #include "bow.h"
 #include "services.h"
 #include "enemies.h"
@@ -49,7 +50,7 @@ void Arrow::process_arrows() {
         // Проверка на столкновение с врагами
         for (int i_enemy = 0; i_enemy < Enemy::enemies_array_size; i_enemy++) {
             if (arrows[i].is_arrow_on_enemy(Enemy::enemies[i_enemy].enemy_upper_left_x, Enemy::enemies[i_enemy].enemy_upper_left_y)) {
-                Enemy::enemies[i_enemy].merge(-1);
+                Enemy::enemies[i_enemy].merge(-1 * get_bow_level());
                 if (Enemy::enemies[i_enemy].level <= 0) {
                     Enemy::enemies[i_enemy].clear_enemy();
                     Enemy::rebuild_array_without_element(i_enemy);
@@ -72,6 +73,36 @@ void Arrow::process_arrows() {
         }
 
         arrows[i].print_arrow();
+    }
+}
+
+int Arrow::get_bow_level() {
+    int level = 1;
+    fstream file("bow.txt", ios::in);
+    if (file.is_open()) {
+        file >> level;
+        file.close();
+    }
+    else {
+        set_new_level(level);
+    }
+    return level;
+}
+
+void Arrow::level_up(const int points) {
+    int current_level = get_bow_level();
+    fstream file("bow.txt", ios::out | ios::trunc);
+    if (file.is_open()) {
+        file << current_level + points;
+        file.close();
+    }
+}
+
+void Arrow::set_new_level(const int new_level) {
+    fstream file("bow.txt", ios::out);
+    if (file.is_open()) {
+        file << new_level;
+        file.close();
     }
 }
 

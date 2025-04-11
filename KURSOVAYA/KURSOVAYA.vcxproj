@@ -146,6 +146,7 @@
     <ClInclude Include="services.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="bow.txt" />
     <Text Include="level.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

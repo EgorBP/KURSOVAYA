@@ -22,7 +22,9 @@ int main() {
 	disableMouseSelection();
 	srand(time(0));
 
-	Level::set_new_level(0);
+	Level::set_new_level(1);
+	Arrow::set_new_level(2);
+
 
 	string mode;
 	Player player;
@@ -37,14 +39,15 @@ int main() {
 	else {
 		mode = "castle";
 		player = Player(75, 27);
-		Level::print_level();
+		Level::print_level(false);
 	}
 
-	mode = "battle";
+	//mode = "battle";
 
 	bool flag_end_game = false;
 	bool can_update_level = false;
 	bool can_change_location = true;
+	bool is_level_passed = false;
 	int player_attack_timer = 0;
 	int intit_wave_timer = 0;
 	int wave = 1;
@@ -64,7 +67,7 @@ int main() {
 		// Немного чиним если был выход из полноэкранного режима
 		if (!check_console_size_changes()) {
 			clear_all();
-			Level::print_level();
+			Level::print_level(is_level_passed);
 		}
 
 
@@ -91,7 +94,8 @@ int main() {
 			if (can_update_level && player.is_player_on_door(Castle::find_door_index(), Castle::door_y_pos, 2)) {
 				can_update_level = false;
 				Level::level_up();
-				Level::print_level();
+				is_level_passed = false;
+				Level::print_level(is_level_passed);
 			}
 
 			// Движение игрока
@@ -107,7 +111,7 @@ int main() {
 				wave = 1;
 				player.player_y = 1;
 				clear_all();
-				Level::print_level();
+				Level::print_level(is_level_passed);
 				disableMouseSelection();
 				continue;
 			}
@@ -117,14 +121,17 @@ int main() {
 		if (mode == "battle") {
 			// ИНИЦИАЛИЗАТОР
 			if (intit_wave_timer == 0) {
-				
 				Level::init_level(wave++, player, intit_wave_timer);
 			}
 
 			if (intit_wave_timer > -1) {
 				intit_wave_timer--;
-				Level::print_timer(intit_wave_timer);
 			}
+			else if (intit_wave_timer <= -1 && Enemy::enemies_array_size == 0) {
+				is_level_passed = true;
+				Level::print_level(is_level_passed);
+			}
+			Level::print_timer(intit_wave_timer);
 
 
 			// ДИНО
@@ -200,7 +207,7 @@ int main() {
 				can_update_level = true;
 				Arrow::delete_array();
 				clear_all();
-				Level::print_level();
+				Level::print_level(is_level_passed);
 				continue;
 			}
 		}

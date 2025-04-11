@@ -86,7 +86,11 @@ void Enemy::delete_array() {
 
 void Enemy::move(const Player& player, int point_x, int point_y) {
 	// Динозавр 2 уровня двигается быстрее
-	if (level > 2 * difficult) {
+	if (level > 4 * difficult) {
+		point_x += 2;
+		point_y++;
+	}
+	else if (level > 2 * difficult) {
 		point_x++;
 	}
 

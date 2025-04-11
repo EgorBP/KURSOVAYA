@@ -49,9 +49,19 @@ public:
 			enemy_upper_left_y = get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]);
 		}
 		else {
-			//if (ran)
-			//enemy_upper_left_x = rand() % (get_console_width() - pos_right[0].size());
-
+			int random_side = rand() % 3;
+			if (random_side == 0) { // Справа
+				enemy_upper_left_x = get_console_width() - pos_right[0].size();
+				enemy_upper_left_y = rand() % (get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]));
+			}
+			else if (random_side == 1) { // Слева
+				enemy_upper_left_x = 2;
+				enemy_upper_left_y = rand() % (get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]));
+			}
+			else { // Снизу
+				enemy_upper_left_x = rand() % (get_console_width() - pos_right[0].size());
+				enemy_upper_left_y = get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]);
+			}
 		}
 		// Спавнится сразу повернутым в нужную сторону 
 		if (enemy_upper_left_x > player.player_x) {

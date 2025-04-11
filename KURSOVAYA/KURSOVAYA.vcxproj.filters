@@ -76,5 +76,8 @@
     <Text Include="level.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="bow.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

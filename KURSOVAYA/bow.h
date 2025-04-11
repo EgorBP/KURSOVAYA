@@ -14,6 +14,9 @@ struct Arrow {
 	static void init_new_arrow(Player& player);
 	static void rebuild_array_without_element(const size_t index);
 	static void process_arrows();
+	static int get_bow_level();
+	static void level_up(const int points = 1);
+	static void set_new_level(const int new_level);
 	static void print_arrow_array_size();
 	static void delete_array();
 
