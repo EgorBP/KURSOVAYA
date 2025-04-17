@@ -8,6 +8,7 @@
 #include "greeting.h"
 #include "level.h"
 #include "game.h"
+#include "dialogue.h"
 
 using namespace std;
 
@@ -74,6 +75,8 @@ void Game::init_loop() {
 		if (mode == "castle") {
 			Castle::print_castle(player);
 			if (can_update_level && player.is_player_on_door(Castle::find_door_index(), Castle::door_y_pos, 2)) {
+				clear_all();
+				mode = "dialogue";
 				can_update_level = false;
 				Level::level_up();
 				is_level_passed = false;
@@ -89,7 +92,7 @@ void Game::init_loop() {
 			// Смена локации
 			if (player.player_y >= get_console_height() - 2) {
 				mode = "battle";
-				intit_wave_timer = 0;
+				Level::wave_timer = 0;
 				wave = 1;
 				player.player_y = 1;
 				clear_all();
@@ -100,20 +103,25 @@ void Game::init_loop() {
 		}
 
 
+		if (mode == "dialogue") {
+			Dialogue::print_princess();
+		}
+
+
 		if (mode == "battle") {
 			// ИНИЦИАЛИЗАТОР
-			if (intit_wave_timer == 0) {
-				Level::init_level(wave++, player, intit_wave_timer);
+			if (Level::wave_timer == 0) {
+				Level::init_level(wave++, player);
 			}
 
-			if (intit_wave_timer > -1) {
-				intit_wave_timer--;
+			if (Level::wave_timer > -1) {
+				Level::wave_timer--;
 			}
-			else if (intit_wave_timer <= -1 && Enemy::enemies_array_size == 0) {
+			else if (Level::wave_timer <= -1 && Enemy::enemies_array_size == 0) {
 				is_level_passed = true;
 				Level::print_level(is_level_passed);
 			}
-			Level::print_timer(intit_wave_timer);
+			Level::print_timer();
 
 
 			// ДИНО
@@ -132,11 +140,11 @@ void Game::init_loop() {
 				for (int i = 0; i < Enemy::enemies_array_size; i++) {
 					// Если игра закончилась то рисумем только того что съел гг
 					if (flag_end_game) {
-						Enemy::enemies[killer_id].print();
+						Enemy::enemies[killer_id].print_all();
 						break;
 					}
 					// Если нет то рисуем всех и двигаем
-					Enemy::enemies[i].print();
+					Enemy::enemies[i].print_all();
 					Enemy::enemies[i].move(player, 2, 1);
 				}
 			}
@@ -182,7 +190,7 @@ void Game::init_loop() {
 			player.player_print();
 
 
-			if (player.player_y <= 0 && Enemy::enemies_array_size == 0 && intit_wave_timer < 0) {
+			if (player.player_y <= 0 && Enemy::enemies_array_size == 0 && Level::wave_timer < 0) {
 				mode = "castle";
 				player.player_y = 37;
 				player.player_x = 76;

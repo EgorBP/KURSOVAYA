@@ -27,7 +27,7 @@ void Arrow::init_new_arrow(Player& player) {
 }
 
 void Arrow::rebuild_array_without_element(const size_t index) {
-    //if (arrows_array_size == 0) return;
+    if (!arrows) return;
 
     Arrow* new_array = new Arrow[arrows_array_size - 1];
     for (size_t i = 0, j = 0; i < arrows_array_size; i++) {

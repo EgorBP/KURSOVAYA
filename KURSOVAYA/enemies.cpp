@@ -38,7 +38,7 @@ void Enemy::init_enemy_in_array(const string& console_side, const int level, con
 }
 
 void Enemy::rebuild_array_without_element(const size_t index) {
-	if (enemies_array_size == 0) return;
+	if (!enemies) return;
 
 	Enemy* new_array = new Enemy[enemies_array_size - 1];
 	for (size_t i = 0, j = 0; i < enemies_array_size; i++) {
@@ -67,7 +67,7 @@ void Enemy::check_merge_all() {
 					enemies[i_checker].merge(enemies[i].level); // Повышаем уровень
 					enemies[i].clear_enemy();                   // Очищаем перед удалением
 					enemies[i_checker].clear_enemy();           // Очищаем и рисуем заново в этой же итерации чтобы создать
-					enemies[i_checker].print();                 //  эффкт переваривания (задержка) и перебить очищение от удаленного
+					enemies[i_checker].print_all();                 //  эффкт переваривания (задержка) и перебить очищение от удаленного
 					rebuild_array_without_element(i);           // Удаляем
 					i--;										// Откатываем i на тот же элемент так как на его месте теперь новый элемент который нужно проверить
 					break;
@@ -78,6 +78,8 @@ void Enemy::check_merge_all() {
 }
 
 void Enemy::delete_array() {
+	if (!enemies) return;
+
 	delete[] enemies;
 	enemies = nullptr;
 	enemies_array_size = 0;
@@ -158,7 +160,7 @@ void Enemy::set_enemy_color() const {
 	set_text_color(color);
 }
 
-void Enemy::print() const {
+void Enemy::print_all() const {
 	set_enemy_color();
 	const string* model;
 	if (position == 'r') model = pos_right;

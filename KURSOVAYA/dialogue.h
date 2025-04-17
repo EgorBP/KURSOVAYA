@@ -1,8 +1,9 @@
 ﻿#pragma once
 #include <string>
 
-struct Dialogue {
+using namespace std;
 
-	Создать отдельный mode для диалогов и для него же структуру с методами.
-	
+struct Dialogue {
+	static string princess;
+	static void print_princess();
 };

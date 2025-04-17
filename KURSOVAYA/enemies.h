@@ -73,7 +73,7 @@ public:
 
 	void move(const Player& player, int points_x, int points_y);
 	void set_enemy_color() const;
-	void print() const;
+	void print_all() const;
 	void save_old_cords();
 	void clear_enemy() const;
 	void merge(const int other_level); 
