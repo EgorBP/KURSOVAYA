@@ -20,7 +20,7 @@ void set_bg_color(const int bg_color_code);
 void set_bg_color(const std::string& bg_color);
 void set_color();
 
-
+void prepare_console();
 void simulateF11();
 void hideCursor();
 void disableMouseSelection();

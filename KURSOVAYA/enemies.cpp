@@ -26,7 +26,7 @@ void Enemy::init_enemy_in_array(const string& console_side, const int level, con
 	// Динамически меняем размер
 	Enemy* new_array = new Enemy[enemies_array_size + 1];
 
-	for (size_t i = 0; i < enemies_array_size; i++) { // копируем старые стрелы
+	for (size_t i = 0; i < enemies_array_size; i++) { // копируем старых врагов
 		new_array[i] = enemies[i];
 	}
 

@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <windows.h>
 #include <string>
+#include "services.h"
 
 using namespace std;
 
@@ -34,12 +35,12 @@ bool check_console_size_changes() {
     }
 }
 
-void move_cursor(const int x = 0, const int y = 0) {
+void move_cursor(const int x, const int y) {
     COORD coord = { x, y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void clear(const int x, const int y, const int n = 1, const char symbol = ' ') {
+void clear(const int x, const int y, const int n, const char symbol) {
     if (n < 0) return;
     if (x + n > get_console_width() || y > get_console_height()) {
         return;
@@ -117,6 +118,18 @@ void set_color() {
     set_color(7, 0);
 }
 
+
+void prepare_console() {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    hideCursor();
+    // Чтобы окно успело открыться
+    Sleep(100);
+    simulateF11();
+    // Чтобы успело перйти в полноэкранный режим
+    Sleep(300);
+    disableMouseSelection();
+}
 
 void simulateF11() {
     INPUT input[2] = {};
