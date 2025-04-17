@@ -39,15 +39,15 @@ void Game::init_loop() {
 	Level::set_new_level(1);
 	Arrow::set_new_level(2);
 
-	while (!flag_end_game) {
+	while (run) {
 		//cout << counter;
 		// Если нажата Esc выходим из цикла
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
-			flag_end_game = true;
+			run = false;
 			break;
 		}
 
-		// Немного чиним если был выход из полноэкранного режима
+		// Чиним если был выход из полноэкранного режима
 		if (!check_console_size_changes()) {
 			clear_all();
 			Level::print_level(is_level_passed);
@@ -74,9 +74,9 @@ void Game::init_loop() {
 
 		if (mode == "castle") {
 			Castle::print_castle(player);
-			if (can_update_level && player.is_player_on_door(Castle::find_door_index(), Castle::door_y_pos, 2)) {
-				clear_all();
-				mode = "dialogue";
+			if (player.is_player_on_door(Castle::find_door_index(), Castle::door_y_pos, 2)) {
+				player.player_y += 1;
+				Dialogue::loop();
 				can_update_level = false;
 				Level::level_up();
 				is_level_passed = false;
@@ -95,16 +95,11 @@ void Game::init_loop() {
 				Level::wave_timer = 0;
 				wave = 1;
 				player.player_y = 1;
-				clear_all();
+				beautiful_clear_all(1);
 				Level::print_level(is_level_passed);
 				disableMouseSelection();
 				continue;
 			}
-		}
-
-
-		if (mode == "dialogue") {
-			Dialogue::print_princess();
 		}
 
 
@@ -130,7 +125,7 @@ void Game::init_loop() {
 					// Проверяем всех дино на то достигли они игрока или нет
 					if (Enemy::enemies[i].is_enemy_on_player(player)) {
 						killer_id = i;
-						flag_end_game = true;
+						is_player_die = true;
 					}
 					// Очищаем всех перед отрисовкой чтобы при перемещении одного
 					// не очистился другой на позиции близкой к текущему
@@ -139,7 +134,7 @@ void Game::init_loop() {
 				}
 				for (int i = 0; i < Enemy::enemies_array_size; i++) {
 					// Если игра закончилась то рисумем только того что съел гг
-					if (flag_end_game) {
+					if (is_player_die) {
 						Enemy::enemies[killer_id].print_all();
 						break;
 					}
@@ -148,7 +143,7 @@ void Game::init_loop() {
 					Enemy::enemies[i].move(player, 2, 1);
 				}
 			}
-			if (flag_end_game) {
+			if (is_player_die) {
 				// Чтобы не видить нажатия других символов мы ждем пока юзер нажмет на нужную кнопку,
 				// а до этого выводим текст поверх всех напечатанных символов
 				while (!(GetAsyncKeyState(VK_RETURN) & 0x8000
@@ -196,6 +191,7 @@ void Game::init_loop() {
 				player.player_x = 76;
 				can_update_level = true;
 				Arrow::delete_array();
+				//beautiful_clear_all(0, '#');
 				clear_all();
 				Level::print_level(is_level_passed);
 				continue;

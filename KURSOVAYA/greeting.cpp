@@ -108,7 +108,7 @@ void Greeting::clear_author_name() {
     clear(132, 45, 24);
 }
 
-void Greeting::beautiful_print(const std::string* item, const int x_pos, const int y_pos, int symobls_to_clear) {
+void Greeting::beautiful_print(const string* item, const int x_pos, const int y_pos, int symobls_to_clear) {
     const int width = item[0].size();
     for (int i{ 0 }; i < width; i++) {
         for (int height{ 0 }; height < size; height++) {

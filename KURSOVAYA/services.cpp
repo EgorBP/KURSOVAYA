@@ -35,6 +35,10 @@ bool check_console_size_changes() {
     }
 }
 
+int get_first_line_width(string text) {
+    return text.substr(0, text.find('\n')).length();
+}
+
 void move_cursor(const int x, const int y) {
     COORD coord = { x, y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
@@ -54,12 +58,33 @@ void clear_all() {
     for (unsigned int i{ 0 }; i < get_console_height(); i++) {
         clear(0, i, get_console_width());
     }
+    move_cursor();
+}
+
+void beautiful_clear_all(int sleep_time, char symbol) {
+    for (int i{ 0 }; i < get_console_width(); i++) {
+        for (int height{ 0 }; height < get_console_height(); height++) {
+            clear(i, height, 1, symbol);
+        }
+        Sleep(sleep_time);
+    }
+    move_cursor();
 }
 
 bool can_move_border(const int x, const int y) {
     if (x < 2 or y < 0) return false;   // Границы окна 
     if (x >= get_console_width() or y >= get_console_height()) return false;
     return true;
+}
+
+bool check_right_left_buttons() {
+    if (GetAsyncKeyState(VK_LEFT) & 0x8000 ||
+        GetAsyncKeyState(VK_RIGHT) & 0x8000 ||
+        GetAsyncKeyState('A') & 0x8000 ||
+        GetAsyncKeyState('D') & 0x8000) {
+        return true;
+    }
+    else return false;
 }
 
 

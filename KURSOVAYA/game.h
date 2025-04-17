@@ -3,7 +3,8 @@
 #include "player.h"
 
 struct Game {
-	bool flag_end_game = false;
+	bool run = true;
+	bool is_player_die = false;
 	bool can_update_level = true;
 	bool can_change_location = true;
 	bool is_level_passed = false;
