@@ -7,6 +7,7 @@
 #include "level.h"
 #include "services.h"
 #include "bow.h"
+#include "bomb.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ DialogueObject Dialogue::current_object = DialogueObject::Princess;
 void Dialogue::loop() {
 	clear_all();
 	bool can_talk_with_princess = true;
+	BlacksmithClass blacksmith{ BlacksmithItems::BowDamageUpgrade };
 
 	while (true) {
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
@@ -44,10 +46,10 @@ void Dialogue::loop() {
 				beautiful_clear_all();
 			}
 			else {
-				process_blacksmith();
+				process_blacksmith(blacksmith);
 			}
 		}
-		Sleep(15);
+		Sleep(50);
 	}
 }
 
@@ -106,54 +108,102 @@ void Dialogue::process_princess() {
 	word = "";
 }
 
-void Dialogue::process_blacksmith() {
+void Dialogue::process_blacksmith(BlacksmithClass& blacksmith) {
 	print_dialogue_frame(blacksmith_art, "Кузнец");
 	move_cursor();
 	cout << blacksmith_art;
 
+	BlacksmithClass::print_money();
+	BlacksmithClass::print_all_items();
+
+	if (GetAsyncKeyState('W') & 0x8000) {
+		if (blacksmith.current_item > 0) {
+			blacksmith.clear_pointer();
+			blacksmith.current_item = static_cast<BlacksmithItems>(blacksmith.current_item - 1);
+		}
+	}
+	else if (GetAsyncKeyState('S') & 0x8000) {
+		if (blacksmith.current_item < BlacksmithClass::items_count - 1) {
+			blacksmith.clear_pointer();
+			blacksmith.current_item = static_cast<BlacksmithItems>(blacksmith.current_item + 1);
+		}
+	}
+
+	move_cursor(150, 43);
+	cout << blacksmith.current_item;
+	blacksmith.print_pointer();
+
+	if (blacksmith.current_item == BlacksmithItems::BowDamageUpgrade) {
+		if (check_enter_button() && Dialogue::get_current_money() > BlacksmithClass::get_money_from_item(blacksmith.current_item)) {
+			Dialogue::money_up(-BlacksmithClass::get_money_from_item(blacksmith.current_item));
+			Arrow::level_up();
+		}
+	}
+	else if (blacksmith.current_item == BlacksmithItems::BombBuy) {
+		if (check_enter_button() && Dialogue::get_current_money() > BlacksmithClass::get_money_from_item(blacksmith.current_item)) {
+			Dialogue::money_up(-BlacksmithClass::get_money_from_item(blacksmith.current_item));
+			Bomb::count_up();
+		}
+	}
+}
+
+void BlacksmithClass::print_pointer() const {
+	set_text_color(Color::Green);
+	move_cursor(get_first_line_width(Dialogue::blacksmith_art) + 6, 5 + current_item * 2);
+	cout << "->";
+	set_color();
+}
+
+void BlacksmithClass::clear_pointer() const {
+	clear(get_first_line_width(Dialogue::blacksmith_art) + 6, 5 + current_item * 2, 2);
+}
+
+void BlacksmithClass::print_money() {
 	set_text_color(Color::Yellow);
 	move_cursor(get_console_width() - 6, 3);
-	cout << get_current_money();
+	cout << Dialogue::get_current_money() << "  ";
+	move_cursor();
+}
 
+void BlacksmithClass::print_all_items() {
+	print_body(0, "Увеличение урона стрелы", BlacksmithClass::get_money_from_item(BlacksmithItems::BowDamageUpgrade), Arrow::get_bow_level);
+	print_body(1, "Новая бомба", BlacksmithClass::get_money_from_item(BlacksmithItems::BombBuy), Bomb::get_current_count);
+}
+
+void BlacksmithClass::print_body(const int y_pos, const string& text, const int price, int (*get_data)()) {
+	move_cursor(get_first_line_width(Dialogue::blacksmith_art) + 8, 5 + y_pos * 2);
+	set_color();
+	cout << text << " (";
+	set_text_color(Color::Red);
+	cout << get_data();
+	set_color();
+	cout << "->";
 	set_text_color(Color::Green);
-	move_cursor(get_first_line_width(blacksmith_art) + 6, 5);
-	cout << "->";
-
-	// Можно изменить фон выбранного элемента
-	Color bg_color = Color::Black;
-
-	move_cursor(get_first_line_width(blacksmith_art) + 8, 5);
-	set_color(Color::White, bg_color);
-	cout << "Увеличение урона лука (";
-	set_color(Color::Red, bg_color);
-	cout << Arrow::get_bow_level();
-	set_color(Color::White, bg_color);
-	cout << "->";
-	set_color(Color::Green, bg_color);
-	cout << Arrow::get_bow_level() + 1;
-	set_color(Color::White, bg_color);
+	cout << get_data() + 1;
+	set_color();
 	cout << ')';
-	set_bg_color(bg_color);
-	// Так как идея врядли будет применятся изза не подходящих цветов консоли цикл сделан с костылями
-	//for (int i{ 0 }; i < get_console_width() - 12 - (get_first_line_width(blacksmith_art) + 8) - 28; i++) {
-	//	cout << ' ';
-	//}
-	move_cursor(get_console_width() - 12, 5);
-	if (get_current_money() < 50) {
-		set_color(Color::Red, bg_color);
+
+	move_cursor(get_console_width() - 12, 5 + y_pos * 2);
+	if (Dialogue::get_current_money() < 50) {
+		set_text_color(Color::Red);
 	}
 	else {
-		set_color(Color::Green, bg_color);
+		set_text_color(Color::Green);
 	}
-	cout << 50;
+	cout << price;
 	set_color();
 
-	// Так как в магазине только 1 товар можно пока что сделать логику только для его покупки
-	if (GetAsyncKeyState(VK_RETURN) & 0x8000 && get_current_money() >= 50) {
-		Arrow::level_up();
-		Dialogue::money_up(-50);
+}
+
+int BlacksmithClass::get_money_from_item(BlacksmithItems item) {
+	switch (item) {
+	case BlacksmithItems::BowDamageUpgrade:
+		return 50;
+	case BlacksmithItems::BombBuy:
+		return 15;
+	default:
+		return -1;
 	}
-	set_color();
 }
 
 int Dialogue::get_current_money() {

@@ -7,6 +7,26 @@ enum DialogueObject {
 	Blacksmith,
 };
 
+enum BlacksmithItems {
+	BowDamageUpgrade,
+	BombBuy,
+};
+
+struct BlacksmithClass {
+	BlacksmithItems current_item;
+
+	static const int items_count = 2;
+
+	void print_pointer() const;
+	void clear_pointer() const;
+	static void print_all_items();
+	static void print_money();
+	static int get_money_from_item(BlacksmithItems item);
+
+private:
+	static void print_body(const int y_pos, const std::string& text, const int price, int (*get_data)());
+};
+
 struct Dialogue {
 	static DialogueObject current_object;
 
@@ -15,7 +35,7 @@ struct Dialogue {
 	static void process_princess();
 
 	static std::string blacksmith_art;
-	static void process_blacksmith();
+	static void process_blacksmith(BlacksmithClass& blacksmith);
 
 	static void loop();
 	static void print_dialogue_frame(const std::string& text, const std::string& heading);

@@ -34,6 +34,8 @@ void clear_all();
 void beautiful_clear_all(int sleep_time = 0, char symbol = ' ');
 bool can_move_border(const int x, const int y);
 bool check_right_left_buttons();
+bool check_esc_button();
+bool check_enter_button();
 
 int get_color_code(const std::string& color);
 void set_color(const int text_color_code, const int bg_color_code);

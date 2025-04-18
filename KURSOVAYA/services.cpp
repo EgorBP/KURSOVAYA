@@ -103,6 +103,19 @@ bool check_right_left_buttons() {
     else return false;
 }
 
+bool check_esc_button() {
+    if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
+        return true;
+    }
+    else return false;
+}
+
+bool check_enter_button() {
+    if (GetAsyncKeyState(VK_RETURN) & 0x8000) {
+        return true;
+    }
+    else return false;
+}
 
 int get_color_code(const string& color) {
     if (color == "black") return 0;

@@ -9,6 +9,7 @@
 #include "level.h"
 #include "game.h"
 #include "dialogue.h"
+#include "bomb.h"
 
 using namespace std;
 
@@ -21,8 +22,8 @@ void Game::start() {
 
 void Game::update_data() {
 	Level::set_new_level(10);
-	Arrow::set_new_level(10);
-	//Dialogue::set_new_money(0);
+	Arrow::set_new_level(1);
+	Dialogue::set_new_money(900);
 
 	// Смотрим где игрок закончил прошлую игру
 	if (Level::get_current_level() < 0 || Level::get_current_level() == 0) {
@@ -43,7 +44,7 @@ void Game::init_loop() {
 	while (run) {
 		//cout << counter;
 		// Если нажата Esc выходим из цикла
-		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
+		if (check_esc_button()) {
 			beautiful_clear_all(1);
 			run = false;
 			break;
@@ -181,6 +182,8 @@ void Game::init_loop() {
 			// Перемещение пули и там же уменьшение уровня динозавра или удаление
 			Arrow::process_arrows();
 			Arrow::print_arrow_array_size();
+
+			Bomb::process_bomb();
 
 
 			// Движение игрока
