@@ -22,7 +22,7 @@ const string Enemy::pos_left[4] = {
 		"   c-L'- ",
 };
 
-void Enemy::init_enemy_in_array(const string& console_side, const int level, const Player& player) {
+void Enemy::init_enemy_in_array(const console_side console_side, const int level, const Player& player) {
 	// Динамически меняем размер
 	Enemy* new_array = new Enemy[enemies_array_size + 1];
 

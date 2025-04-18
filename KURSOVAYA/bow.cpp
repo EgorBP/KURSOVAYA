@@ -120,13 +120,13 @@ void Arrow::delete_array() {
 
 void Arrow::arrow_clear() const {
     if (arrow_side == '>') clear(arrow_x - 1, arrow_y, 3);
-    if (arrow_side == '<') clear(arrow_x - 1, arrow_y, 3);
-    if (arrow_side == '^') {
+    else if (arrow_side == '<') clear(arrow_x - 1, arrow_y, 3);
+    else if (arrow_side == '^') {
         clear(arrow_x, arrow_y - 0);
         clear(arrow_x, arrow_y - 1);
         clear(arrow_x, arrow_y - 2);
     }
-    if (arrow_side == 'V') {
+    else if (arrow_side == 'V') {
         clear(arrow_x, arrow_y + 2);
         clear(arrow_x, arrow_y + 1);
         clear(arrow_x, arrow_y + 0);

@@ -7,7 +7,6 @@
 
 using namespace std;
 
-const int Level::max_level = 10;
 int Level::wave_timer = 0;
 
 int Level::get_current_level() {
@@ -109,7 +108,7 @@ void Level::init_0_level(const int wave, const Player& player) {
 	// Присвоить -1 после всех волн
 	switch (wave) {
 	case 1:
-		Enemy::init_enemy_in_array("right", 1, player);
+		Enemy::init_enemy_in_array(console_side::right, 1, player);
 		wave_timer = -1;
 		return;
 	default:
@@ -121,11 +120,11 @@ void Level::init_0_level(const int wave, const Player& player) {
 void Level::init_1_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
-		Enemy::init_enemy_in_array("left", 1, player);
+		Enemy::init_enemy_in_array(console_side::left, 1, player);
 		break;
 	case 2:
-		Enemy::init_enemy_in_array("left", 1, player);
-		Enemy::init_enemy_in_array("bottom", 1, player);
+		Enemy::init_enemy_in_array(console_side::left, 1, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 1, player);
 		wave_timer = -1;
 		return;
 	default:
@@ -138,13 +137,13 @@ void Level::init_1_level(const int wave, const Player& player) {
 void Level::init_2_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
-		Enemy::init_enemy_in_array("right", 1, player);
-		Enemy::init_enemy_in_array("bottom", 1, player);
+		Enemy::init_enemy_in_array(console_side::right, 1, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 1, player);
 		wave_timer = 100;
 		return;
 	case 2:
-		Enemy::init_enemy_in_array("bottom", 2, player);
-		Enemy::init_enemy_in_array("bottom", 2, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 2, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 2, player);
 		wave_timer = -1;
 		return;
 	default:
@@ -157,15 +156,15 @@ void Level::init_2_level(const int wave, const Player& player) {
 void Level::init_3_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
-		Enemy::init_enemy_in_array("bottom", 1, player);
-		Enemy::init_enemy_in_array("bottom", 1, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 1, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 1, player);
 		wave_timer = 100;
 		return;
 	case 2:
-		Enemy::init_enemy_in_array("bottom", 1, player);
-		Enemy::init_enemy_in_array("bottom", 1, player);
-		Enemy::init_enemy_in_array("bottom", 1, player);
-		Enemy::init_enemy_in_array("bottom", 1, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 1, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 1, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 1, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 1, player);
 		wave_timer = -1;
 		return;
 	default:
@@ -178,20 +177,20 @@ void Level::init_3_level(const int wave, const Player& player) {
 void Level::init_4_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
-		Enemy::init_enemy_in_array("r", 2, player);
-		Enemy::init_enemy_in_array("l", 1, player);
+		Enemy::init_enemy_in_array(console_side::r, 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 1, player);
 		wave_timer = 150;
 		return;
 	case 2:
-		Enemy::init_enemy_in_array("r", 1, player);
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("bottom", 1, player);
-		Enemy::init_enemy_in_array("r", 1, player);
+		Enemy::init_enemy_in_array(console_side::r, 1, player);
+		Enemy::init_enemy_in_array(console_side::l, 2, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 1, player);
+		Enemy::init_enemy_in_array(console_side::r, 1, player);
 		break;
 	case 3:
-		Enemy::init_enemy_in_array("r", 1, player);
-		Enemy::init_enemy_in_array("bottom", 2, player);
-		Enemy::init_enemy_in_array("bottom", 1, player);
+		Enemy::init_enemy_in_array(console_side::r, 1, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 2, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 1, player);
 		wave_timer = -1;
 		return;
 	default:
@@ -204,19 +203,19 @@ void Level::init_4_level(const int wave, const Player& player) {
 void Level::init_5_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
-		Enemy::init_enemy_in_array("r", 1, player);
-		Enemy::init_enemy_in_array("l", 1, player);
-		Enemy::init_enemy_in_array("b", 1, player);
+		Enemy::init_enemy_in_array(console_side::r, 1, player);
+		Enemy::init_enemy_in_array(console_side::l, 1, player);
+		Enemy::init_enemy_in_array(console_side::b, 1, player);
 		wave_timer = 150;
 		return;
 	case 2:
-		Enemy::init_enemy_in_array("r", 2, player);
-		Enemy::init_enemy_in_array("l", 2, player);
+		Enemy::init_enemy_in_array(console_side::r, 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 2, player);
 		break;
 	case 3:
-		Enemy::init_enemy_in_array("r", 2, player);
-		Enemy::init_enemy_in_array("l", 3, player);
-		Enemy::init_enemy_in_array("b", 2, player);
+		Enemy::init_enemy_in_array(console_side::r, 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 3, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
 		wave_timer = -1;
 		return;
 	default:
@@ -224,26 +223,25 @@ void Level::init_5_level(const int wave, const Player& player) {
 		return;
 	}
 	wave_timer = 200;
-
 }
 
 void Level::init_6_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
-		Enemy::init_enemy_in_array("r", 1, player);
-		Enemy::init_enemy_in_array("r", 1, player);
-		Enemy::init_enemy_in_array("r", 1, player);
+		Enemy::init_enemy_in_array(console_side::r, 1, player);
+		Enemy::init_enemy_in_array(console_side::r, 1, player);
+		Enemy::init_enemy_in_array(console_side::r, 1, player);
 		wave_timer = 120;
 		return;
 	case 2:
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("l", 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 2, player);
 		break;
 	case 3:
-		Enemy::init_enemy_in_array("b", 3, player);
-		Enemy::init_enemy_in_array("b", 2, player);
-		Enemy::init_enemy_in_array("b", 3, player);
+		Enemy::init_enemy_in_array(console_side::b, 3, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 3, player);
 		wave_timer = -1;
 		return;
 	default:
@@ -256,22 +254,22 @@ void Level::init_6_level(const int wave, const Player& player) {
 void Level::init_7_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("l", 1, player);
-		Enemy::init_enemy_in_array("r", 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 1, player);
+		Enemy::init_enemy_in_array(console_side::r, 2, player);
 		wave_timer = 150;
 		return;
 	case 2:
-		Enemy::init_enemy_in_array("b", 2, player);
-		Enemy::init_enemy_in_array("b", 2, player);
-		Enemy::init_enemy_in_array("r", 1, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
+		Enemy::init_enemy_in_array(console_side::r, 1, player);
 		break;
 	case 3:
-		Enemy::init_enemy_in_array("l", 3, player);
-		Enemy::init_enemy_in_array("b", 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 3, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
 		break;
 	case 4:
-		Enemy::init_enemy_in_array("b", 3, player);
+		Enemy::init_enemy_in_array(console_side::b, 3, player);
 		wave_timer = -1;
 		return;
 	default:
@@ -284,26 +282,26 @@ void Level::init_7_level(const int wave, const Player& player) {
 void Level::init_8_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("r", 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 2, player);
+		Enemy::init_enemy_in_array(console_side::r, 2, player);
 		wave_timer = 150;
 		return;
 	case 2:
-		Enemy::init_enemy_in_array("b", 2, player);
-		Enemy::init_enemy_in_array("r", 2, player);
-		Enemy::init_enemy_in_array("b", 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
+		Enemy::init_enemy_in_array(console_side::r, 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
 		break;
 	case 3:
-		Enemy::init_enemy_in_array("l", 3, player);
-		Enemy::init_enemy_in_array("r", 2, player);
-		Enemy::init_enemy_in_array("b", 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 3, player);
+		Enemy::init_enemy_in_array(console_side::r, 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
 		break;
 	case 4:
-		Enemy::init_enemy_in_array("b", 3, player);
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("b", 3, player);
-		Enemy::init_enemy_in_array("b", 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 3, player);
+		Enemy::init_enemy_in_array(console_side::l, 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 3, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
 		wave_timer = -1;
 		return;
 	default:
@@ -316,33 +314,80 @@ void Level::init_8_level(const int wave, const Player& player) {
 void Level::init_9_level(const int wave, const Player& player) {
 	switch (wave) {
 	case 1:
-		Enemy::init_enemy_in_array("l", 1, player);
-		Enemy::init_enemy_in_array("b", 2, player);
-		Enemy::init_enemy_in_array("r", 1, player);
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("b", 1, player);
-		Enemy::init_enemy_in_array("r", 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 1, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
+		Enemy::init_enemy_in_array(console_side::r, 1, player);
+		Enemy::init_enemy_in_array(console_side::l, 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 1, player);
+		Enemy::init_enemy_in_array(console_side::r, 2, player);
 		break;
 	case 2:
-		Enemy::init_enemy_in_array("b", 2, player);
-		Enemy::init_enemy_in_array("r", 2, player);
-		Enemy::init_enemy_in_array("b", 2, player);
-		Enemy::init_enemy_in_array("l", 1, player);
-		Enemy::init_enemy_in_array("b", 2, player);
-		Enemy::init_enemy_in_array("r", 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
+		Enemy::init_enemy_in_array(console_side::r, 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 1, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
+		Enemy::init_enemy_in_array(console_side::r, 2, player);
 		break;
 	case 3:
-		Enemy::init_enemy_in_array("l", 3, player);
-		Enemy::init_enemy_in_array("r", 2, player);
-		Enemy::init_enemy_in_array("b", 2, player);
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("r", 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 1, player);
+		Enemy::init_enemy_in_array(console_side::l, 1, player);
+		Enemy::init_enemy_in_array(console_side::l, 2, player);
 		break;
 	case 4:
-		Enemy::init_enemy_in_array("b", 3, player);
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("b", 3, player);
-		Enemy::init_enemy_in_array("r", 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
+		Enemy::init_enemy_in_array(console_side::r, 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
+		Enemy::init_enemy_in_array(console_side::b, 2, player);
+		Enemy::init_enemy_in_array(console_side::l, 3, player);
+		break;
+	default:
+		wave_timer = -1;
+		return;
+	}
+	wave_timer = 300;
+}
+
+void Level::init_10_level(const int wave, const Player& player) {
+	switch (wave) {
+	case 1:
+		Enemy::init_enemy_in_array(console_side::left, 1, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 2, player);
+		Enemy::init_enemy_in_array(console_side::rnd, 1, player);
+		Enemy::init_enemy_in_array(console_side::left, 2, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 1, player);
+		Enemy::init_enemy_in_array(console_side::right, 2, player);
+		Enemy::init_enemy_in_array(console_side::rnd, 1, player);
+		break;
+	case 2:
+		Enemy::init_enemy_in_array(console_side::rnd, 2, player);
+		Enemy::init_enemy_in_array(console_side::right, 2, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 2, player);
+		Enemy::init_enemy_in_array(console_side::left, 2, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 2, player);
+		Enemy::init_enemy_in_array(console_side::rnd, 2, player);
+		Enemy::init_enemy_in_array(console_side::right, 1, player);
+		break;
+	case 3:
+		Enemy::init_enemy_in_array(console_side::rnd, 3, player);
+		Enemy::init_enemy_in_array(console_side::right, 2, player);
+		Enemy::init_enemy_in_array(console_side::rnd, 3, player);
+		Enemy::init_enemy_in_array(console_side::left, 2, player);
+		Enemy::init_enemy_in_array(console_side::rnd, 2, player);
+		break;
+	case 4:
+		Enemy::init_enemy_in_array(console_side::rnd, 3, player);
+		Enemy::init_enemy_in_array(console_side::rnd, 2, player);
+		Enemy::init_enemy_in_array(console_side::bottom, 3, player);
+		Enemy::init_enemy_in_array(console_side::rnd, 2, player);
+		Enemy::init_enemy_in_array(console_side::rnd, 1, player);
+		break;
+	case 5:
+		Enemy::init_enemy_in_array(console_side::bottom, 4, player);
+		Enemy::init_enemy_in_array(console_side::right, 2, player);
+		Enemy::init_enemy_in_array(console_side::right, 2, player);
+		Enemy::init_enemy_in_array(console_side::left, 2, player);
+		Enemy::init_enemy_in_array(console_side::left, 2, player);
 		wave_timer = -1;
 		return;
 	default:
@@ -352,50 +397,3 @@ void Level::init_9_level(const int wave, const Player& player) {
 	wave_timer = 250;
 }
 
-void Level::init_10_level(const int wave, const Player& player) {
-	switch (wave) {
-	case 1:
-		Enemy::init_enemy_in_array("l", 1, player);
-		Enemy::init_enemy_in_array("b", 2, player);
-		Enemy::init_enemy_in_array(" ", 1, player);
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("b", 1, player);
-		Enemy::init_enemy_in_array("r", 2, player);
-		Enemy::init_enemy_in_array(" ", 1, player);
-		break;
-	case 2:
-		Enemy::init_enemy_in_array(" ", 2, player);
-		Enemy::init_enemy_in_array("r", 2, player);
-		Enemy::init_enemy_in_array("b", 2, player);
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("b", 2, player);
-		Enemy::init_enemy_in_array(" ", 2, player);
-		Enemy::init_enemy_in_array("r", 1, player);
-		break;
-	case 3:
-		Enemy::init_enemy_in_array(" ", 3, player);
-		Enemy::init_enemy_in_array("r", 2, player);
-		Enemy::init_enemy_in_array(" ", 3, player);
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array(" ", 2, player);
-		break;
-	case 4:
-		Enemy::init_enemy_in_array(" ", 3, player);
-		Enemy::init_enemy_in_array(" ", 2, player);
-		Enemy::init_enemy_in_array("b", 3, player);
-		Enemy::init_enemy_in_array(" ", 2, player);
-		Enemy::init_enemy_in_array(" ", 1, player);
-	case 5:
-		Enemy::init_enemy_in_array("b", 4, player);
-		Enemy::init_enemy_in_array("r", 2, player);
-		Enemy::init_enemy_in_array("r", 2, player);
-		Enemy::init_enemy_in_array("l", 2, player);
-		Enemy::init_enemy_in_array("l", 2, player);
-		wave_timer = -1;
-		return;
-	default:
-		wave_timer = -1;
-		return;
-	}
-	wave_timer = 250;
-}

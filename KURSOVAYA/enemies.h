@@ -7,6 +7,13 @@
 #include "player.h"
 #include "services.h"
 
+enum console_side {
+	left, l,
+	right, r,
+	bottom, b,
+	random, rnd,
+};
+
 struct Enemy {
 private:
 	int old_enemy_upper_left_x;
@@ -26,28 +33,28 @@ public:
 	static size_t enemies_array_size;
 	static Enemy* enemies;
 
-	static void init_enemy_in_array(const std::string& console_side, const int level, const Player& player);
+	static void init_enemy_in_array(const console_side console_side, const int level, const Player& player);
 	static void rebuild_array_without_element(const size_t index);
 	static void check_merge_all();
 	static void delete_array();
 
 
 	Enemy() {};
-	Enemy(const std::string& console_side, const int level, const Player player) : level(level * difficult), old_enemy_upper_left_x(-1), old_enemy_upper_left_y(-1) {
+	Enemy(const console_side console_side, const int level, const Player player) : level(level * difficult), old_enemy_upper_left_x(-1), old_enemy_upper_left_y(-1) {
 		// Спавним по правой левой или нижней стороне
-		if (console_side == "right" || console_side == "r") { // правая сторона
+		if (console_side == console_side::right || console_side == console_side::r) { // правая сторона
 			enemy_upper_left_x = get_console_width() - pos_right[0].size();
 			enemy_upper_left_y = rand() % (get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]));
 		}
-		else if (console_side == "left" || console_side == "l") { // левая сторона
+		else if (console_side == console_side::left || console_side == console_side::l) { // левая сторона
 			enemy_upper_left_x = 2;
 			enemy_upper_left_y = rand() % (get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]));
 		}
-		else if (console_side == "bottom" || console_side == "b") { // низ
+		else if (console_side == console_side::bottom || console_side == console_side::b) { // низ
 			enemy_upper_left_x = rand() % (get_console_width() - pos_right[0].size());
 			enemy_upper_left_y = get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]);
 		}
-		else {
+		else  if (console_side == console_side::random || console_side == console_side::rnd) { // рандом
 			int random_side = rand() % 3;
 			if (random_side == 0) { // Справа
 				enemy_upper_left_x = get_console_width() - pos_right[0].size();

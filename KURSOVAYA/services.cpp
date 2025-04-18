@@ -21,6 +21,22 @@ int get_console_height() {
     return -1;
 }
 
+int get_cursor_x() {
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+        return csbi.dwCursorPosition.X;
+    }
+    return -1;
+}
+
+int get_cursor_y() {
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+        return csbi.dwCursorPosition.Y;
+    }
+    return -1;
+}
+
 bool check_console_size_changes() {
     static int console_width = get_console_width();
     static int console_height = get_console_height();

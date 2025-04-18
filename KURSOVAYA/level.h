@@ -2,7 +2,7 @@
 #include "enemies.h"
 
 struct Level {
-	static const int max_level;
+	static const int max_level = 10;
 	static int wave_timer;
 
 	static int get_current_level();

@@ -152,6 +152,7 @@
   <ItemGroup>
     <Text Include="bow.txt" />
     <Text Include="level.txt" />
+    <Text Include="money.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

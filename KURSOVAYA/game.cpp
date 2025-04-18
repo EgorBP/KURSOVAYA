@@ -20,29 +20,31 @@ void Game::start() {
 }
 
 void Game::update_data() {
+	Level::set_new_level(1);
+	Arrow::set_new_level(5);
+	Dialogue::set_new_money(50);
+
 	// Смотрим где игрок закончил прошлую игру
 	if (Level::get_current_level() < 0 || Level::get_current_level() == 0) {
 		Level::set_new_level(0);
-		mode = "first_time";
+		mode = Mode::first_time;
 		// Только на нечетном x чтобы мог по правому краю впритык лазить
 		player = Player(get_console_width() / 2, get_console_height() / 2);
 		Greeting::greeting();
 	}
 	else {
-		mode = "castle";
+		mode = Mode::castle;
 		player = Player(75, 27);
 		Level::print_level(false);
 	}
 }
 
 void Game::init_loop() {
-	Level::set_new_level(1);
-	Arrow::set_new_level(2);
-
 	while (run) {
 		//cout << counter;
 		// Если нажата Esc выходим из цикла
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
+			beautiful_clear_all(1);
 			run = false;
 			break;
 		}
@@ -54,7 +56,7 @@ void Game::init_loop() {
 		}
 
 
-		if (mode == "first_time") {
+		if (mode == Mode::first_time) {
 			// Движение игрока
 			if (counter % 2 == 0) {
 				player.player_move(2, 1);
@@ -64,7 +66,7 @@ void Game::init_loop() {
 			player.player_print();
 
 			if (player.player_y <= 0) {
-				mode = "battle";
+				mode = Mode::battle;
 				player.player_y = get_console_height() - 1;
 				clear_all();
 				continue;
@@ -72,14 +74,18 @@ void Game::init_loop() {
 		}
 
 
-		if (mode == "castle") {
+		else if (mode == Mode::castle) {
 			Castle::print_castle(player);
 			if (player.is_player_on_door(Castle::find_door_index(), Castle::door_y_pos, 2)) {
-				player.player_y += 1;
+				if (can_update_level) {
+					Dialogue::money_up(15);
+					can_update_level = false;
+					Level::level_up();
+					is_level_passed = false;
+				}
+
 				Dialogue::loop();
-				can_update_level = false;
-				Level::level_up();
-				is_level_passed = false;
+				player.player_y += 1;
 				Level::print_level(is_level_passed);
 			}
 
@@ -91,7 +97,7 @@ void Game::init_loop() {
 
 			// Смена локации
 			if (player.player_y >= get_console_height() - 2) {
-				mode = "battle";
+				mode = Mode::battle;
 				Level::wave_timer = 0;
 				wave = 1;
 				player.player_y = 1;
@@ -103,7 +109,7 @@ void Game::init_loop() {
 		}
 
 
-		if (mode == "battle") {
+		else if (mode == Mode::battle) {
 			// ИНИЦИАЛИЗАТОР
 			if (Level::wave_timer == 0) {
 				Level::init_level(wave++, player);
@@ -153,7 +159,7 @@ void Game::init_loop() {
 					cout << "Поражение, нажмите Space или Enter...";
 					Sleep(50);
 				}
-				mode = "castle";
+				mode = Mode::castle;
 			}
 			// Слияние дино
 			Enemy::check_merge_all();
@@ -168,8 +174,9 @@ void Game::init_loop() {
 				}
 			}
 
-			if (player_attack_timer > 0)
+			if (player_attack_timer > 0) {
 				player_attack_timer--;
+			}
 
 			// Перемещение пули и там же уменьшение уровня динозавра или удаление
 			Arrow::process_arrows();
@@ -186,7 +193,7 @@ void Game::init_loop() {
 
 
 			if (player.player_y <= 0 && Enemy::enemies_array_size == 0 && Level::wave_timer < 0) {
-				mode = "castle";
+				mode = Mode::castle;
 				player.player_y = 37;
 				player.player_x = 76;
 				can_update_level = true;

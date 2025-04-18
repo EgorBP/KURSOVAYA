@@ -91,5 +91,8 @@
     <Text Include="bow.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="money.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

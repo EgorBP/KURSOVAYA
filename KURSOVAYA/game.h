@@ -2,6 +2,12 @@
 #include <string>
 #include "player.h"
 
+enum Mode {
+	first_time,
+	castle,
+	battle,
+};
+
 struct Game {
 	bool run = true;
 	bool is_player_die = false;
@@ -13,7 +19,7 @@ struct Game {
 	int killer_id;
 	unsigned long long counter = 0;
 
-	std::string mode;
+	Mode mode;
 	Player player;
 
 	static void start();
