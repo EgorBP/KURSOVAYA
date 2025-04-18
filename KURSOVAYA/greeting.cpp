@@ -95,11 +95,11 @@ void Greeting::greeting(int symobls_to_clear) {
 void Greeting::print_author_name() {
     move_cursor(132, 45);
     cout << "Made with";
-    set_text_color("purple");
+    set_text_color(Color::Purple);
     cout << " love ";
     set_color();
     cout << "by ";
-    set_text_color("green");
+    set_text_color(Color::Green);
     cout << "EgorBP";
     set_color();
 }
@@ -125,12 +125,12 @@ void Greeting::game_name_print(int x_pos, int y_pos, int symobls_to_clear) {
     for (int i{ 0 }; i < width; i++) {
         for (int height{ 0 }; height < 6; height++) {
             move_cursor(x_pos + i, y_pos + height);
-            set_text_color("cyan");
+            set_text_color(Color::Cyan);
             cout << third[0][height][i];
             clear(x_pos + i + 1, y_pos + height, symobls_to_clear);
 
             move_cursor(x_pos + i, y_pos + height + 8);
-            set_text_color("yellow");
+            set_text_color(Color::Yellow);
             cout << third[1][height][i];
             clear(x_pos + i + 1, y_pos + height + 8, symobls_to_clear);
 

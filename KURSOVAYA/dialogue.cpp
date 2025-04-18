@@ -10,7 +10,7 @@
 
 using namespace std;
 
-DialogueObject Dialogue::current_object = DialogueObject::princess;
+DialogueObject Dialogue::current_object = DialogueObject::Princess;
 
 void Dialogue::loop() {
 	clear_all();
@@ -29,18 +29,18 @@ void Dialogue::loop() {
 			clear_all();
 		}
 
-		if (current_object == DialogueObject::princess) {
+		if (current_object == DialogueObject::Princess) {
 			if (check_right_left_buttons()) {
-				current_object = DialogueObject::blacksmith;
+				current_object = DialogueObject::Blacksmith;
 				beautiful_clear_all();
 			}
 			else {
 				process_princess();
 			}
 		}
-		else if (current_object == DialogueObject::blacksmith) {
+		else if (current_object == DialogueObject::Blacksmith) {
 			if (check_right_left_buttons()) {
-				current_object = DialogueObject::princess;
+				current_object = DialogueObject::Princess;
 				beautiful_clear_all();
 			}
 			else {
@@ -52,11 +52,11 @@ void Dialogue::loop() {
 }
 
 void Dialogue::print_dialogue_frame(const string& text, const string& heading) {
-	set_text_color("green");
+	set_text_color(Color::Green);
 	move_cursor((get_console_width() - get_first_line_width(text) - heading.length()) / 2 + get_first_line_width(text) + 2);
 	cout << heading;
 
-	set_text_color("purple");
+	set_text_color(Color::Purple);
 	clear(get_first_line_width(text) + 1, 1, get_console_width() - get_first_line_width(text) - 1, '_');
 	clear(get_first_line_width(text) + 2, get_console_height() - 1, get_console_width() - get_first_line_width(text) - 3, '_');
 
@@ -71,9 +71,9 @@ void Dialogue::print_dialogue_frame(const string& text, const string& heading) {
 }
 
 void Dialogue::process_princess() {
-	print_dialogue_frame(princess, "Принцесса");
+	print_dialogue_frame(princess_art, "Принцесса");
 	move_cursor();
-	cout << princess;
+	cout << princess_art;
 
 	string word = "";
 	bool run = true;
@@ -81,10 +81,10 @@ void Dialogue::process_princess() {
 		cout << word;
 		word = "";
 		if (i != 0) Sleep(1000);
-		move_cursor(get_first_line_width(princess) + 4, 3 + i * 2 + new_strings_cout);
-		for (char symbol : princess_dialogues[Level::get_current_level() - 2][i]) {
+		move_cursor(get_first_line_width(princess_art) + 4, 3 + i * 2 + new_strings_cout);
+		for (char symbol : princess_dialogues[Level::get_current_level() - 1][i]) {
 			if (check_right_left_buttons()) {
-				current_object = DialogueObject::blacksmith;
+				current_object = DialogueObject::Blacksmith;
 				beautiful_clear_all();
 				run = false;
 				break;
@@ -92,7 +92,7 @@ void Dialogue::process_princess() {
 			word += symbol;
 			if (get_cursor_x() + word.length() >= get_console_width() - 1 || symbol == '\n') {
 				new_strings_cout++;
-				move_cursor(get_first_line_width(princess) + 4 + 1, 3 + i * 2 + new_strings_cout);
+				move_cursor(get_first_line_width(princess_art) + 4 + 1, 3 + i * 2 + new_strings_cout);
 			}
 			if (symbol == ' ' || symbol == '\0') {
 				Sleep(100);
@@ -107,44 +107,43 @@ void Dialogue::process_princess() {
 }
 
 void Dialogue::process_blacksmith() {
-	print_dialogue_frame(blacksmith, "Кузнец");
+	print_dialogue_frame(blacksmith_art, "Кузнец");
 	move_cursor();
-	cout << blacksmith;
+	cout << blacksmith_art;
 
-	set_text_color("yellow");
+	set_text_color(Color::Yellow);
 	move_cursor(get_console_width() - 6, 3);
 	cout << get_current_money();
-	//set_color();
 
-	set_text_color("green");
-	move_cursor(get_first_line_width(blacksmith) + 6, 5);
+	set_text_color(Color::Green);
+	move_cursor(get_first_line_width(blacksmith_art) + 6, 5);
 	cout << "->";
 
 	// Можно изменить фон выбранного элемента
-	string bg_color = "black";
+	Color bg_color = Color::Black;
 
-	move_cursor(get_first_line_width(blacksmith) + 8, 5);
-	set_color("white", bg_color);
+	move_cursor(get_first_line_width(blacksmith_art) + 8, 5);
+	set_color(Color::White, bg_color);
 	cout << "Увеличение урона лука (";
-	set_color("red", bg_color);
+	set_color(Color::Red, bg_color);
 	cout << Arrow::get_bow_level();
-	set_color("white", bg_color);
+	set_color(Color::White, bg_color);
 	cout << "->";
-	set_color("green", bg_color);
+	set_color(Color::Green, bg_color);
 	cout << Arrow::get_bow_level() + 1;
-	set_color("white", bg_color);
+	set_color(Color::White, bg_color);
 	cout << ')';
 	set_bg_color(bg_color);
 	// Так как идея врядли будет применятся изза не подходящих цветов консоли цикл сделан с костылями
-	//for (int i{ 0 }; i < get_console_width() - 12 - (get_first_line_width(blacksmith) + 8) - 28; i++) {
+	//for (int i{ 0 }; i < get_console_width() - 12 - (get_first_line_width(blacksmith_art) + 8) - 28; i++) {
 	//	cout << ' ';
 	//}
 	move_cursor(get_console_width() - 12, 5);
 	if (get_current_money() < 50) {
-		set_color("red", bg_color);
+		set_color(Color::Red, bg_color);
 	}
 	else {
-		set_color("green", bg_color);
+		set_color(Color::Green, bg_color);
 	}
 	cout << 50;
 	set_color();
@@ -188,35 +187,35 @@ void Dialogue::set_new_money(const int new_level) {
 }
 
 
-const string Dialogue::princess_dialogues[Level::max_level][6] = {
+const string Dialogue::princess_dialogues[Level::max_level + 1][6] = {
 	{
 		"Принцесса: Кто ты? Как кто-то смог пройти через все эти ужасы?",
 		"Рыцарь: Я — рыцарь. Я пришёл, чтобы победить чудовищ. И найти способ освободить тебя.",
 		"Принцесса: Ты пришёл… ради меня? Но ты не знаешь ничего об этом месте.",
 		"Рыцарь: Я не боюсь. И я узнаю все. Я не покину тебя.",
 		"Принцесса: Ты — первый, кто смог пройти через замок. Ты… правда хочешь помочь?",
-		"Рыцарь: Я дам всё, чтобы увидеть тебя свободной."
+		"Рыцарь: Я сделаю всё, чтобы увидеть тебя свободной."
 	},
 	{
 		"Принцесса: Ты действительно не боишься этого места?",
-		"Рыцарь: Я был на поле боя, где страшнее. Эти чудовища — лишь пустые оболочки.",
+		"Рыцарь: Поверь, я бывал в местах и по страшнее.",
 		"Принцесса: Ты храбр, но здесь не всё так просто. Это место полнится магией, которая связывает меня с ним.",
 		"Рыцарь: Я уверен, что смогу найти способ освободить тебя. Ты не должна оставаться здесь.",
 		"Принцесса: Ты не понимаешь… Я не могу покинуть этот замок. Я… я стала его частью."
 	},
 	{
 		"Рыцарь: Ты говоришь, что замок держит тебя. Что именно это значит? Почему ты не можешь просто уйти?",
-		"Принцесса: Это проклятие. Я открыла двери, когда не должна была, и теперь эта магия держит меня здесь. Я не могу уйти без разрушения всего.",
+		"Принцесса: Это проклятие. Я открыла двери, когда не должна была, и теперь эта магия держит меня здесь. Я не могу уйти, я пыталась.",
 		"Рыцарь: Но ты ведь не виновата в этом, верно? Ты не знала, что произойдёт.",
 		"Принцесса: Возможно. Но теперь я здесь, и этот замок стал моим пленом. Я не могу изменить то, что случилось.",
 		"Рыцарь: Я освобожу тебя, как только разберусь с этим проклятием. Мы найдём выход.",
 		"Принцесса: Ты… надеешься? Ты веришь, что можно изменить судьбу?"
 	},
 	{
-		"Рыцарь: Каждый раз, когда я иду вглубь замка, я чувствую, что проклятие ослабевает. Это моя сила или твоя?",
+		"Рыцарь: Каждый раз, когда я уничтожаю этих существ, я чувствую, что проклятие ослабевает. Это моя сила или твоя?",
 		"Принцесса: Это твоя сила. Ты не только сражаешься с чудовищами, ты разрушаешь их связь с этим местом. Ты… меняешь атмосферу.",
 		"Рыцарь: Если я смогу уничтожить всех врагов, ты сможешь уйти?",
-		"Принцесса: Это не так просто. Проклятие не зависит от чудовищ. Оно связано с самой магией замка, с тем, что я сделала.",
+		"Принцесса: Это не так просто. Однако думаю те существа как-то связаны с замком и они сильны.",
 		"Рыцарь: Тогда я буду сражаться дальше. Всё это не зря.",
 		"Принцесса: Ты веришь в то, что я могу быть свободной? Это многое значит."
 	},
@@ -244,10 +243,18 @@ const string Dialogue::princess_dialogues[Level::max_level][6] = {
 		"Принцесса: Я не помню, когда в последний раз я чувствовала, что не одна."
 	},
 	{
-		"Рыцарь: Ты говорила о том, как открыла дверь. Как думаешь, сможем ли мы закрыть её?",
-		"Принцесса: Магия замка не так проста. Но ты — первая надежда. Возможно, ты и есть тот, кто должен закрыть её.",
-		"Рыцарь: Я не боюсь. Я пройду этот путь, чтобы ты была свободна.",
+		"Рыцарь: Ты говорила о том, как открыла дверь, а после увидела этих существ на улице...",
+		"Принцесса: Да. Похоже этот замок питается моей силой. И они защищают его и... меня.",
+		"Рыцарь: Я не боюсь. Я пройду этот путь и уничтожу их всех чтобы ты была свободна.",
 		"Принцесса: Я верю в тебя. Я верю в то, что ты сможешь это сделать. Иначе… я не смогла бы продолжать."
+	},
+	{
+		"Принцесса: Каждый твой шаг приближает меня к свободе. Я чувствую, как оковы слабеют.",
+		"Рыцарь: Осталось немного. Я вижу, как замок теряет свою тень.",
+		"Принцесса: Но с этим уходит и часть меня. Я не знаю, кем буду вне этих стен.",
+		"Рыцарь: Ты станешь собой. Без проклятия, без боли. Просто собой.",
+		"Принцесса: Если бы не ты, я бы давно забыла, каково это — надеяться.",
+		"Рыцарь: Тогда держись за эту надежду. Она сильнее любой магии."
 	},
 	{
 		"Рыцарь: Я почти на финишной прямой. Эти чудовища больше не станут мне помехой. Но ты… ты не боишься того, что будет после?",
@@ -256,15 +263,15 @@ const string Dialogue::princess_dialogues[Level::max_level][6] = {
 		"Принцесса: Я надеюсь на это. Ты — всё, что у меня есть."
 	},
 	{
-		"Рыцарь: Всё закончено. Замок очищен. Проклятие разрушено. Ты свободна.",
+		"Рыцарь: Всё закончено. Леса очищены. Проклятие разрушено. Ты свободна.",
 		"Принцесса: Ты сделал невозможное. Ты освободил меня.",
-		"Рыцарь: Ты не одна. И никогда больше не будешь.",
+		"Рыцарь: Теперь ты не одна. И никогда больше не будешь.",
 		"Принцесса: Ты показал мне, что значит настоящая сила — не в мечах, а в вере. Спасибо, рыцарь.",
 		"Принцесса: Ты не просто освободил меня. Ты освободил нас обоих."
 	}
 };
 
-string Dialogue::princess =
+string Dialogue::princess_art =
 R"(++++********######%%%%%%@@@@@@@@@@@@@@@@@@@*@@@@@@@@@@@@@@@@@@@@@%%######*****++++++
 ++++*******######%%%%%%@@@@@@@@@@@@@@@@@@@@##@@@@@@@@@@@@@@@@@@@@%%%######*****+++++
 ++++*******#####%%%%%@@@@@@@@@@@@@@@@@@@@+%@%@@@@@@@@@@@@@@@@@@@@@%%%#####*****+++++
@@ -312,7 +319,7 @@ R"(++++********######%%%%%%@@@@@@@@@@@@@@@@@@@*@@@@@@@@@@@@@@@@@@@@@%%######****
 --@@@@@@@@%##+=---++-=+==--+*%@@@@@@@@@@@@@%@@@@@@@@@@@@@%%%+*+=+-----=+*@@++#@@@@@@
 -=@@@@@@##+@@@#+=+=**--==---*%@@@@@@@@@@@%@++@@@@@@@@@@@@@%%+-+=--+==--+#@@@@%#%@@@@)";
 
-string Dialogue::blacksmith =
+string Dialogue::blacksmith_art =
 R"(-:::::::::::::::::::::::::::::::----------------------------------::::--::::::::::::
 :-::::::::::::::::::::::::::::::-------------------::-=-----------:::::::::::-::::::
 ::-:-:::::::::::::::::::::::-:--------------------:----=-===------::::::-:::-:-::--:

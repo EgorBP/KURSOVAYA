@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bomb.cpp" />
     <ClCompile Include="bow.cpp" />
     <ClCompile Include="castle.cpp" />
     <ClCompile Include="dialogue.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="services.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bomb.h" />
     <ClInclude Include="bow.h" />
     <ClInclude Include="castle.h" />
     <ClInclude Include="dialogue.h" />

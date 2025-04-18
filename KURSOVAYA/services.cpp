@@ -128,31 +128,27 @@ void set_color(const int text_color_code, const int bg_color_code) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text_color_code | (bg_color_code << 4));
 }
 
-void set_color(const string& text_color, const string& bg_color) {
-    int text_color_code = get_color_code(text_color);
-    int bg_color_code = get_color_code(bg_color);
+void set_color(const Color text_color, const Color bg_color) {
+    //int text_color_code = get_color_code(text_color);
+    //int bg_color_code = get_color_code(bg_color);
 
-    set_color(text_color_code, bg_color_code);
+    set_color(static_cast<int>(text_color), static_cast<int>(bg_color));
 }
 
 void set_text_color(const int text_color_code) {
     set_color(text_color_code, 0);
 }
 
-void set_text_color(const std::string& text_color) {
-    int text_color_code = get_color_code(text_color);
-
-    set_color(text_color_code, 0);
+void set_text_color(const Color text_color) {
+    set_color(text_color, 0);
 }
 
 void set_bg_color(const int bg_color_code) {
     set_color(7, bg_color_code);
 }
 
-void set_bg_color(const std::string& bg_color) {
-    int bg_color_code = get_color_code(bg_color);
-
-    set_color(7, bg_color_code);
+void set_bg_color(const Color bg_color) {
+    set_color(7, bg_color);
 }
 
 void set_color() {

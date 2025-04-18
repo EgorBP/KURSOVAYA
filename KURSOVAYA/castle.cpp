@@ -58,17 +58,17 @@ void Castle::print_castle(const Player& player) {
                     x_index++;
                     if (!(i == player_y && x_index == player_x)) {
                         if (symbol == '~' && is_water) {
-                            set_text_color("cyan");
+                            set_text_color(Color::Cyan);
                             is_first_water = false;
                         }
                         else if (symbol == '~') {
-                            set_text_color("green");
+                            set_text_color(Color::Green);
                         }
                         if (symbol == '+') {
-                            set_text_color("yellow");
+                            set_text_color(Color::Yellow);
                         }
                         if (symbol == ':') {
-                            set_text_color("red");
+                            set_text_color(Color::Red);
                         }
                         if (!is_first_water && i - empty_spaces < 21 && i - empty_spaces > 15 && x_index - free_left_space < 61 &&
                             (symbol == ' ' || symbol == '|') && castle[i - empty_spaces - 1][x_index - free_left_space] == '~') {

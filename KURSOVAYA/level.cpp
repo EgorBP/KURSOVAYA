@@ -32,7 +32,7 @@ void Level::level_up(const int points) {
 }
 
 void Level::set_new_level(const int new_level) {
-	fstream file("level.txt", ios::out);
+	fstream file("level.txt", ios::out | ios::trunc);
 	if (file.is_open()) {
 		file << new_level;
 		file.close();
@@ -41,10 +41,10 @@ void Level::set_new_level(const int new_level) {
 
 void Level::print_level(bool is_passed) {
 	if (is_passed) {
-		set_text_color("green");
+		set_text_color(Color::Green);
 	}
 	else {
-		set_text_color("red");
+		set_text_color(Color::Red);
 	}
 
 	move_cursor(0, 0);
@@ -72,7 +72,7 @@ void Level::print_timer() {
 	move_cursor(0, 6);
 
 	if (wave_timer <= -1) {
-		set_text_color("green");
+		set_text_color(Color::Green);
 		cout << 0;
 		set_color();
 	}

@@ -3,18 +3,18 @@
 #include "level.h"
 
 enum DialogueObject {
-	princess,
-	blacksmith,
+	Princess,
+	Blacksmith,
 };
 
 struct Dialogue {
 	static DialogueObject current_object;
 
-	static std::string princess;
-	static const std::string princess_dialogues[Level::max_level][6];
+	static std::string princess_art;
+	static const std::string princess_dialogues[Level::max_level + 1][6];
 	static void process_princess();
 
-	static std::string blacksmith;
+	static std::string blacksmith_art;
 	static void process_blacksmith();
 
 	static void loop();

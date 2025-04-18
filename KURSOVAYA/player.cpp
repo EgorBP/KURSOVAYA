@@ -12,7 +12,7 @@ void Player::player_clear() const {
 	}
 }
 
-void Player::player_print(const std::string& color) const {
+void Player::player_print(const Color color) const {
 	move_cursor(player_x, player_y);
 	set_text_color(color);
 	cout << player_side;

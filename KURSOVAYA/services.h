@@ -5,21 +5,21 @@
 
 enum Color {
 //  0 - Черный
-	black,
+	Black,
 //  1 - Синий
-	blue,
+	Blue,
 //  2 - Зеленый
-	green,
+	Green,
 //  3 - Голубой
-	cyan,
+	Cyan,
 //  4 - Красный
-	red,
+	Red,
 //  5 - Пурпурный
-	purple,
+	Purple,
 //  6 - Желтый
-	yellow,
+	Yellow,
 //  7 - Белый(по умолчанию)
-	white,
+	White,
 };
 
 int get_console_width();
@@ -37,11 +37,11 @@ bool check_right_left_buttons();
 
 int get_color_code(const std::string& color);
 void set_color(const int text_color_code, const int bg_color_code);
-void set_color(const std::string& text_color, const std::string& bg_color);
+void set_color(const Color text_color, const Color bg_color);
 void set_text_color(const int text_color_code);
-void set_text_color(const std::string& text_color);
+void set_text_color(const Color text_color);
 void set_bg_color(const int bg_color_code);
-void set_bg_color(const std::string& bg_color);
+void set_bg_color(const Color bg_color);
 void set_color();
 
 void prepare_console();

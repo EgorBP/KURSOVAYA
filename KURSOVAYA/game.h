@@ -3,15 +3,15 @@
 #include "player.h"
 
 enum Mode {
-	first_time,
-	castle,
-	battle,
+	FirstTime,
+	Castle,
+	Battle,
 };
 
 struct Game {
 	bool run = true;
 	bool is_player_die = false;
-	bool can_update_level = true;
+	bool can_update_level = false;
 	bool can_change_location = true;
 	bool is_level_passed = false;
 	int player_attack_timer = 0;

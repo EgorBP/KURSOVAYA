@@ -99,7 +99,7 @@ void Arrow::level_up(const int points) {
 }
 
 void Arrow::set_new_level(const int new_level) {
-    fstream file("bow.txt", ios::out);
+    fstream file("bow.txt", ios::out | ios::trunc);
     if (file.is_open()) {
         file << new_level;
         file.close();
@@ -145,11 +145,11 @@ void Arrow::print_arrow() const {
         move_cursor(arrow_x - 1, arrow_y);
         cout << "*->";
     }
-    if (arrow_side == '<') {
+    else if (arrow_side == '<') {
         move_cursor(arrow_x - 1, arrow_y);
         cout << "<-*";
     }
-    if (arrow_side == '^') {
+    else if (arrow_side == '^') {
         move_cursor(arrow_x, arrow_y - 2);
         cout << '^';
         move_cursor(arrow_x, arrow_y - 1);
@@ -157,7 +157,7 @@ void Arrow::print_arrow() const {
         move_cursor(arrow_x, arrow_y - 0);
         cout << '*';
     }
-    if (arrow_side == 'V') {
+    else if (arrow_side == 'V') {
         move_cursor(arrow_x, arrow_y + 0);
         cout << '*';
         move_cursor(arrow_x, arrow_y + 1);
