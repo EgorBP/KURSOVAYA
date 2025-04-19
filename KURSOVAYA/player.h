@@ -18,7 +18,7 @@ public:
 
 	void player_clear() const;
 	void player_print(const Color color = Color::Green) const;
-	void player_move(const int points_x = 2, const int points_y = 1);
+	void player_move(const int points_x = 2, const int points_y = 1, bool (*custom_can_move)(int player_x, int player_y) = can_move_border);
 	bool is_player_on_door(const int door_x, const int door_y, const int door_width) const;
 };
 

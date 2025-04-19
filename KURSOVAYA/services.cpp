@@ -117,17 +117,6 @@ bool check_enter_button() {
     else return false;
 }
 
-int get_color_code(const string& color) {
-    if (color == "black") return 0;
-    if (color == "blue") return 1;
-    if (color == "green") return 2;
-    if (color == "cyan") return 3;
-    if (color == "red") return 4;
-    if (color == "purple") return 5;
-    if (color == "yellow") return 6;
-    if (color == "white") return 7;
-    return 7; // По умолчанию белый
-}
 
 void set_color(const int text_color_code, const int bg_color_code) {
     //  0 - Черный
@@ -142,10 +131,7 @@ void set_color(const int text_color_code, const int bg_color_code) {
 }
 
 void set_color(const Color text_color, const Color bg_color) {
-    //int text_color_code = get_color_code(text_color);
-    //int bg_color_code = get_color_code(bg_color);
-
-    set_color(static_cast<int>(text_color), static_cast<int>(bg_color));
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), static_cast<int>(text_color) | (static_cast<int>(bg_color) << 4));
 }
 
 void set_text_color(const int text_color_code) {
@@ -153,7 +139,7 @@ void set_text_color(const int text_color_code) {
 }
 
 void set_text_color(const Color text_color) {
-    set_color(text_color, 0);
+    set_color(text_color, Color::Black);
 }
 
 void set_bg_color(const int bg_color_code) {
@@ -161,7 +147,7 @@ void set_bg_color(const int bg_color_code) {
 }
 
 void set_bg_color(const Color bg_color) {
-    set_color(7, bg_color);
+    set_color(Color::White, bg_color);
 }
 
 void set_color() {

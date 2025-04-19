@@ -12,13 +12,14 @@
 using namespace std;
 
 DialogueObject Dialogue::current_object = DialogueObject::Princess;
+bool Dialogue::exit = false;
 
 void Dialogue::loop() {
 	clear_all();
-	bool can_talk_with_princess = true;
 	BlacksmithClass blacksmith{ BlacksmithItems::BowDamageUpgrade };
+	exit = false;
 
-	while (true) {
+	while (!exit) {
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
 			beautiful_clear_all();
 			// Ждем чтобы случайно не затригерить выход из основного цикла
@@ -85,6 +86,12 @@ void Dialogue::process_princess() {
 		if (i != 0) Sleep(1000);
 		move_cursor(get_first_line_width(princess_art) + 4, 3 + i * 2 + new_strings_cout);
 		for (char symbol : princess_dialogues[Level::get_current_level() - 1][i]) {
+			if (check_esc_button()) {
+				beautiful_clear_all();
+				exit = true;
+				run = false;
+				break;
+			}
 			if (check_right_left_buttons()) {
 				current_object = DialogueObject::Blacksmith;
 				beautiful_clear_all();

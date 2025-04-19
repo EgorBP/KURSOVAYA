@@ -19,7 +19,7 @@
     <Filter Include="Decorations">
       <UniqueIdentifier>{0efccba1-cd87-494d-b747-9d026d70d08a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="File processing">
+    <Filter Include="Levels">
       <UniqueIdentifier>{0d5652c3-02d8-429d-864a-6c5cb838240e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -46,7 +46,7 @@
       <Filter>Decorations</Filter>
     </ClCompile>
     <ClCompile Include="level.cpp">
-      <Filter>File processing</Filter>
+      <Filter>Levels</Filter>
     </ClCompile>
     <ClCompile Include="dialogue.cpp">
       <Filter>Decorations</Filter>
@@ -78,7 +78,7 @@
       <Filter>Decorations</Filter>
     </ClInclude>
     <ClInclude Include="level.h">
-      <Filter>File processing</Filter>
+      <Filter>Levels</Filter>
     </ClInclude>
     <ClInclude Include="dialogue.h">
       <Filter>Decorations</Filter>

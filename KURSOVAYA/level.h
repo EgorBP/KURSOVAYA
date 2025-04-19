@@ -11,7 +11,11 @@ struct Level {
 	static void print_level(bool is_passed = true);
 	static void print_timer();
 	static void init_level(const int wave, const Player& player);
-
+	
+// При добавлении нового уровня:
+//  1. Увеличить max_level на 1
+//	2. Добавить функцию здесь
+//  3. Добавить указатель в массив в init_level
 private:
 	static void init_0_level(const int wave, const Player& player);
 	static void init_1_level(const int wave, const Player& player);

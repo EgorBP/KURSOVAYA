@@ -28,6 +28,7 @@ private:
 };
 
 struct Dialogue {
+	static bool exit;
 	static DialogueObject current_object;
 
 	static std::string princess_art;

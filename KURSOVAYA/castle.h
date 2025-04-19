@@ -12,6 +12,7 @@ struct Castle {
 
 	static void print_castle(const Player& player);
 	static int find_door_index();
+	static bool can_move_castle(int player_x, int player_y);
 };
 
 #endif

@@ -25,4 +25,7 @@ struct Game {
 	static void start();
 	void update_data();
 	void init_loop();
+
+private:
+	void process_player(Player& player, const Color color = Green) const;
 };

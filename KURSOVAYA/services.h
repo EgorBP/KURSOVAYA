@@ -37,7 +37,6 @@ bool check_right_left_buttons();
 bool check_esc_button();
 bool check_enter_button();
 
-int get_color_code(const std::string& color);
 void set_color(const int text_color_code, const int bg_color_code);
 void set_color(const Color text_color, const Color bg_color);
 void set_text_color(const int text_color_code);

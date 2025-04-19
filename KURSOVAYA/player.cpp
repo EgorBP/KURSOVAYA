@@ -19,36 +19,36 @@ void Player::player_print(const Color color) const {
 	set_text_color(7);
 }
 
-void Player::player_move(const int points_x, const int points_y) {
+void Player::player_move(const int points_x, const int points_y, bool (*custom_can_move)(int, int)) {
 	old_player_x = player_x;
 	old_player_y = player_y;
 
-	if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move_border(player_x - points_x, player_y - points_y)) { // Вверх и влево
+	if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && custom_can_move(player_x - points_x, player_y - points_y)) { // Вверх и влево
 		player_y -= points_y;
 		player_x -= points_x;
 	}
-	else if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move_border(player_x + points_x, player_y - points_y)) { // Вверх и вправо
+	else if ((GetAsyncKeyState('W') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && custom_can_move(player_x + points_x, player_y - points_y)) { // Вверх и вправо
 		player_y -= points_y;
 		player_x += points_x;
 	}
-	else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && can_move_border(player_x - points_x, player_y + points_y)) { // Вниз и влево
+	else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('A') & 0x8000) && custom_can_move(player_x - points_x, player_y + points_y)) { // Вниз и влево
 		player_y += points_y;
 		player_x -= points_x;
 	}
-	else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && can_move_border(player_x + points_x, player_y + points_y)) { // Вниз и вправо
+	else if ((GetAsyncKeyState('S') & 0x8000) && (GetAsyncKeyState('D') & 0x8000) && custom_can_move(player_x + points_x, player_y + points_y)) { // Вниз и вправо
 		player_y += points_y;
 		player_x += points_x;
 	}
-	else if (GetAsyncKeyState('W') & 0x8000 && can_move_border(player_x, player_y - points_y)) { // Только вверх
+	else if (GetAsyncKeyState('W') & 0x8000 && custom_can_move(player_x, player_y - points_y)) { // Только вверх
 		player_y -= points_y;
 	}
-	else if (GetAsyncKeyState('S') & 0x8000 && can_move_border(player_x, player_y + points_y)) { // Только вниз
+	else if (GetAsyncKeyState('S') & 0x8000 && custom_can_move(player_x, player_y + points_y)) { // Только вниз
 		player_y += points_y;
 	}
-	else if (GetAsyncKeyState('A') & 0x8000 && can_move_border(player_x - points_x, player_y)) { // Только влево
+	else if (GetAsyncKeyState('A') & 0x8000 && custom_can_move(player_x - points_x, player_y)) { // Только влево
 		player_x -= points_x;
 	}
-	else if (GetAsyncKeyState('D') & 0x8000 && can_move_border(player_x + points_x, player_y)) { // Только вправо
+	else if (GetAsyncKeyState('D') & 0x8000 && custom_can_move(player_x + points_x, player_y)) { // Только вправо
 		player_x += points_x;
 	}
 

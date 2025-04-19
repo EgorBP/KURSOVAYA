@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <chrono>
 
 
 struct Bomb {
@@ -9,4 +10,8 @@ struct Bomb {
 	static int get_current_count();
 	static void count_up(const int points = 1);
 	static void set_new_count(const int new_level);
+
+private:
+	static std::chrono::steady_clock::time_point last_boom_time;
+	static const int boom_timer = 500;
 };

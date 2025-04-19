@@ -36,7 +36,6 @@ const string Castle::castle[] = {
 "   ~      ~        ~~ ~    ++++++  ~~   ~    ~",
 "                 ~      ~ ~+++ ++   ~     ~       ~",
 "          ~        ~     ~ ++++++~    ~  ~ ~",
-
 };
 
 void Castle::print_castle(const Player& player) {
@@ -102,4 +101,26 @@ int Castle::find_door_index() {
         }
     }
     return -1;
+}
+
+bool Castle::can_move_castle(int player_x, int player_y) {
+    if (!can_move_border(player_x, player_y)) return false;
+
+    size_t castle_size = sizeof(castle) / sizeof(castle[0]) - 1;
+
+    if ((player_y == empty_spaces + 18) &&      // Трава 1
+        ((player_x < free_left_space + 13) || (player_x > free_left_space + 49)))
+        return false;
+    else if ((player_y == empty_spaces + 19) && // Трава 2
+        ((player_x < free_left_space + 15) || (player_x > free_left_space + 47)))
+        return false;
+    else if ((player_y == empty_spaces + 20) && // Трава 3
+        ((player_x < free_left_space + 18) || (player_x > free_left_space + 43)))
+        return false;
+    else if (player_y < empty_spaces + 18 &&    // Двери
+        ((player_x < castle[16].find_first_of(':') + free_left_space + 1) || (player_x > castle[16].find_last_of(':') + free_left_space + 1)))
+        return false;
+    else if (((player_y < castle_size + empty_spaces + 2) && (player_y > empty_spaces + 20)) &&   // Вода и мост
+        ((player_x < castle[castle_size].find_first_of('+') + free_left_space + 1) || (player_x > castle[castle_size].find_last_of('+') + free_left_space + 1)))
+        return false;
 }

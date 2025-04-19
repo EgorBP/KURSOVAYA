@@ -78,8 +78,6 @@ void Enemy::check_merge_all() {
 }
 
 void Enemy::delete_array() {
-	if (!enemies) return;
-
 	delete[] enemies;
 	enemies = nullptr;
 	enemies_array_size = 0;

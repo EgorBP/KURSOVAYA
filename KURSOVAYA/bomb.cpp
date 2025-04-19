@@ -1,11 +1,14 @@
 ﻿#include <iostream>
 #include <fstream>
+#include <chrono>
 #include "windows.h"
 #include "services.h"
 #include "enemies.h"
 #include "bomb.h"
 
 using namespace std;
+
+std::chrono::steady_clock::time_point Bomb::last_boom_time = std::chrono::steady_clock::now();
 
 void Bomb::process_bomb() {
 	print_count();
@@ -23,8 +26,18 @@ void Bomb::boom() {
 }
 
 bool Bomb::check_boom() {
-	if (GetAsyncKeyState('E') && get_current_count() > 0) return true;
-	else return false;
+	using namespace std::chrono;
+
+	auto now = steady_clock::now();
+	auto elapsed = duration_cast<milliseconds>(now - last_boom_time);
+
+	if (GetAsyncKeyState('E') && get_current_count() > 0 && elapsed.count() > 500) {
+		last_boom_time = steady_clock::now();
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 void Bomb::print_count() {

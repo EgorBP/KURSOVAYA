@@ -14,27 +14,29 @@
 using namespace std;
 
 void Game::start() {
-	srand(time(0));
 	Game game;
 	game.update_data();
 	game.init_loop();
 }
 
 void Game::update_data() {
-	Level::set_new_level(10);
+	Level::set_new_level(1);
 	Arrow::set_new_level(1);
 	Dialogue::set_new_money(900);
+	Bomb::set_new_count(0);
+
+	srand(time(0));
 
 	// Смотрим где игрок закончил прошлую игру
 	if (Level::get_current_level() < 0 || Level::get_current_level() == 0) {
 		Level::set_new_level(0);
-		mode = Mode::FirstTime;
+		mode = FirstTime;
 		// Только на нечетном x чтобы мог по правому краю впритык лазить
 		player = Player(get_console_width() / 2, get_console_height() / 2);
 		//Greeting::greeting();
 	}
 	else {
-		mode = Mode::Castle;
+		mode = Castle;
 		player = Player(75, 27);
 		Level::print_level(false);
 	}
@@ -57,25 +59,19 @@ void Game::init_loop() {
 		}
 
 
-		if (mode == Mode::FirstTime) {
-			// Движение игрока
-			if (counter % 2 == 0) {
-				player.player_move(2, 1);
-				player.player_clear();
-			}
-			// Отрисовка игрока
-			player.player_print();
+		if (mode == FirstTime) {
+			// ИГРОК
+			process_player(player);
 
 			if (player.player_y <= 0) {
-				mode = Mode::Battle;
+				mode = Battle;
 				player.player_y = get_console_height() - 1;
 				clear_all();
-				continue;
 			}
 		}
 
 
-		else if (mode == Mode::Castle) {
+		else if (mode == Castle) {
 			Castle::print_castle(player);
 			if (player.is_player_on_door(Castle::find_door_index(), Castle::door_y_pos, 2)) {
 				if (can_update_level) {
@@ -90,27 +86,23 @@ void Game::init_loop() {
 				Level::print_level(is_level_passed);
 			}
 
-			// Движение игрока
-			player.player_move(1, 1);
-			player.player_clear();
-			// Отрисовка игрока
-			player.player_print(Color::Purple);
+			// ИГРОК
+			process_player(player, Purple);
 
 			// Смена локации
-			if (player.player_y >= get_console_height() - 2) {
-				mode = Mode::Battle;
+			if (player.player_y >= get_console_height() - 5) {
+				mode = Battle;
 				Level::wave_timer = 0;
 				wave = 1;
 				player.player_y = 1;
 				beautiful_clear_all(1);
 				Level::print_level(is_level_passed);
-				disableMouseSelection();
 				continue;
 			}
 		}
 
 
-		else if (mode == Mode::Battle) {
+		else if (mode == Battle) {
 			// ИНИЦИАЛИЗАТОР
 			if (Level::wave_timer == 0) {
 				Level::init_level(wave++, player);
@@ -160,7 +152,12 @@ void Game::init_loop() {
 					cout << "Поражение, нажмите Space или Enter...";
 					Sleep(50);
 				}
-				mode = Mode::Castle;
+				mode = Castle;
+				is_player_die = false;
+				player.player_x = 75;
+				player.player_y = 27;
+				clear_all();
+				continue;
 			}
 			// Слияние дино
 			Enemy::check_merge_all();
@@ -183,20 +180,14 @@ void Game::init_loop() {
 			Arrow::process_arrows();
 			Arrow::print_arrow_array_size();
 
+			// БОМБА
 			Bomb::process_bomb();
-
-
-			// Движение игрока
-			if (counter % 2 == 0) {
-				player.player_move(2, 1);
-				player.player_clear();
-			}
-			// Отрисовка игрока
-			player.player_print();
-
+			
+			// ИГРОК
+			process_player(player);
 
 			if (player.player_y <= 0 && Enemy::enemies_array_size == 0 && Level::wave_timer < 0) {
-				mode = Mode::Castle;
+				mode = Castle;
 				player.player_y = 37;
 				player.player_x = 76;
 				can_update_level = true;
@@ -204,7 +195,6 @@ void Game::init_loop() {
 				//beautiful_clear_all(0, '#');
 				clear_all();
 				Level::print_level(is_level_passed);
-				continue;
 			}
 		}
 
@@ -219,4 +209,20 @@ void Game::init_loop() {
 	// Освобождаем динамические массивы
 	Enemy::delete_array();
 	Arrow::delete_array();
+}
+
+
+void Game::process_player(Player& player, const Color color) const {
+	// Движение игрока
+	if (counter % 2 == 0) {
+		if (mode == Castle) {
+			player.player_move(1, 1, Castle::can_move_castle);
+		}
+		else {
+			player.player_move(2, 1);
+		}
+		player.player_clear();
+	}
+	// Отрисовка игрока
+	player.player_print(color);
 }
