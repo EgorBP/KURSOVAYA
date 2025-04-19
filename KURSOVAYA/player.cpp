@@ -84,3 +84,10 @@ bool Player::is_player_on_door(const int door_x, const int door_y, const int doo
 	}
 	else return false;
 }
+
+void Player::print_help() {
+	move_cursor(3, get_console_height() - 3);
+	cout << "WASD - перемещение";
+	move_cursor(3, get_console_height() - 2);
+	cout << "ЛКМ - стрелять";
+}

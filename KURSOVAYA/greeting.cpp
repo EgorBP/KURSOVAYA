@@ -75,6 +75,23 @@ R"(                                                                             
 R"(                                                                                                  )",
 };
 
+const string Greeting::end[size] = {
+R"(      _   _   _____   _   _   _____   _   _      )",
+R"(     | | / / |  _  | | | | | |  ___| | | | |     )",
+R"(     | |/ /  | | | | | |_| | | |___  | | | |     )",
+R"(     |   (   | | | | |  _  | |  ___| | |_| |     )",
+R"(     | |\ \  | |_| | | | | | | |___  |____ |     )",
+R"(     |_| \_\ |_____| |_| |_| |_____|      \_\    )",
+R"(                                                 )",
+R"(                                                 )",
+R"(      _     _   _____   _____   _       _        )",
+R"(     | |   / | | ____| |  _  | | |     | |       )",
+R"(     | |  // | | |     | |_| | | |___  | |       )",
+R"(     | | //| | | |     |  ___| |  _  | | |       )",
+R"(     | |// | | | |     | |     | |_| | | |       )",
+R"(     |_ /  |_| |_|     |_|     |_____| |_|       )", };
+
+
 void Greeting::greeting(int symobls_to_clear) {
     const int x = 25;
     const int y = 15;
@@ -88,7 +105,7 @@ void Greeting::greeting(int symobls_to_clear) {
     game_name_print(x, y, symobls_to_clear);
     Sleep(1000);
     beautiful_print(last, x, y, symobls_to_clear);
-    
+
     clear_author_name();
 }
 
@@ -108,7 +125,13 @@ void Greeting::clear_author_name() {
     clear(132, 45, 24);
 }
 
-void Greeting::beautiful_print(const string* item, const int x_pos, const int y_pos, int symobls_to_clear) {
+void Greeting::print_end() {
+    clear_all();
+    beautiful_print(end, 54, 15, 0);
+    Sleep(5000);
+}
+
+void Greeting::beautiful_print(const string * item, const int x_pos, const int y_pos, int symobls_to_clear) {
     const int width = item[0].size();
     for (int i{ 0 }; i < width; i++) {
         for (int height{ 0 }; height < size; height++) {

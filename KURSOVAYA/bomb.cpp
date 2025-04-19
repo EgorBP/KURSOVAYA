@@ -43,6 +43,7 @@ bool Bomb::check_boom() {
 void Bomb::print_count() {
 	move_cursor(0, get_console_height() - 4);
 	cout << get_current_count();
+	if (get_current_count() < 10) cout << ' ';
 }
 
 int Bomb::get_current_count() {

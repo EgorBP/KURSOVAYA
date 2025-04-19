@@ -131,6 +131,7 @@
     <ClCompile Include="bow.cpp" />
     <ClCompile Include="castle.cpp" />
     <ClCompile Include="dialogue.cpp" />
+    <ClCompile Include="end.cpp" />
     <ClCompile Include="enemies.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="greeting.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="bow.h" />
     <ClInclude Include="castle.h" />
     <ClInclude Include="dialogue.h" />
+    <ClInclude Include="end.h" />
     <ClInclude Include="enemies.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="greeting.h" />

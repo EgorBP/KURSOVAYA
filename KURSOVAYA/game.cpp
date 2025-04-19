@@ -9,9 +9,15 @@
 #include "level.h"
 #include "dialogue.h"
 #include "bomb.h"
+#include "end.h"
 #include "game.h"
 
 using namespace std;
+
+Game::~Game() {
+	Enemy::delete_array();
+	Arrow::delete_array();
+}
 
 void Game::start() {
 	Game game;
@@ -20,15 +26,18 @@ void Game::start() {
 }
 
 void Game::update_data() {
-	Level::set_new_level(0);
-	Arrow::set_new_level(1);
-	Dialogue::set_new_money(900);
-	Bomb::set_new_count(0);
+	//Level::set_new_level(10);
+	//Arrow::set_new_level(1);
+	//Dialogue::set_new_money(900);
+	//Bomb::set_new_count(0);
 
 	srand(time(0));
 
 	// Смотрим где игрок закончил прошлую игру
 	if (Level::get_current_level() <= 0) {
+		init_first_start();
+	}
+	else if (Level::get_current_level() > 10) {
 		init_first_start();
 	}
 	else {
@@ -57,9 +66,6 @@ void Game::init_loop() {
 		counter++;
 		move_cursor(0, 0);
 	}
-
-	Enemy::delete_array();
-	Arrow::delete_array();
 }
 
 bool Game::check_exit_requested() {
@@ -72,7 +78,7 @@ bool Game::check_exit_requested() {
 	return false;
 }
 
-bool Game::handle_resize() {
+bool Game::handle_resize() const {
 	// Чиним если был выход из полноэкранного режима
 	if (!check_console_size_changes()) {
 		clear_all();
@@ -83,7 +89,20 @@ bool Game::handle_resize() {
 }
 
 void Game::process_first_time() {
+	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
+		if (player_attack_timer <= 0) {
+			Arrow::init_new_arrow(player);
+			player_attack_timer = 12;
+		}
+	}
+
+	if (player_attack_timer > 0) player_attack_timer--;
+
 	process_player(player);
+	Player::print_help();
+
+	Arrow::process_arrows();
+
 	if (player.player_y <= 0) {
 		mode = Battle;
 		player.player_y = get_console_height() - 1;
@@ -102,6 +121,11 @@ void Game::process_castle() {
 			is_level_passed = false;
 		}
 		Dialogue::loop();
+		if (End::is_end()) {
+			Greeting::print_end();
+			run = false;
+			return;
+		}
 		player.player_y += 1;
 		Level::print_level(is_level_passed);
 	}
@@ -213,10 +237,12 @@ void Game::process_player(Player& player, const Color color) const {
 
 void Game::init_first_start() {
 	Level::set_new_level(0);
+	Arrow::set_new_level(1);
+	Bomb::set_new_count(0);
 	mode = FirstTime;
 	// Только на нечетном x чтобы мог по правому краю впритык лазить
 	player = Player(get_console_width() / 2, get_console_height() / 2);
-	Greeting::greeting();
+	//Greeting::greeting();
 }
 
 void Game::init_from_saved_state() {

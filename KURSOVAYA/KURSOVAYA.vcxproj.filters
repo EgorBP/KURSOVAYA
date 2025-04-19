@@ -22,12 +22,12 @@
     <Filter Include="Levels">
       <UniqueIdentifier>{0d5652c3-02d8-429d-864a-6c5cb838240e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{b1449143-d083-4da3-8dfc-16f68c449071}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MAIN.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="services.cpp">
@@ -57,12 +57,15 @@
     <ClCompile Include="bomb.cpp">
       <Filter>Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="end.cpp">
+      <Filter>Decorations</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="enemies.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="services.h">
@@ -88,6 +91,12 @@
     </ClInclude>
     <ClInclude Include="bomb.h">
       <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="end.h">
+      <Filter>Decorations</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

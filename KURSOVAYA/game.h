@@ -26,13 +26,15 @@ struct Game {
 	void update_data();
 	void init_loop();
 
+	~Game();
+	
 private:
 	void process_first_time();
 	void process_castle();
 	void process_battle();
 
 	bool check_exit_requested();
-	bool handle_resize();
+	bool handle_resize() const;
 
 	void process_enemies();
 	void handle_player_death();

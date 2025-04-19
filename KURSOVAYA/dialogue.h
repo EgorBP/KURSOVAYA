@@ -22,6 +22,7 @@ struct BlacksmithClass {
 	static void print_all_items();
 	static void print_money();
 	static int get_money_from_item(BlacksmithItems item);
+	static void print_help();
 
 private:
 	static void print_body(const int y_pos, const std::string& text, const int price, int (*get_data)());

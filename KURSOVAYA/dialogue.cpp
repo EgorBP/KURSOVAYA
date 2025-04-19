@@ -122,14 +122,15 @@ void Dialogue::process_blacksmith(BlacksmithClass& blacksmith) {
 
 	BlacksmithClass::print_money();
 	BlacksmithClass::print_all_items();
+	BlacksmithClass::print_help();
 
-	if (GetAsyncKeyState('W') & 0x8000) {
+	if (GetAsyncKeyState('W') & 0x8000 || GetAsyncKeyState(VK_UP) & 0x8000) {
 		if (blacksmith.current_item > 0) {
 			blacksmith.clear_pointer();
 			blacksmith.current_item = static_cast<BlacksmithItems>(blacksmith.current_item - 1);
 		}
 	}
-	else if (GetAsyncKeyState('S') & 0x8000) {
+	else if (GetAsyncKeyState('S') & 0x8000 || GetAsyncKeyState(VK_DOWN) & 0x8000) {
 		if (blacksmith.current_item < BlacksmithClass::items_count - 1) {
 			blacksmith.clear_pointer();
 			blacksmith.current_item = static_cast<BlacksmithItems>(blacksmith.current_item + 1);
@@ -144,12 +145,14 @@ void Dialogue::process_blacksmith(BlacksmithClass& blacksmith) {
 		if (check_enter_button() && Dialogue::get_current_money() > BlacksmithClass::get_money_from_item(blacksmith.current_item)) {
 			Dialogue::money_up(-BlacksmithClass::get_money_from_item(blacksmith.current_item));
 			Arrow::level_up();
+			Sleep(100);
 		}
 	}
 	else if (blacksmith.current_item == BlacksmithItems::BombBuy) {
 		if (check_enter_button() && Dialogue::get_current_money() > BlacksmithClass::get_money_from_item(blacksmith.current_item)) {
 			Dialogue::money_up(-BlacksmithClass::get_money_from_item(blacksmith.current_item));
 			Bomb::count_up();
+			Sleep(100);
 		}
 	}
 }
@@ -211,6 +214,16 @@ int BlacksmithClass::get_money_from_item(BlacksmithItems item) {
 	default:
 		return -1;
 	}
+}
+
+void BlacksmithClass::print_help() {
+	move_cursor(get_first_line_width(Dialogue::blacksmith_art) + 6, get_console_height() - 5);
+	cout << "'W' - вверх";
+	move_cursor(get_first_line_width(Dialogue::blacksmith_art) + 6, get_console_height() - 4);
+	cout << "'S' - вниз";
+	move_cursor(get_first_line_width(Dialogue::blacksmith_art) + 6, get_console_height() - 3);
+	cout << "'Enter' - купить";
+
 }
 
 int Dialogue::get_current_money() {
