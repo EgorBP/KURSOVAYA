@@ -20,7 +20,7 @@ void Game::start() {
 }
 
 void Game::update_data() {
-	Level::set_new_level(1);
+	Level::set_new_level(0);
 	Arrow::set_new_level(1);
 	Dialogue::set_new_money(900);
 	Bomb::set_new_count(0);
@@ -63,6 +63,7 @@ void Game::init_loop() {
 }
 
 bool Game::check_exit_requested() {
+	// Если нажата Esc выходим из цикла
 	if (check_esc_button()) {
 		beautiful_clear_all(1);
 		run = false;
@@ -72,6 +73,7 @@ bool Game::check_exit_requested() {
 }
 
 bool Game::handle_resize() {
+	// Чиним если был выход из полноэкранного режима
 	if (!check_console_size_changes()) {
 		clear_all();
 		Level::print_level(is_level_passed);
@@ -212,7 +214,9 @@ void Game::process_player(Player& player, const Color color) const {
 void Game::init_first_start() {
 	Level::set_new_level(0);
 	mode = FirstTime;
+	// Только на нечетном x чтобы мог по правому краю впритык лазить
 	player = Player(get_console_width() / 2, get_console_height() / 2);
+	Greeting::greeting();
 }
 
 void Game::init_from_saved_state() {
