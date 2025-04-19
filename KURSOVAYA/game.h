@@ -9,6 +9,7 @@ enum Mode {
 };
 
 struct Game {
+	Player player;
 	bool run = true;
 	bool is_player_die = false;
 	bool can_update_level = false;
@@ -20,12 +21,23 @@ struct Game {
 	unsigned long long counter = 0;
 
 	Mode mode;
-	Player player;
 
 	static void start();
 	void update_data();
 	void init_loop();
 
 private:
+	void process_first_time();
+	void process_castle();
+	void process_battle();
+
+	bool check_exit_requested();
+	bool handle_resize();
+
+	void process_enemies();
+	void handle_player_death();
 	void process_player(Player& player, const Color color = Green) const;
+
+	void init_first_start();
+	void init_from_saved_state();
 };

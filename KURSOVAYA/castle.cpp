@@ -95,12 +95,7 @@ void Castle::print_castle(const Player& player) {
 }
 
 int Castle::find_door_index() {
-    for (int i{ 0 }; i < castle[16].size(); i++) {
-        if (castle[16][i] == ':') {
-            return i + free_left_space + 1;
-        }
-    }
-    return -1;
+    return castle[16].find_last_of(':') + free_left_space;
 }
 
 bool Castle::can_move_castle(int player_x, int player_y) {
