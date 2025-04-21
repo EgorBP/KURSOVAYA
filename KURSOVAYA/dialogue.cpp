@@ -50,7 +50,7 @@ void Dialogue::loop() {
 				process_blacksmith(blacksmith);
 			}
 		}
-		Sleep(50);
+		Sleep(15);
 	}
 }
 
@@ -137,19 +137,19 @@ void Dialogue::process_blacksmith(BlacksmithClass& blacksmith) {
 		}
 	}
 
-	move_cursor(150, 43);
+	move_cursor(get_console_width() - 6, get_console_height() - 3);
 	cout << blacksmith.current_item;
 	blacksmith.print_pointer();
 
 	if (blacksmith.current_item == BlacksmithItems::BowDamageUpgrade) {
-		if (check_enter_button() && Dialogue::get_current_money() > BlacksmithClass::get_money_from_item(blacksmith.current_item)) {
+		if (check_enter_button() && Dialogue::get_current_money() >= BlacksmithClass::get_money_from_item(blacksmith.current_item)) {
 			Dialogue::money_up(-BlacksmithClass::get_money_from_item(blacksmith.current_item));
 			Arrow::level_up();
 			Sleep(100);
 		}
 	}
 	else if (blacksmith.current_item == BlacksmithItems::BombBuy) {
-		if (check_enter_button() && Dialogue::get_current_money() > BlacksmithClass::get_money_from_item(blacksmith.current_item)) {
+		if (check_enter_button() && Dialogue::get_current_money() >= BlacksmithClass::get_money_from_item(blacksmith.current_item)) {
 			Dialogue::money_up(-BlacksmithClass::get_money_from_item(blacksmith.current_item));
 			Bomb::count_up();
 			Sleep(100);
@@ -194,7 +194,7 @@ void BlacksmithClass::print_body(const int y_pos, const string& text, const int 
 	cout << ')';
 
 	move_cursor(get_console_width() - 12, 5 + y_pos * 2);
-	if (Dialogue::get_current_money() < 50) {
+	if (Dialogue::get_current_money() < price) {
 		set_text_color(Color::Red);
 	}
 	else {

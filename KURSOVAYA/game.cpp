@@ -26,10 +26,10 @@ void Game::start() {
 }
 
 void Game::update_data() {
-	//Level::set_new_level(10);
-	//Arrow::set_new_level(1);
-	//Dialogue::set_new_money(900);
-	//Bomb::set_new_count(0);
+	Level::set_new_level(1);
+	Arrow::set_new_level(10);
+	Dialogue::set_new_money(50);
+	Bomb::set_new_count(10);
 
 	srand(time(0));
 
@@ -212,11 +212,12 @@ void Game::process_enemies() {
 }
 
 void Game::handle_player_death() {
+	string s = "SPACE (Enter/Esc)";
 	while (!(GetAsyncKeyState(VK_RETURN) & 0x8000
 		|| GetAsyncKeyState(VK_SPACE) & 0x8000
 		|| GetAsyncKeyState(VK_ESCAPE) & 0x8000)) {
-		move_cursor(0, 0);
-		cout << "Поражение, нажмите Space или Enter...";
+		move_cursor(get_console_width() / 2 - s.length() / 2 + 2, get_console_height() - 1);
+		cout << s;
 		Sleep(50);
 	}
 	mode = Castle;
@@ -242,7 +243,7 @@ void Game::init_first_start() {
 	mode = FirstTime;
 	// Только на нечетном x чтобы мог по правому краю впритык лазить
 	player = Player(get_console_width() / 2, get_console_height() / 2);
-	//Greeting::greeting();
+	Greeting::greeting();
 }
 
 void Game::init_from_saved_state() {

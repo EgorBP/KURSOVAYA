@@ -133,8 +133,17 @@ void Greeting::print_end() {
 
 void Greeting::beautiful_print(const string * item, const int x_pos, const int y_pos, int symobls_to_clear) {
     const int width = item[0].size();
-    for (int i{ 0 }; i < width; i++) {
-        for (int height{ 0 }; height < size; height++) {
+
+    for (size_t i{ 0 }; i < size; i++) {
+        if (item[i].size() != width) {
+            move_cursor();
+            cout << "Размер всех строк в массиве должен быть одинаковым. Прерывание...";
+            return;
+        }
+    }
+
+    for (size_t i{ 0 }; i < width; i++) {
+        for (size_t height{ 0 }; height < size; height++) {
             move_cursor(x_pos + i, y_pos + height);
             cout << item[height][i];
             clear(x_pos + i + 1, y_pos + height, symobls_to_clear);
