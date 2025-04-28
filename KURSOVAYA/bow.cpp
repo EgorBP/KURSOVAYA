@@ -86,6 +86,7 @@ int Arrow::get_bow_level() {
     else {
         set_new_level(level);
     }
+    file.close();
     return level;
 }
 

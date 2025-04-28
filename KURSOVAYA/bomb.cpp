@@ -56,6 +56,7 @@ int Bomb::get_current_count() {
 	else {
 		set_new_count(level);
 	}
+	file.close();
 	return level;
 }
 

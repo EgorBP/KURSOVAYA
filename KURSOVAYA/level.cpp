@@ -19,6 +19,7 @@ int Level::get_current_level() {
 	else {
 		set_new_level(level);
 	}
+	file.close();
 	return level;
 }
 

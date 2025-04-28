@@ -1,4 +1,4 @@
-п»ї#include <iostream>
+#include <iostream>
 #include <windows.h>
 #include "services.h"
 #include "enemies.h"
@@ -26,14 +26,14 @@ void Game::start() {
 }
 
 void Game::update_data() {
-	Level::set_new_level(1);
+	Level::set_new_level(8);
 	Arrow::set_new_level(10);
 	Dialogue::set_new_money(50);
 	Bomb::set_new_count(10);
 
 	srand(time(0));
 
-	// РЎРјРѕС‚СЂРёРј РіРґРµ РёРіСЂРѕРє Р·Р°РєРѕРЅС‡РёР» РїСЂРѕС€Р»СѓСЋ РёРіСЂСѓ
+	// Смотрим где игрок закончил прошлую игру
 	if (Level::get_current_level() <= 0) {
 		init_first_start();
 	}
@@ -69,7 +69,7 @@ void Game::init_loop() {
 }
 
 bool Game::check_exit_requested() {
-	// Р•СЃР»Рё РЅР°Р¶Р°С‚Р° Esc РІС‹С…РѕРґРёРј РёР· С†РёРєР»Р°
+	// Если нажата Esc выходим из цикла
 	if (check_esc_button()) {
 		beautiful_clear_all(1);
 		run = false;
@@ -79,7 +79,7 @@ bool Game::check_exit_requested() {
 }
 
 bool Game::handle_resize() const {
-	// Р§РёРЅРёРј РµСЃР»Рё Р±С‹Р» РІС‹С…РѕРґ РёР· РїРѕР»РЅРѕСЌРєСЂР°РЅРЅРѕРіРѕ СЂРµР¶РёРјР°
+	// Чиним если был выход из полноэкранного режима
 	if (!check_console_size_changes()) {
 		clear_all();
 		Level::print_level(is_level_passed);
@@ -225,6 +225,7 @@ void Game::handle_player_death() {
 	player.player_x = 75;
 	player.player_y = 27;
 	clear_all();
+	Level::print_level(false);
 }
 
 void Game::process_player(Player& player, const Color color) const {
@@ -241,7 +242,7 @@ void Game::init_first_start() {
 	Arrow::set_new_level(1);
 	Bomb::set_new_count(0);
 	mode = FirstTime;
-	// РўРѕР»СЊРєРѕ РЅР° РЅРµС‡РµС‚РЅРѕРј x С‡С‚РѕР±С‹ РјРѕРі РїРѕ РїСЂР°РІРѕРјСѓ РєСЂР°СЋ РІРїСЂРёС‚С‹Рє Р»Р°Р·РёС‚СЊ
+	// Только на нечетном x чтобы мог по правому краю впритык лазить
 	player = Player(get_console_width() / 2, get_console_height() / 2);
 	Greeting::greeting();
 }

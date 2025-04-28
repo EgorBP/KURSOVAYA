@@ -236,6 +236,7 @@ int Dialogue::get_current_money() {
 	else {
 		set_new_money(level);
 	}
+	file.close();
 	return level;
 }
 
@@ -249,7 +250,7 @@ void Dialogue::money_up(const int points) {
 }
 
 void Dialogue::set_new_money(const int new_level) {
-	fstream file("money.txt", ios::out);
+	fstream file("money.txt", ios::out | ios::trunc);
 	if (file.is_open()) {
 		file << new_level;
 		file.close();

@@ -1,4 +1,4 @@
-п»ї#include <iostream>
+#include <iostream>
 #include "services.h"
 #include "player.h"
 #include "enemies.h"
@@ -23,10 +23,10 @@ const string Enemy::pos_left[4] = {
 };
 
 void Enemy::init_enemy_in_array(const console_side console_side, const int level, const Player& player) {
-	// Р”РёРЅР°РјРёС‡РµСЃРєРё РјРµРЅСЏРµРј СЂР°Р·РјРµСЂ
+	// Динамически меняем размер
 	Enemy* new_array = new Enemy[enemies_array_size + 1];
 
-	for (size_t i = 0; i < enemies_array_size; i++) { // РєРѕРїРёСЂСѓРµРј СЃС‚Р°СЂС‹С… РІСЂР°РіРѕРІ
+	for (size_t i = 0; i < enemies_array_size; i++) { // копируем старых врагов
 		new_array[i] = enemies[i];
 	}
 
@@ -64,13 +64,13 @@ void Enemy::check_merge_all() {
 				int y_other = enemies[i_checker].enemy_upper_left_y;
 
 				if (abs(x_main - x_other) < 9 && abs(y_main - y_other) < 3) {
-					enemies[i_checker].merge(enemies[i].level); // РџРѕРІС‹С€Р°РµРј СѓСЂРѕРІРµРЅСЊ
-					enemies[i].clear_enemy();                   // РћС‡РёС‰Р°РµРј РїРµСЂРµРґ СѓРґР°Р»РµРЅРёРµРј
-					enemies[i_checker].clear_enemy();           // РћС‡РёС‰Р°РµРј Рё СЂРёСЃСѓРµРј Р·Р°РЅРѕРІРѕ РІ СЌС‚РѕР№ Р¶Рµ РёС‚РµСЂР°С†РёРё С‡С‚РѕР±С‹ СЃРѕР·РґР°С‚СЊ
-					enemies[i_checker].print_all();                 //  СЌС„С„РєС‚ РїРµСЂРµРІР°СЂРёРІР°РЅРёСЏ (Р·Р°РґРµСЂР¶РєР°) Рё РїРµСЂРµР±РёС‚СЊ РѕС‡РёС‰РµРЅРёРµ РѕС‚ СѓРґР°Р»РµРЅРЅРѕРіРѕ
-					rebuild_array_without_element(i);           // РЈРґР°Р»СЏРµРј
-					i--;										// РћС‚РєР°С‚С‹РІР°РµРј i РЅР° С‚РѕС‚ Р¶Рµ СЌР»РµРјРµРЅС‚ С‚Р°Рє РєР°Рє РЅР° РµРіРѕ РјРµСЃС‚Рµ С‚РµРїРµСЂСЊ РЅРѕРІС‹Р№ СЌР»РµРјРµРЅС‚ РєРѕС‚РѕСЂС‹Р№ РЅСѓР¶РЅРѕ РїСЂРѕРІРµСЂРёС‚СЊ
-					//break;
+					enemies[i_checker].merge(enemies[i].level); // Повышаем уровень
+					enemies[i].clear_enemy();                   // Очищаем перед удалением
+					enemies[i_checker].clear_enemy();           // Очищаем и рисуем заново в этой же итерации чтобы создать
+					enemies[i_checker].print_all();             //  эффкт переваривания (задержка) и перебить очищение от удаленного
+					rebuild_array_without_element(i);           // Удаляем
+					i--;										// Откатываем i на тот же элемент так как на его месте теперь новый элемент который нужно проверить
+					break;
 				}
 			}
 		}
@@ -85,7 +85,7 @@ void Enemy::delete_array() {
 
 
 void Enemy::move(const Player& player, int point_x, int point_y) {
-	// Р”РёРЅРѕР·Р°РІСЂ 2 СѓСЂРѕРІРЅСЏ РґРІРёРіР°РµС‚СЃСЏ Р±С‹СЃС‚СЂРµРµ
+	// Динозавр 2 уровня двигается быстрее
 	if (level > 4 * difficult) {
 		point_x += 2;
 		point_y++;
@@ -94,11 +94,11 @@ void Enemy::move(const Player& player, int point_x, int point_y) {
 		point_x++;
 	}
 
-	// Р Р°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ С‚РѕС‡РєРё РѕС‚СЃР»РµР¶РёРІР°РЅРёСЏ (Р»РµРІРѕРіРѕ РІРµСЂС…РЅРµРіРѕ СѓРіР»Р°) РґРѕ С†РµРЅС‚СЂР°
+	// Расстояние от точки отслеживания (левого верхнего угла) до центра
 	int distance_x = 4;
 	int distance_y = 2;
 
-	// Р§С‚РѕР±С‹ РґРёРЅРѕР·Р°РІСЂ РЅРµ РїРµСЂРµС…РѕРґРёР» РЅР° РґСЂСѓРіРёРµ СЃС‚СЂРѕРєРё РЅР° РіСЂР°РЅРёС†Р°С…
+	// Чтобы динозавр не переходил на другие строки на границах
 	const int player_x = player.player_x;
 	const int player_y = player.player_y;
 	if (player_x <= 4) {
@@ -114,14 +114,14 @@ void Enemy::move(const Player& player, int point_x, int point_y) {
 		distance_y += 1;
 	}
 
-	// Р¦РµРЅС‚СЂ
+	// Центр
 	int enemy_center_x = enemy_upper_left_x + distance_x;
 	int	enemy_center_y = enemy_upper_left_y + distance_y;
-	// РљСѓРґР° РёРґС‚Рё
+	// Куда идти
 	int x_difference = player_x - enemy_center_x;
 	int y_difference = player_y - enemy_center_y;
 
-	// Р”РІРёР¶РµРЅРёРµ РїРѕ X СЃ РјС‘СЂС‚РІРѕР№ Р·РѕРЅРѕР№ (С‡С‚РѕР±С‹ РёР·Р±РµР¶Р°С‚СЊ РґС‘СЂРіР°РЅРёСЏ)
+	// Движение по X с мёртвой зоной (чтобы избежать дёргания)
 	if (std::abs(x_difference) > 1) {
 		if (x_difference > 0) {
 			enemy_upper_left_x += point_x;
@@ -133,7 +133,7 @@ void Enemy::move(const Player& player, int point_x, int point_y) {
 		}
 	}
 
-	// Р”РІРёР¶РµРЅРёРµ РїРѕ Y
+	// Движение по Y
 	if (y_difference > 0) {
 		enemy_upper_left_y += point_y;
 	}
@@ -143,18 +143,18 @@ void Enemy::move(const Player& player, int point_x, int point_y) {
 }
 
 void Enemy::set_enemy_color() const {
-	int color = 7;  // Р‘РµР»С‹Р№
+	int color = 7;  // Белый
 	//if (level == 1) color = color;
-	//else if (level == 2) color = 6; // Р–РµР»С‚С‹Р№
-	//else if (level == 3) color = 4; // РљСЂР°СЃРЅС‹Р№
-	//else if (level == 4) color = 5; // РџСѓСЂРїСѓСЂРЅС‹Р№
+	//else if (level == 2) color = 6; // Желтый
+	//else if (level == 3) color = 4; // Красный
+	//else if (level == 4) color = 5; // Пурпурный
 	//else if (level <= 0) color = 7;
-	//else color = 5; // РџСѓСЂРїСѓСЂРЅС‹Р№
+	//else color = 5; // Пурпурный
 
-	if (level > 3 * difficult) color = 5; // РџСѓСЂРїСѓСЂРЅС‹Р№
-	else if (level > 2 * difficult) color = 4; // РљСЂР°СЃРЅС‹Р№
-	else if (level > 1 * difficult) color = 6; // Р–РµР»С‚С‹Р№
-	else color = color; // Р‘РµР»С‹Р№
+	if (level > 3 * difficult) color = 5; // Пурпурный
+	else if (level > 2 * difficult) color = 4; // Красный
+	else if (level > 1 * difficult) color = 6; // Желтый
+	else color = color; // Белый
 	set_text_color(color);
 }
 
@@ -200,7 +200,7 @@ void Enemy::merge(const int other_level) {
 }
 
 bool Enemy::is_enemy_on_player(const Player& player) const {
-	// Р’РµСЂРЅСѓС‚СЊ true РІСЂР°Рі РІ РіРµСЂРѕРµ РёРЅР°С‡Рµ false
+	// Вернуть true враг в герое иначе false
 	const int player_x = player.player_x;
 	const int player_y = player.player_y;
 
