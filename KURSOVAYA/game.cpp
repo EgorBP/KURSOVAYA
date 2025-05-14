@@ -123,6 +123,7 @@ void Game::process_castle() {
 		Dialogue::loop();
 		if (End::is_end()) {
 			Greeting::print_end();
+			End::process_end();
 			run = false;
 			return;
 		}
@@ -221,6 +222,7 @@ void Game::handle_player_death() {
 		Sleep(50);
 	}
 	mode = Castle;
+	Enemy::delete_array();
 	is_player_die = false;
 	player.player_x = 75;
 	player.player_y = 27;
