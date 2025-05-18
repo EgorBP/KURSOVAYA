@@ -1,7 +1,7 @@
-﻿#pragma once
+#pragma once
 #include <string>
 
-struct Greeting {
+    struct Greeting {
     static const int size = 14;
     static const std::string first[size];
     static const std::string second[size];

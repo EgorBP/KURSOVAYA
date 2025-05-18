@@ -100,14 +100,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="level.txt">
-      <Filter>Файлы ресурсов</Filter>
-    </Text>
-    <Text Include="bow.txt">
-      <Filter>Файлы ресурсов</Filter>
-    </Text>
-    <Text Include="money.txt">
-      <Filter>Файлы ресурсов</Filter>
-    </Text>
+    <Text Include="Data\arts.txt" />
+    <Text Include="Data\bow.txt" />
+    <Text Include="Data\level.txt" />
+    <Text Include="Data\money.txt" />
+    <Text Include="Data\bomb.txt" />
   </ItemGroup>
 </Project>

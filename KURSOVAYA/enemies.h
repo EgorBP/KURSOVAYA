@@ -1,4 +1,4 @@
-ï»¿#ifndef ENEMIES_H
+#ifndef ENEMIES_H
 #define ENEMIES_H
 
 #include <string>
@@ -14,6 +14,11 @@ enum console_side {
 	random, rnd,
 };
 
+enum class enemy_side {
+	left, l,
+	right, r,
+};
+
 struct Enemy {
 private:
 	int old_enemy_upper_left_x;
@@ -23,7 +28,7 @@ public:
 	int difficult = 3;
 	int enemy_upper_left_x;
 	int enemy_upper_left_y;
-	char position;
+	enemy_side position;
 	int level = 1;
 
 
@@ -40,41 +45,41 @@ public:
 
 
 	Enemy() {};
-	Enemy(const console_side console_side, const int level, const Player player) : level(level * difficult), old_enemy_upper_left_x(-1), old_enemy_upper_left_y(-1) {
-		// Ð¡Ð¿Ð°Ð²Ð½Ð¸Ð¼ Ð¿Ð¾ Ð¿Ñ€Ð°Ð²Ð¾Ð¹ Ð»ÐµÐ²Ð¾Ð¹ Ð¸Ð»Ð¸ Ð½Ð¸Ð¶Ð½ÐµÐ¹ ÑÑ‚Ð¾Ñ€Ð¾Ð½Ðµ
-		if (console_side == console_side::right || console_side == console_side::r) { // Ð¿Ñ€Ð°Ð²Ð°Ñ ÑÑ‚Ð¾Ñ€Ð¾Ð½Ð°
+	Enemy(const console_side console_side, const int level, const Player player) : level(level* difficult), old_enemy_upper_left_x(-1), old_enemy_upper_left_y(-1) {
+		// Ñïàâíèì ïî ïðàâîé ëåâîé èëè íèæíåé ñòîðîíå
+		if (console_side == console_side::right || console_side == console_side::r) { // ïðàâàÿ ñòîðîíà
 			enemy_upper_left_x = get_console_width() - pos_right[0].size();
 			enemy_upper_left_y = rand() % (get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]));
 		}
-		else if (console_side == console_side::left || console_side == console_side::l) { // Ð»ÐµÐ²Ð°Ñ ÑÑ‚Ð¾Ñ€Ð¾Ð½Ð°
+		else if (console_side == console_side::left || console_side == console_side::l) { // ëåâàÿ ñòîðîíà
 			enemy_upper_left_x = 2;
 			enemy_upper_left_y = rand() % (get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]));
 		}
-		else if (console_side == console_side::bottom || console_side == console_side::b) { // Ð½Ð¸Ð·
+		else if (console_side == console_side::bottom || console_side == console_side::b) { // íèç
 			enemy_upper_left_x = rand() % (get_console_width() - pos_right[0].size());
 			enemy_upper_left_y = get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]);
 		}
-		else  if (console_side == console_side::random || console_side == console_side::rnd) { // Ñ€Ð°Ð½Ð´Ð¾Ð¼
+		else  if (console_side == console_side::random || console_side == console_side::rnd) { // ðàíäîì
 			int random_side = rand() % 3;
-			if (random_side == 0) { // Ð¡Ð¿Ñ€Ð°Ð²Ð°
+			if (random_side == 0) { // Ñïðàâà
 				enemy_upper_left_x = get_console_width() - pos_right[0].size();
 				enemy_upper_left_y = rand() % (get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]));
 			}
-			else if (random_side == 1) { // Ð¡Ð»ÐµÐ²Ð°
+			else if (random_side == 1) { // Ñëåâà
 				enemy_upper_left_x = 2;
 				enemy_upper_left_y = rand() % (get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]));
 			}
-			else { // Ð¡Ð½Ð¸Ð·Ñƒ
+			else { // Ñíèçó
 				enemy_upper_left_x = rand() % (get_console_width() - pos_right[0].size());
 				enemy_upper_left_y = get_console_height() - sizeof(pos_right) / sizeof(pos_right[0]);
 			}
 		}
-		// Ð¡Ð¿Ð°Ð²Ð½Ð¸Ñ‚ÑÑ ÑÑ€Ð°Ð·Ñƒ Ð¿Ð¾Ð²ÐµÑ€Ð½ÑƒÑ‚Ñ‹Ð¼ Ð² Ð½ÑƒÐ¶Ð½ÑƒÑŽ ÑÑ‚Ð¾Ñ€Ð¾Ð½Ñƒ 
+		// Ñïàâíèòñÿ ñðàçó ïîâåðíóòûì â íóæíóþ ñòîðîíó 
 		if (enemy_upper_left_x > player.player_x) {
-			position = 'r';
+			position = enemy_side::r;
 		}
 		else {
-			position = 'l';
+			position = enemy_side::l;
 		}
 	}
 
@@ -83,7 +88,7 @@ public:
 	void print_all() const;
 	void save_old_cords();
 	void clear_enemy() const;
-	void merge(const int other_level); 
+	void merge(const int other_level);
 	bool is_enemy_on_player(const Player& player) const;
 };
 

@@ -125,11 +125,11 @@ void Enemy::move(const Player& player, int point_x, int point_y) {
 	if (std::abs(x_difference) > 1) {
 		if (x_difference > 0) {
 			enemy_upper_left_x += point_x;
-			position = 'l';
+			position = enemy_side::l;
 		}
 		else {
 			enemy_upper_left_x -= point_x;
-			position = 'r';
+			position = enemy_side::r;
 		}
 	}
 
@@ -161,7 +161,7 @@ void Enemy::set_enemy_color() const {
 void Enemy::print_all() const {
 	set_enemy_color();
 	const string* model;
-	if (position == 'r') model = pos_right;
+	if (position == enemy_side::r) model = pos_right;
 	else model = pos_left;
 	for (int i = 0; i < 4; i++) {
 		move_cursor(enemy_upper_left_x, enemy_upper_left_y + i);

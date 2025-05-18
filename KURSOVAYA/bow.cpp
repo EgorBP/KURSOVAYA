@@ -1,4 +1,4 @@
-п»ї#include <iostream>
+#include <iostream>
 #include <windows.h>
 #include <fstream>
 #include "bow.h"
@@ -11,11 +11,13 @@ using namespace std;
 size_t Arrow::arrows_array_size = 0;
 Arrow* Arrow::arrows = nullptr;
 
+const string Arrow::filename = "Data\\bow.txt";
+
 void Arrow::init_new_arrow(Player& player) {
-    // Р”РёРЅР°РјРёС‡РµСЃРєРё РјРµРЅСЏРµРј СЂР°Р·РјРµСЂ
+    // Динамически меняем размер
     Arrow* new_array = new Arrow[arrows_array_size + 1];
 
-    for (size_t i = 0; i < arrows_array_size; i++) { // РєРѕРїРёСЂСѓРµРј СЃС‚Р°СЂС‹Рµ СЃС‚СЂРµР»С‹
+    for (size_t i = 0; i < arrows_array_size; i++) { // копируем старые стрелы
         new_array[i] = arrows[i];
     }
 
@@ -47,7 +49,7 @@ void Arrow::process_arrows() {
         bool to_destroy = false;
         arrows[i].arrow_clear();
 
-        // РџСЂРѕРІРµСЂРєР° РЅР° СЃС‚РѕР»РєРЅРѕРІРµРЅРёРµ СЃ РІСЂР°РіР°РјРё
+        // Проверка на столкновение с врагами
         for (int i_enemy = 0; i_enemy < Enemy::enemies_array_size; i_enemy++) {
             if (arrows[i].is_arrow_on_enemy(Enemy::enemies[i_enemy].enemy_upper_left_x, Enemy::enemies[i_enemy].enemy_upper_left_y)) {
                 Enemy::enemies[i_enemy].merge(-1 * get_bow_level());
@@ -56,11 +58,11 @@ void Arrow::process_arrows() {
                     Enemy::rebuild_array_without_element(i_enemy);
                 }
                 to_destroy = true;
-                break;  // РџСЂРµСЂС‹РІР°РµРј С†РёРєР» РїРѕ РІСЂР°РіР°Рј, РЅРѕ РЅРµ РІРЅРµС€РЅРёР№!
+                break;  // Прерываем цикл по врагам, но не внешний!
             }
         }
 
-        // Р”РІРёР¶РµРЅРёРµ СЃС‚СЂРµР»С‹
+        // Движение стрелы
         if (arrows[i].arrow_side == '<') arrows[i].arrow_x -= 2;
         else if (arrows[i].arrow_side == '>') arrows[i].arrow_x += 2;
         else if (arrows[i].arrow_side == '^') arrows[i].arrow_y--;
@@ -78,7 +80,7 @@ void Arrow::process_arrows() {
 
 int Arrow::get_bow_level() {
     int level = 1;
-    fstream file("bow.txt", ios::in);
+    fstream file(Arrow::filename, ios::in);
     if (file.is_open()) {
         file >> level;
         file.close();
@@ -92,7 +94,7 @@ int Arrow::get_bow_level() {
 
 void Arrow::level_up(const int points) {
     int current_level = get_bow_level();
-    fstream file("bow.txt", ios::out | ios::trunc);
+    fstream file(Arrow::filename, ios::out | ios::trunc);
     if (file.is_open()) {
         file << current_level + points;
         file.close();
@@ -100,7 +102,7 @@ void Arrow::level_up(const int points) {
 }
 
 void Arrow::set_new_level(const int new_level) {
-    fstream file("bow.txt", ios::out | ios::trunc);
+    fstream file(Arrow::filename, ios::out | ios::trunc);
     if (file.is_open()) {
         file << new_level;
         file.close();

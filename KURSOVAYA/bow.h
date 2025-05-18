@@ -1,4 +1,4 @@
-﻿#ifndef BOW_H
+#ifndef BOW_H
 #define BOW_H
 
 #include "enemies.h"
@@ -7,6 +7,8 @@ struct Arrow {
 	int arrow_x;
 	int arrow_y;
 	char arrow_side;
+
+	static const std::string filename;
 
 	static size_t arrows_array_size;
 	static Arrow* arrows;

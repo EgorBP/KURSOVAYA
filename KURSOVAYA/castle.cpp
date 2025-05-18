@@ -1,51 +1,23 @@
-п»ї#include <iostream>
+#include <iostream>
 #include <Windows.h>
 #include <string>
 #include "services.h"
 #include "player.h"
 #include "castle.h"
+#include <fstream>
 
 using namespace std;
 
-const string Castle::castle[] = {
-"                        /\\         /\\  ",
-"                      (^<>^)     (^<>^) ",
-"             __       /^/\\^\\     /^/\\^\\      __",
-"          __:  |     / /  \\ \\   / /  \\ \\    |  :__",
-"         |  :__|     |^^^^^^|   |^^^^^^|    |__:  |",
-"         |__:  |     \\/\\/\\/\\/   \\/\\/\\/\\/    |  :__|",
-"              / \\    |  __  |   |  __  |   / \\  ",
-"             /   \\   | |__| |   | |__| |  /   \\ ",
-"            /_____\\  |      |   |      | /_____\\" ,
-"            |     |==  ==  ==  ==  ==  ==|     |",
-"            |  _  | |__||__||__||__||__| |  _  |",
-"            | | | |                      | | | |  ~",
-" ~      ~~~~| |=| |   __            __   | |=| |~~~~~   ~              ",
-"     ~~~~~~~|     |  |  |    __    |  |  |     |~~~~~~~~    ~          ",
-"~   ~~~~~   |     |  |==|   |::|   |==|  |     |   ~~~~~~~        ~    ",
-"   ~~~~~    |     |         |::|         |     |~    ~~~~~~            ",
-"   ~~~~     |_____|_________|::|_________|_____|~~    ~~~~~~   ~       ",
-"   ~~~~     ~~~~~~~~~~~~~~~~++++~~~~~~~~~~~~~~~~~      ~~~~~           ",
-"    ~~~~      ~~~~~~~~~~~~~~++++~~~~~~~~~~~~~~~       ~~~~~~           ",
-"      ~~~~       ~~~~~~~~~~~++++~~~~~~~~~~~         ~~~~~~~      ~",
-"~        ~~~~~             ++++++                 ~~~~~",
-"            ~~~ ~~  ~  ~ ~ ++++ +  ~~   ~~   ~~~ ~~~~",
-"       ~        ~  ~    ~  ++++++~ ~  ~ ~  ~~               ~",
-"            ~      ~ ~   ~ + ++++~     ~~    ~       ~",
-"               ~    ~  ~   ++++++ ~~   ~ ~",
-"   ~      ~        ~~ ~    ++++++  ~~   ~    ~",
-"                 ~      ~ ~+++ ++   ~     ~       ~",
-"          ~        ~     ~ ++++++~    ~  ~ ~",
-};
+string Castle::castle[Castle::castle_size];
 
 void Castle::print_castle(const Player& player) {
     const int player_x = player.player_x;
     const int player_y = player.player_y;
 
-    size_t castle_size = sizeof(castle) / sizeof(castle[0]);
+    size_t castle_size = Castle::castle_size;
 
-    // Р Р°Р·РјРµСЂС‹ РєРѕРЅСЃРѕР»Рё: x = 156, y = 45
-    // Р Р°Р·РјРµСЂС‹ Р·Р°РјРєР°: 24 СЃС‚СЂРѕРєРё, 61 СЃРёРјРІРѕР»Р° СЃР°РјР°СЏ РґР»РёРЅРЅР°СЏ СЃС‚СЂРѕРєР°
+    // Размеры консоли: x = 156, y = 45
+    // Размеры замка: 24 строки, 61 символа самая длинная строка
     for (int i{ 0 }; i < get_console_height() - 1; i++) {
         if (i > empty_spaces && i < empty_spaces + castle_size + 1) {
             clear(0, i, free_left_space + 1);
@@ -53,7 +25,7 @@ void Castle::print_castle(const Player& player) {
                 int x_index = free_left_space;
                 bool is_water = true;
                 bool is_first_water = true;
-                for (char symbol : castle[i - empty_spaces - 1]) {
+                for (char symbol : Castle::castle[i - empty_spaces - 1]) {
                     x_index++;
                     if (!(i == player_y && x_index == player_x)) {
                         if (symbol == '~' && is_water) {
@@ -101,21 +73,35 @@ int Castle::find_door_index() {
 bool Castle::can_move_castle(int player_x, int player_y) {
     if (!can_move_border(player_x, player_y)) return false;
 
-    size_t castle_size = sizeof(castle) / sizeof(castle[0]) - 1;
+    size_t castle_size = Castle::castle_size - 1;
 
-    if ((player_y == empty_spaces + 18) &&      // РўСЂР°РІР° 1
+    if ((player_y == empty_spaces + 18) &&      // Трава 1
         ((player_x < free_left_space + 13) || (player_x > free_left_space + 49)))
         return false;
-    else if ((player_y == empty_spaces + 19) && // РўСЂР°РІР° 2
+    else if ((player_y == empty_spaces + 19) && // Трава 2
         ((player_x < free_left_space + 15) || (player_x > free_left_space + 47)))
         return false;
-    else if ((player_y == empty_spaces + 20) && // РўСЂР°РІР° 3
+    else if ((player_y == empty_spaces + 20) && // Трава 3
         ((player_x < free_left_space + 18) || (player_x > free_left_space + 43)))
         return false;
-    else if (player_y < empty_spaces + 18 &&    // Р”РІРµСЂРё
+    else if (player_y < empty_spaces + 18 &&    // Двери
         ((player_x < castle[16].find_first_of(':') + free_left_space + 1) || (player_x > castle[16].find_last_of(':') + free_left_space + 1)))
         return false;
-    else if (((player_y < castle_size + empty_spaces + 2) && (player_y > empty_spaces + 20)) &&   // Р’РѕРґР° Рё РјРѕСЃС‚
+    else if (((player_y < castle_size + empty_spaces + 2) && (player_y > empty_spaces + 20)) &&   // Вода и мост
         ((player_x < castle[castle_size].find_first_of('+') + free_left_space + 1) || (player_x > castle[castle_size].find_last_of('+') + free_left_space + 1)))
         return false;
+}
+
+void Castle::read_castle() {
+    ifstream file("Data\\arts.txt");
+    
+    if (!file) {
+        cout << "Ошибка открытия файла.";
+        return;
+    }
+
+    string s = "";
+    for (int i{ 0 }; getline(file, s) && !s.empty(); i++) {
+        Castle::castle[i] = s;
+    }
 }

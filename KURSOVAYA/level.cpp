@@ -1,4 +1,4 @@
-п»ї#include <iostream>
+#include <iostream>
 #include <Windows.h>
 #include <fstream>
 #include "services.h"
@@ -9,9 +9,11 @@ using namespace std;
 
 int Level::wave_timer = 0;
 
+const string Level::filename = "Data\\level.txt";
+
 int Level::get_current_level() {
 	int level = 0;
-	fstream file("level.txt", ios::in);
+	fstream file(Level::filename, ios::in);
 	if (file.is_open()) {
 		file >> level;
 		file.close();
@@ -25,7 +27,7 @@ int Level::get_current_level() {
 
 void Level::level_up(const int points) {
 	int current_level = get_current_level();
-	fstream file("level.txt", ios::out | ios::trunc);
+	fstream file(Level::filename, ios::out | ios::trunc);
 	if (file.is_open()) {
 		file << current_level + points;
 		file.close();
@@ -33,7 +35,7 @@ void Level::level_up(const int points) {
 }
 
 void Level::set_new_level(const int new_level) {
-	fstream file("level.txt", ios::out | ios::trunc);
+	fstream file(Level::filename, ios::out | ios::trunc);
 	if (file.is_open()) {
 		file << new_level;
 		file.close();
@@ -106,7 +108,7 @@ void Level::init_level(const int wave, const Player& player) {
 }
 
 void Level::init_0_level(const int wave, const Player& player) {
-	// РџСЂРёСЃРІРѕРёС‚СЊ -1 РїРѕСЃР»Рµ РІСЃРµС… РІРѕР»РЅ
+	// Присвоить -1 после всех волн
 	switch (wave) {
 	case 1:
 		Enemy::init_enemy_in_array(console_side::right, 1, player);

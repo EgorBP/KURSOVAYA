@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <chrono>
 #include "windows.h"
@@ -9,6 +9,8 @@
 using namespace std;
 
 std::chrono::steady_clock::time_point Bomb::last_boom_time = std::chrono::steady_clock::now();
+
+const string Bomb::filename = "Data\\bomb.txt";
 
 void Bomb::process_bomb() {
 	print_count();
@@ -48,7 +50,7 @@ void Bomb::print_count() {
 
 int Bomb::get_current_count() {
 	int level = 0;
-	fstream file("bomb.txt", ios::in);
+	fstream file(Bomb::filename, ios::in);
 	if (file.is_open()) {
 		file >> level;
 		file.close();
@@ -62,7 +64,7 @@ int Bomb::get_current_count() {
 
 void Bomb::count_up(const int points) {
 	int current_level = get_current_count();
-	fstream file("bomb.txt", ios::out | ios::trunc);
+	fstream file(Bomb::filename, ios::out | ios::trunc);
 	if (file.is_open()) {
 		file << current_level + points;
 		file.close();
@@ -70,7 +72,7 @@ void Bomb::count_up(const int points) {
 }
 
 void Bomb::set_new_count(const int new_level) {
-	fstream file("bomb.txt", ios::out | ios::trunc);
+	fstream file(Bomb::filename, ios::out | ios::trunc);
 	if (file.is_open()) {
 		file << new_level;
 		file.close();

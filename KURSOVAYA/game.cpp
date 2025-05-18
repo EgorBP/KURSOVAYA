@@ -26,7 +26,7 @@ void Game::start() {
 }
 
 void Game::update_data() {
-	Level::set_new_level(8);
+	Level::set_new_level(0);
 	Arrow::set_new_level(10);
 	Dialogue::set_new_money(50);
 	Bomb::set_new_count(10);
@@ -43,6 +43,10 @@ void Game::update_data() {
 	else {
 		init_from_saved_state();
 	}
+
+	Castle::read_castle();
+	Dialogue::read_princess();
+	Dialogue::read_blacksmith();
 }
 
 void Game::init_loop() {
@@ -223,6 +227,7 @@ void Game::handle_player_death() {
 	}
 	mode = Castle;
 	Enemy::delete_array();
+	Arrow::delete_array();
 	is_player_die = false;
 	player.player_x = 75;
 	player.player_y = 27;

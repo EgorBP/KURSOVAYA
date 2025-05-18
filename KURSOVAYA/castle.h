@@ -1,4 +1,4 @@
-﻿#ifndef CASTLE_H
+#ifndef CASTLE_H
 #define CASTLE_H
 
 #include <string>
@@ -8,11 +8,13 @@ struct Castle {
 	static const int free_left_space = 45;   // x pos
 	static const int empty_spaces = 8;       // y pos
 	static const int door_y_pos = empty_spaces + 17;
-	static const std::string castle[];
+	static const int castle_size = 28;
+	static std::string castle[castle_size];
 
 	static void print_castle(const Player& player);
 	static int find_door_index();
 	static bool can_move_castle(int player_x, int player_y);
+	static void read_castle();
 };
 
 #endif

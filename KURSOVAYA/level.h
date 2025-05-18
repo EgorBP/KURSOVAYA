@@ -1,9 +1,11 @@
-п»ї#pragma once
+#pragma once
 #include "enemies.h"
 
 struct Level {
 	static const int max_level = 10;
 	static int wave_timer;
+
+	static const std::string filename;
 
 	static int get_current_level();
 	static void level_up(const int points = 1);
@@ -12,10 +14,10 @@ struct Level {
 	static void print_timer();
 	static void init_level(const int wave, const Player& player);
 	
-// РџСЂРё РґРѕР±Р°РІР»РµРЅРёРё РЅРѕРІРѕРіРѕ СѓСЂРѕРІРЅСЏ:
-//  1. РЈРІРµР»РёС‡РёС‚СЊ max_level РЅР° 1
-//	2. Р”РѕР±Р°РІРёС‚СЊ С„СѓРЅРєС†РёСЋ Р·РґРµСЃСЊ
-//  3. Р”РѕР±Р°РІРёС‚СЊ СѓРєР°Р·Р°С‚РµР»СЊ РІ РјР°СЃСЃРёРІ РІ init_level
+// При добавлении нового уровня:
+//  1. Увеличить max_level на 1
+//	2. Добавить функцию здесь
+//  3. Добавить указатель в массив в init_level
 private:
 	static void init_0_level(const int wave, const Player& player);
 	static void init_1_level(const int wave, const Player& player);

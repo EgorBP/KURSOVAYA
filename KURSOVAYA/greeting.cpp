@@ -1,4 +1,4 @@
-ï»¿#include <iostream>
+#include <iostream>
 #include <Windows.h>
 #include "services.h"
 #include "greeting.h"
@@ -137,7 +137,7 @@ void Greeting::beautiful_print(const string * item, const int x_pos, const int y
     for (size_t i{ 0 }; i < size; i++) {
         if (item[i].size() != width) {
             move_cursor();
-            cout << "Ð Ð°Ð·Ð¼ÐµÑ€ Ð²ÑÐµÑ… ÑÑ‚Ñ€Ð¾Ðº Ð² Ð¼Ð°ÑÑÐ¸Ð²Ðµ Ð´Ð¾Ð»Ð¶ÐµÐ½ Ð±Ñ‹Ñ‚ÑŒ Ð¾Ð´Ð¸Ð½Ð°ÐºÐ¾Ð²Ñ‹Ð¼. ÐŸÑ€ÐµÑ€Ñ‹Ð²Ð°Ð½Ð¸Ðµ...";
+            cout << "Ðàçìåð âñåõ ñòðîê â ìàññèâå äîëæåí áûòü îäèíàêîâûì. Ïðåðûâàíèå...";    
             return;
         }
     }

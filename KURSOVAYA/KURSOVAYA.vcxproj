@@ -154,9 +154,11 @@
     <ClInclude Include="services.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="bow.txt" />
-    <Text Include="level.txt" />
-    <Text Include="money.txt" />
+    <Text Include="Data\arts.txt" />
+    <Text Include="Data\bomb.txt" />
+    <Text Include="Data\bow.txt" />
+    <Text Include="Data\level.txt" />
+    <Text Include="Data\money.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
