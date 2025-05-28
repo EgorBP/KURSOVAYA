@@ -26,7 +26,7 @@ void Game::start() {
 }
 
 void Game::update_data() {
-	Level::set_new_level(0);
+	Level::set_new_level(4);
 	Arrow::set_new_level(10);
 	Dialogue::set_new_money(50);
 	Bomb::set_new_count(10);

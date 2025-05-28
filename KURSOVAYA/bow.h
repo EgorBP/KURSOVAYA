@@ -4,9 +4,9 @@
 #include "enemies.h"
 
 struct Arrow {
-	int arrow_x;
-	int arrow_y;
-	char arrow_side;
+	int arrow_x = -1;
+	int arrow_y = -1;
+	char arrow_side = '^'; // Может быть только: ^, V, <, >.
 
 	static const std::string filename;
 

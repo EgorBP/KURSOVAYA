@@ -22,7 +22,7 @@ const string Enemy::pos_left[4] = {
 		"   c-L'- ",
 };
 
-void Enemy::init_enemy_in_array(const console_side console_side, const int level, const Player& player) {
+void Enemy::init_enemy_in_array(const ConsoleSide console_side, const int level, const Player& player) {
 	// Динамически меняем размер
 	Enemy* new_array = new Enemy[enemies_array_size + 1];
 
@@ -125,11 +125,11 @@ void Enemy::move(const Player& player, int point_x, int point_y) {
 	if (std::abs(x_difference) > 1) {
 		if (x_difference > 0) {
 			enemy_upper_left_x += point_x;
-			position = enemy_side::l;
+			position = EnemySide::l;
 		}
 		else {
 			enemy_upper_left_x -= point_x;
-			position = enemy_side::r;
+			position = EnemySide::r;
 		}
 	}
 
@@ -161,7 +161,7 @@ void Enemy::set_enemy_color() const {
 void Enemy::print_all() const {
 	set_enemy_color();
 	const string* model;
-	if (position == enemy_side::r) model = pos_right;
+	if (position == EnemySide::r) model = pos_right;
 	else model = pos_left;
 	for (int i = 0; i < 4; i++) {
 		move_cursor(enemy_upper_left_x, enemy_upper_left_y + i);

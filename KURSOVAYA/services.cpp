@@ -1,4 +1,4 @@
-п»ї#include <iostream>
+#include <iostream>
 #include <windows.h>
 #include <string>
 #include "services.h"
@@ -88,7 +88,7 @@ void beautiful_clear_all(int sleep_time, char symbol) {
 }
 
 bool can_move_border(const int x, const int y) {
-    if (x < 2 or y < 0) return false;   // Р“СЂР°РЅРёС†С‹ РѕРєРЅР° 
+    if (x < 2 or y < 0) return false;   // Границы окна 
     if (x >= get_console_width() or y >= get_console_height()) return false;
     return true;
 }
@@ -119,14 +119,14 @@ bool check_enter_button() {
 
 
 void set_color(const int text_color_code, const int bg_color_code) {
-    //  0 - Р§РµСЂРЅС‹Р№
-    //  1 - РЎРёРЅРёР№
-    //  2 - Р—РµР»РµРЅС‹Р№
-    //  3 - Р“РѕР»СѓР±РѕР№
-    //  4 - РљСЂР°СЃРЅС‹Р№
-    //  5 - РџСѓСЂРїСѓСЂРЅС‹Р№
-    //  6 - Р–РµР»С‚С‹Р№
-    //  7 - Р‘РµР»С‹Р№(РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ)
+    //  0 - Черный
+    //  1 - Синий
+    //  2 - Зеленый
+    //  3 - Голубой
+    //  4 - Красный
+    //  5 - Пурпурный
+    //  6 - Желтый
+    //  7 - Белый(по умолчанию)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text_color_code | (bg_color_code << 4));
 }
 
@@ -159,10 +159,10 @@ void prepare_console() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     hideCursor();
-    // Р§С‚РѕР±С‹ РѕРєРЅРѕ СѓСЃРїРµР»Рѕ РѕС‚РєСЂС‹С‚СЊСЃСЏ
+    // Чтобы окно успело открыться
     Sleep(100);
     simulateF11();
-    // Р§С‚РѕР±С‹ СѓСЃРїРµР»Рѕ РїРµСЂР№С‚Рё РІ РїРѕР»РЅРѕСЌРєСЂР°РЅРЅС‹Р№ СЂРµР¶РёРј
+    // Чтобы успело перйти в полноэкранный режим
     Sleep(300);
     disableMouseSelection();
 }

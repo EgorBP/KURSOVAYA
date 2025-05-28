@@ -83,12 +83,25 @@ void Dialogue::process_princess() {
 
 	string word = "";
 	bool run = true;
+	int level_index = Level::get_current_level() - 1;
+
+	if (level_index < 0 || level_index >= Level::max_level) {
+		return;
+	}
+
 	for (int i{ 0 }, new_strings_cout{ 0 }; i < 6 && run; i++) {
+		const std::string& line = princess_dialogues[level_index][i];
+
+		if (line.empty()) {
+			continue;
+		}
+
 		cout << word;
 		word = "";
 		if (i != 0) Sleep(1000);
 		move_cursor(get_first_line_width(princess_art) + 4, 3 + i * 2 + new_strings_cout);
-		for (char symbol : princess_dialogues[Level::get_current_level() - 1][i]) {
+
+		for (char symbol : line) {
 			if (check_esc_button()) {
 				beautiful_clear_all();
 				exit = true;
